@@ -1,0 +1,3086 @@
+<!DOCTYPE html><html lang="mr"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>JDCC भुसावळ — तारीखवार माहिती प्रणाली</title><style>
+@import url('https://fonts.googleapis.com/css2?family=Hind:wght@400;500;600;700&family=Poppins:wght@500;600;700&display=swap');
+:root{--navy:#004a79;--teal:#009a9c;--gold:#b9975b;--pale:#f2f8f8;--ink:#173c52;--line:#d5e4e7}*{box-sizing:border-box}body{margin:0;background:var(--pale);font-family:Hind,Arial,sans-serif;color:#304b5b}.top{background:#003b68;color:white;font-size:13px;padding:9px 0}.wrap{width:min(1080px,92%);margin:auto}.top .wrap{display:flex;justify-content:space-between}header{background:white}.brand{min-height:105px;display:flex;align-items:center;gap:16px}.logo{width:76px;height:76px;object-fit:contain}.brand h1{margin:0;color:var(--navy);font:700 20px Poppins,sans-serif}.brand p{margin:3px 0;color:#71818b}.pill{margin-left:auto;background:#e5f5f3;color:#08746f;border-left:4px solid var(--teal);padding:9px 13px;font-weight:600}.hero{background:linear-gradient(110deg,#004a79e8,#008e9bd9),url('https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=1400&q=75') center/cover;color:#fff;padding:42px 0}.hero h2{font-size:34px;margin:0}.hero p{font-size:18px;margin:7px 0 0}.screen{margin:27px auto}.login{max-width:560px;margin:0 auto;background:#fff;padding:29px;border-radius:9px;box-shadow:0 7px 25px #123d521b}.login h3,.panel h3{margin:0;color:var(--ink);font-size:25px}.hint{margin:5px 0 19px;color:#6c7e87}.tabs{display:flex;margin-bottom:20px;border-bottom:1px solid var(--line)}.tabs button{border:0;background:none;padding:11px 16px;color:#4f6877;font:600 15px Hind;cursor:pointer}.tabs button.on{color:var(--navy);border-bottom:3px solid var(--teal)}label{display:block;font-weight:600;margin:12px 0 5px}input,select,textarea{width:100%;border:1px solid #c7dadd;border-radius:5px;padding:11px;font:16px Hind;color:#294452}textarea{min-height:75px;resize:vertical}button{cursor:pointer}.btn{border:0;border-radius:5px;padding:11px 19px;color:#fff;background:var(--navy);font:600 14px Poppins}.btn.teal{background:var(--teal)}.btn.out{color:var(--navy);background:#fff;border:1px solid var(--navy)}.warning{font-size:13px;background:#fff9e9;border-left:4px solid var(--gold);padding:10px;margin-top:18px;color:#705625}.hidden{display:none!important}.bar{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:17px;margin-bottom:22px}.stat,.panel{background:#fff;border-radius:8px;box-shadow:0 5px 19px #16425513;border:1px solid #dfebec}.stat{padding:17px}.stat b{color:var(--teal);font:700 24px Poppins;display:block}.panel{padding:25px;margin-bottom:20px}.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:15px}.full{grid-column:1/-1}.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px}.tablebox{overflow:auto}table{width:100%;border-collapse:collapse}th{text-align:left;padding:10px;background:#e6f3f3;color:#29556a}td{padding:10px;border-bottom:1px solid var(--line)}.muted{color:#758993}.foot{text-align:center;background:#003b68;color:#dcecf1;padding:17px;margin-top:40px;font-size:13px}@media print{body{background:#fff}.top,header,.hero,.login,.foot,.bar .actions,.btn{display:none!important}.screen,.wrap{width:100%;margin:0}.panel{border:0;box-shadow:none;padding:0}.stats{margin:0 0 12px}.stat{box-shadow:none;border:1px solid #bbb;padding:8px}.tablebox{overflow:visible}table{font-size:10pt}th,td{padding:6px;border:1px solid #aaa}.print-title{display:block!important}}@media(max-width:650px){.brand h1{font-size:16px}.pill{display:none}.logo{width:61px}.hero h2{font-size:28px}.stats,.grid{grid-template-columns:1fr}.panel,.login{padding:19px}.top .wrap{font-size:11px}}
+</style>
+<style>
+.menu-selected{background:#0b66d4!important;color:#fff!important;border-color:#0b66d4!important}
+.home-row,.admin-date-row{cursor:pointer}
+.home-row:hover,.admin-date-row:hover{background:#eef8ff}
+#homeReport,#adminReport{margin-top:18px}
+</style>
+
+<style>
+.column-builder{border:1px solid #d5e4e7;border-radius:7px;padding:12px;background:#f8fbfb}
+.main-col-card{border:1px solid #c7dadd;border-radius:7px;background:#fff;padding:12px;margin-bottom:10px}
+.main-col-head{display:flex;gap:8px;align-items:center}
+.main-col-head input{flex:1}
+.sub-list{margin:9px 0 0 18px;padding-left:12px;border-left:3px solid #e5f0f0}
+.sub-row{display:flex;gap:8px;align-items:center;margin:7px 0}
+.sub-row input{flex:1}
+.small-btn{padding:7px 11px!important;font-size:12px!important}
+.column-help{font-size:12px;color:#6c7e87;margin-top:5px}
+@media(max-width:650px){.main-col-head,.sub-row{flex-wrap:wrap}.main-col-head input,.sub-row input{width:100%}}
+</style>
+
+<style id="v30-admin-login-clean">
+/* V30: Admin login should not show the Branch Login tab. */
+#loginBox.admin-login-mode #branchTab { display:none !important; }
+#loginBox.admin-login-mode .tabs { justify-content:flex-end; }
+</style>
+<script>
+(function(){
+  const oldShowLogin = window.showLogin;
+  window.showLogin = function(which){
+    if (typeof oldShowLogin === 'function') oldShowLogin(which);
+    const box=document.getElementById('loginBox');
+    if(box) box.classList.toggle('admin-login-mode', which==='admin');
+  };
+  document.addEventListener('DOMContentLoaded', function(){
+    const box=document.getElementById('loginBox');
+    const admin=document.getElementById('adminTab');
+    const branch=document.getElementById('branchTab');
+    if(admin) admin.addEventListener('click', function(){
+      if(typeof window.showLogin==='function') window.showLogin('admin');
+    });
+    if(branch) branch.addEventListener('click', function(){
+      if(typeof window.showLogin==='function') window.showLogin('branch');
+    });
+  });
+})();
+</script>
+
+</head><body><div class="top"><div class="wrap"><span>दि. जळगाव जिल्हा मध्यवर्ती सहकारी बँक लि., जळगाव</span><span>भुसावळ तालुका</span></div></div>
+<header><div class="wrap brand"><img class="logo" src="data:image/jpeg;base64,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" alt="JDCC बँक लोगो"><div><h1>दि. जळगाव जिल्हा मध्यवर्ती सहकारी बँक लि. जळगाव</h1><p>भुसावळ तालुका — शाखा माहिती संकलन प्रणाली</p></div><div class="pill">१७ शाखांसाठी माहिती नोंदणी</div></div><nav class="wrap" style="display:flex;gap:7px;padding:0 0 15px"><button id="navHome" class="btn" type="button">मुख्यपृष्ठ</button><button id="navBranch" class="btn out" type="button">शाखा लॉगिन</button><button id="navAdmin" class="btn out hidden" type="button">Admin</button></nav></header>
+<main class="wrap screen">
+  <section id="homePage">
+    <div class="bar">
+      <div><h3>मुख्यपृष्ठ</h3><span class="muted">बँकेची रोजची माहिती — तारीख व शीर्षकानुसार</span></div>
+      <button id="officeBtn" class="btn out" type="button">विभागीय कार्यालय प्रवेश</button>
+    </div>
+    <section id="homeDaily" class="panel"></section>
+    <section id="homeReport" class="panel hidden"></section>
+  </section>
+
+  <section id="loginBox" class="login hidden">
+    <div class="tabs">
+      <button id="branchTab" class="on" type="button">शाखा लॉगिन</button>
+      <button id="adminTab" type="button">Admin लॉगिन</button>
+    </div>
+    <h3 id="loginTitle">शाखा लॉगिन</h3>
+    <p id="loginHint" class="hint">आपली शाखा निवडा आणि पासवर्ड टाका.</p>
+    <label id="branchLabel">शाखेचे नाव</label>
+    <select id="loginBranch"></select>
+    <label>पासवर्ड</label>
+    <input id="password" type="password" placeholder="पासवर्ड">
+    <div class="actions"><button id="loginBtn" class="btn" type="button">लॉगिन करा</button></div>
+  </section>
+
+  <section id="branchArea" class="hidden">
+    <div class="bar">
+      <div><h3>शाखा लॉगिन</h3><span class="muted" id="branchName"></span></div>
+      <button id="branchLogout" class="btn out" type="button">लॉगआउट</button>
+    </div>
+    <section class="panel">
+      <div id="branchRequest" class="warning"></div>
+      <label>माहितीची तारीख</label>
+      <select id="branchDate"></select>
+      <form id="branchForm">
+        <div id="branchFields" class="grid" style="margin-top:14px"></div>
+        <div class="actions"><button class="btn teal" type="submit">माहिती जतन करा</button></div>
+      </form>
+    </section>
+  </section>
+
+  <section id="adminArea" class="hidden">
+    <div class="bar">
+      <div><h3>विभागीय कार्यालय — Admin</h3><span class="muted">तारीखवार माहिती व एकत्रित रिपोर्ट</span></div>
+      <button id="adminLogout" class="btn out" type="button">लॉगआउट</button>
+    </div>
+
+    <section class="panel">
+      <h3>Admin माहिती मागणी</h3>
+      <p class="hint">प्रत्येक तारीख स्वतंत्र. त्या तारखेचेच Title, Letter आणि Columns शाखांना दिसतील.</p>
+      <div class="grid">
+        <div><label>तारीख *</label><input id="reqDate" type="date"></div>
+        <div><label>माहितीचे शीर्षक *</label><input id="reqTitle"></div>
+        <div class="full"><label>सूचना / Letter</label><textarea id="reqLetter"></textarea></div>
+        <div class="full">
+  <label>मुख्य Column व त्याखालील Multiple Sub-Columns</label>
+  <div id="columnBuilder"></div>
+  <button id="addMainColumn" class="btn out" type="button" style="margin-top:10px">+ मुख्य Column जोडा</button>
+  <input id="reqFields" class="hidden" aria-hidden="true">
+  <p class="hint" style="margin-top:8px">उदा. मुख्य Column: LMS माहिती → LMS सदस्य संख्या, F2 सदस्य संख्या, नवीन सदस्य</p>
+</div>
+      </div>
+      <div class="actions"><button id="saveRequest" class="btn teal" type="button">माहिती जतन करा</button></div>
+    </section>
+
+    <section id="adminDaily" class="panel"></section>
+    <section id="adminReport" class="panel hidden"></section>
+  </section>
+</main>
+<footer class="foot">© 2026 दि. जळगाव जिल्हा मध्यवर्ती सहकारी बँक लि., जळगाव — डेमो प्रणाली @ J S GHULE</footer>
+<script>
+const BRANCHES=['वरणगाव','पिंपळगाव खु.','शिंदी','भुसावळ','पिंपळगाव बु.','फेकरी','किन्ही','तळवेल','फुलगाव','कठोरा','कुऱ्हे पानाचे','साक्री','साकेगाव','सुनसगाव','वराडसीम','भुसावळ वि. कक्ष','न्यू एरिया भुसावळ'];
+window.BRANCHES=BRANCHES; // Make the 17 branch names available to all report renderers.
+const REQ_KEY='JDCC_SIMPLE_REQUESTS_V1';
+const DATA_KEY='JDCC_SIMPLE_BRANCH_DATA_V1';
+let role='',activeBranch='',selectedDate='',loggedIn=false;
+
+const $=id=>document.getElementById(id);
+const esc=x=>String(x??'').replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;').replaceAll("'",'&#39;');
+const today=()=>new Date().toISOString().slice(0,10);
+function requests(){try{const x=JSON.parse(localStorage.getItem(REQ_KEY)||'[]');return Array.isArray(x)?x:[]}catch(e){return[]}}
+function saveRequests(x){localStorage.setItem(REQ_KEY,JSON.stringify(x))}
+function branchData(){try{return JSON.parse(localStorage.getItem(DATA_KEY)||'{}')||{}}catch(e){return{}}}
+function saveBranchData(x){localStorage.setItem(DATA_KEY,JSON.stringify(x))}
+function req(d){return requests().find(x=>String(x.date)===String(d))||null}
+function dates(){return requests().map(x=>x.date).filter(Boolean).sort((a,b)=>String(b).localeCompare(String(a)))}
+function latestDate(){return dates()[0]||today()}
+
+function hideAll(){['homePage','loginBox','branchArea','adminArea'].forEach(id=>$(id).classList.add('hidden'))}
+function nav(id){['navHome','navBranch','navAdmin'].forEach(x=>$(x)?.classList.remove('menu-selected'));$(id)?.classList.add('menu-selected')}
+function updateNav(){
+  $('navAdmin').classList.toggle('hidden',!(loggedIn&&role==='admin'));
+}
+
+function showHome(){
+  hideAll();$('homePage').classList.remove('hidden');updateNav();nav('navHome');
+  renderHome();
+}
+function showLogin(which){
+  hideAll();$('loginBox').classList.remove('hidden');
+  $('branchTab').classList.toggle('on',which==='branch');
+  $('adminTab').classList.toggle('on',which==='admin');
+  $('loginTitle').textContent=which==='admin'?'Admin लॉगिन':'शाखा लॉगिन';
+  $('loginHint').textContent=which==='admin'?'विभागीय कार्यालय भुसावळ — Admin पासवर्ड टाका.':'आपली शाखा निवडा आणि पासवर्ड टाका.';
+  $('loginBranch').classList.toggle('hidden',which==='admin');
+  $('branchLabel').classList.toggle('hidden',which==='admin');
+  $('password').value='';
+  $('password').focus();
+  window.loginMode=which;
+}
+function showBranch(){
+  if(!loggedIn){showLogin('branch');nav('navBranch');return}
+  if(role!=='branch'){showHome();return}
+  hideAll();$('branchArea').classList.remove('hidden');updateNav();nav('navBranch');
+  $('branchName').textContent='निवडलेली शाखा: '+activeBranch;
+  renderBranchDates();
+  renderBranchForm();
+}
+function showAdmin(){
+  if(!loggedIn||role!=='admin'){showLogin('admin');return}
+  hideAll();$('adminArea').classList.remove('hidden');updateNav();nav('navAdmin');
+  renderAdmin();
+}
+
+function login(){
+  const isAdmin=window.loginMode==='admin', pass=$('password').value.trim();
+  if(pass!==(isAdmin?'admin123':'branch123')){alert('पासवर्ड चुकीचा आहे.');return}
+  loggedIn=true;role=isAdmin?'admin':'branch';
+  if(isAdmin){selectedDate=latestDate();showAdmin()}
+  else{activeBranch=$('loginBranch').value;selectedDate=latestDate();showBranch()}
+}
+function logout(){loggedIn=false;role='';activeBranch='';selectedDate='';showHome()}
+
+function renderHome(){
+  const a=requests().sort((x,y)=>String(y.date).localeCompare(String(x.date)));
+  $('homeDaily').innerHTML='<div class="bar"><div><h3>दैनिक माहिती</h3><span class="muted">तारीख व माहितीचे शीर्षक</span></div></div>'+
+    (a.length?'<div class="tablebox"><table><thead><tr><th>तारीख</th><th>माहितीचे शीर्षक</th></tr></thead><tbody>'+
+    a.map(x=>'<tr class="home-row" data-date="'+esc(x.date)+'"><td>'+esc(x.date)+'</td><td>'+esc(x.title)+'</td></tr>').join('')+
+    '</tbody></table></div>':'<p class="hint">Admin ने अजून तारीखवार माहिती जतन केलेली नाही.</p>');
+  $('homeDaily').querySelectorAll('.home-row').forEach(r=>r.onclick=()=>showHomeReport(r.dataset.date));
+  $('homeReport').classList.add('hidden');
+  $('homeReport').innerHTML='';
+}
+
+function aggregateHTML(d, targetTitle){
+  const q=req(d); if(!q)return '';
+  const all=branchData(), fields=flatten(q);
+  const rows=BRANCHES.map(b=>{
+    const r=all[b]?.[d];
+    return '<tr><td>'+esc(b)+'</td>'+fields.map((f,i)=>'<td>'+esc(r?.values?.[i]||'-')+'</td>').join('')+
+      '<td>'+(r?'जमा':'प्रलंबित')+'</td></tr>';
+  }).join('');
+  const submitted=BRANCHES.filter(b=>all[b]?.[d]).length;
+  return '<div class="bar"><div><h3>एकत्रित माहिती</h3><span class="muted">तारीख: '+esc(d)+'</span></div>'+
+    '<button class="btn out" type="button" onclick="closeReport(\''+esc(targetTitle)+'\')">बंद करा</button></div>'+
+    '<div class="warning"><b>'+esc(q.title)+'</b><br>'+esc(q.letter||'')+
+    '<div style="margin-top:6px">माहिती भरलेल्या शाखा: '+submitted+' / '+BRANCHES.length+'</div></div>'+
+    '<div class="tablebox"><table><thead><tr><th>शाखा</th>'+fields.map(f=>'<th>'+esc(f)+'</th>').join('')+'<th>स्थिती</th></tr></thead><tbody>'+rows+'</tbody></table></div>';
+}
+function showHomeReport(d){
+  const q=req(d);if(!q)return;
+  $('homeReport').innerHTML=aggregateHTML(d,'homeReport');
+  $('homeReport').classList.remove('hidden');
+  $('homeReport').scrollIntoView({behavior:'smooth',block:'start'});
+}
+function closeReport(id){$(id)?.classList.add('hidden')}
+
+function renderAdmin(){
+  if(!$('reqDate').value)$('reqDate').value=selectedDate||latestDate();
+  loadRequestEditor();
+  renderAdminDaily();
+  renderAdminReport($('reqDate').value);
+}
+function loadRequestEditor(){
+  const d=$('reqDate').value||latestDate(),q=req(d)||{title:'',letter:'',fields:[]};
+  $('reqTitle').value=q.title||'';$('reqLetter').value=q.letter||'';$('reqFields').value=(q.fields||[]).join(', ');
+}
+function saveAdminRequest(){
+  const d=$('reqDate').value.trim(),title=$('reqTitle').value.trim();
+  if(!d||!title){alert('तारीख आणि माहितीचे शीर्षक आवश्यक आहे.');return}
+  const item={date:d,title,letter:$('reqLetter').value.trim(),fields:$('reqFields').value.split(',').map(x=>x.trim()).filter(Boolean)};
+  const a=requests(),i=a.findIndex(x=>String(x.date)===d);
+  if(i>=0)a[i]=item;else a.push(item);
+  a.sort((x,y)=>String(x.date).localeCompare(String(y.date)));saveRequests(a);
+  selectedDate=d;alert('Admin माहिती जतन झाली.');
+  renderAdminDaily();renderAdminReport(d);renderHome();
+}
+function renderAdminDaily(){
+  const a=requests().sort((x,y)=>String(y.date).localeCompare(String(x.date)));
+  $('adminDaily').innerHTML='<div class="bar"><div><h3>दैनिक माहिती</h3><span class="muted">तारीख व माहितीचे शीर्षक</span></div></div>'+
+    (a.length?'<div class="tablebox"><table><thead><tr><th>तारीख</th><th>माहितीचे शीर्षक</th><th>Action</th></tr></thead><tbody>'+
+    a.map(x=>'<tr><td>'+esc(x.date)+'</td><td class="admin-date-row" data-date="'+esc(x.date)+'">'+esc(x.title)+'</td><td><button class="btn out admin-edit" data-date="'+esc(x.date)+'" type="button">Edit</button></td></tr>').join('')+
+    '</tbody></table></div>':'<p class="hint">अजून माहिती जतन केलेली नाही.</p>');
+  $('adminDaily').querySelectorAll('.admin-date-row').forEach(x=>x.onclick=()=>{selectedDate=x.dataset.date;$('reqDate').value=selectedDate;loadRequestEditor();renderAdminReport(selectedDate)});
+  $('adminDaily').querySelectorAll('.admin-edit').forEach(x=>x.onclick=()=>{selectedDate=x.dataset.date;$('reqDate').value=selectedDate;loadRequestEditor();$('adminArea').scrollIntoView({behavior:'smooth',block:'start'})});
+}
+function renderAdminReport(d){
+  const q=req(d);
+  if(!q){$('adminReport').classList.add('hidden');return}
+  if(typeof renderAdmin17BranchReport==='function'){
+    renderAdmin17BranchReport(d);
+  }else{
+    $('adminReport').innerHTML=aggregateHTML(d,'adminReport');
+    $('adminReport').classList.remove('hidden');
+  }
+}
+function renderBranchDates(){
+  const ds=dates();$('branchDate').innerHTML=(ds.length?ds:[today()]).map(d=>'<option value="'+esc(d)+'">'+esc(d)+'</option>').join('');
+  $('branchDate').value=selectedDate||latestDate();
+}
+function renderBranchForm(){
+  const d=$('branchDate').value||latestDate(),q=req(d);
+  selectedDate=d;
+  $('branchRequest').innerHTML=q?
+    '<b>'+esc(q.title)+'</b><br>तारीख: '+esc(d)+'<br>'+
+    '<span style="white-space:pre-wrap">'+esc(q.letter||'')+'</span>':
+    '<b>या तारखेसाठी Admin माहिती उपलब्ध नाही.</b>';
+
+  const all=branchData(),saved=all[activeBranch]?.[d]||{};
+  const columns=Array.isArray(q?.columns)&&q.columns.length?q.columns:[];
+  const fields=q?.fields||[];
+  let idx=0;
+
+  if(columns.length){
+    $('branchFields').innerHTML=columns.map(c=>{
+      const main=String(c.title||'').trim();
+      const subs=Array.isArray(c.subs)?c.subs.map(x=>String(x??'').trim()):[];
+
+      if(subs.length){
+        const cells=subs.map(s=>{
+          const i=idx++;
+          return '<div class="branch-sub-column"><label>'+esc(s)+'</label>'+
+            '<input id="bf_'+i+'" value="'+esc(saved.values?.[i]??'')+'" placeholder="'+esc(s)+'"></div>';
+        }).join('');
+        return '<div class="branch-main-column">'+
+          '<div class="branch-main-column-title">'+esc(main)+'</div>'+
+          '<div class="branch-sub-columns">'+cells+'</div></div>';
+      }
+
+      const i=idx++;
+      return '<div class="branch-main-column">'+
+        '<div class="branch-main-column-title">'+esc(main)+'</div>'+
+        '<div class="branch-sub-columns"><div class="branch-sub-column">'+
+        '<label>'+esc(main)+'</label><input id="bf_'+i+'" value="'+
+        esc(saved.values?.[i]??'')+'" placeholder="'+esc(main)+'"></div></div></div>';
+    }).join('');
+  }else{
+    $('branchFields').innerHTML=fields.length?
+      fields.map((f,i)=>'<div><label>'+esc(f)+'</label>'+
+      '<input id="bf_'+i+'" value="'+esc(saved.values?.[i]||'')+'" placeholder="'+esc(f)+'"></div>').join(''):
+      '<div class="full hint">या तारखेसाठी Admin ने कोणतेही Columns जतन केलेले नाहीत.</div>';
+  }
+}
+function saveBranch(){
+  const d=$('branchDate').value,q=req(d);
+  if(!q){alert('या तारखेसाठी Admin ने माहिती मागणी जतन केलेली नाही.');return}
+  const values=(q.fields||[]).map((f,i)=>$('bf_'+i)?.value||'');
+  const all=branchData();if(!all[activeBranch])all[activeBranch]={};
+  all[activeBranch][d]={branch:activeBranch,date:d,values,updated:new Date().toISOString()};
+  saveBranchData(all);
+  alert('शाखेची माहिती '+d+' साठी जतन झाली.');
+  renderBranchForm();
+}
+
+$('officeBtn').onclick=()=>{if(loggedIn&&role==='branch'){alert('Branch Login ला Admin प्रवेश नाही.');return} showLogin('admin')};
+$('branchTab').onclick=()=>showLogin('branch');$('adminTab').onclick=()=>showLogin('admin');
+$('loginBtn').onclick=login;$('password').onkeydown=e=>{if(e.key==='Enter')login()};
+$('branchLogout').onclick=logout;$('adminLogout').onclick=logout;
+$('branchDate').onchange=renderBranchForm;$('branchForm').onsubmit=e=>{e.preventDefault();saveBranch()};
+$('saveRequest').onclick=saveAdminRequest;$('reqDate').onchange=loadRequestEditor;
+$('navHome').onclick=showHome;$('navBranch').onclick=showBranch;$('navAdmin').onclick=showAdmin;
+
+$('loginBranch').innerHTML=BRANCHES.map(b=>'<option>'+esc(b)+'</option>').join('');
+showHome();
+</script>
+
+<script>
+(function(){
+  const $=id=>document.getElementById(id);
+  function hi(id){
+    ['navHome','navBranch','navAdmin'].forEach(x=>$(x)?.classList.remove('menu-selected'));
+    $(id)?.classList.add('menu-selected');
+  }
+  function branchLogin(){
+    if(typeof loggedIn!=='undefined' && loggedIn && typeof role!=='undefined' && role==='branch'){
+      if(typeof showBranch==='function')showBranch();
+    }else{
+      if(typeof showLogin==='function')showLogin('branch');
+      else {
+        $('loginBox')?.classList.remove('hidden');
+        $('branchTab')?.classList.add('on');
+        $('adminTab')?.classList.remove('on');
+      }
+    }
+    hi('navBranch');
+  }
+  function home(){
+    if(typeof showHome==='function')showHome();
+    hi('navHome');
+  }
+  function admin(){
+    if(typeof showAdmin==='function')showAdmin();
+    else if(typeof showLogin==='function')showLogin('admin');
+    hi('navAdmin');
+  }
+  document.addEventListener('DOMContentLoaded',function(){
+    $('navHome')?.addEventListener('click',home,true);
+    $('navBranch')?.addEventListener('click',branchLogin,true);
+    $('navAdmin')?.addEventListener('click',admin,true);
+    $('branchTab')?.addEventListener('click',function(){branchLogin()},true);
+    $('adminTab')?.addEventListener('click',function(){admin()},true);
+    hi('navHome');
+  });
+})();
+</script>
+
+<script>
+document.addEventListener('DOMContentLoaded',function(){
+  const adminTab=document.getElementById('adminTab');
+  const loginBox=document.getElementById('loginBox');
+  const office=document.getElementById('officeBtn');
+
+  // Hide Admin tab from the login screen entirely.
+  if(adminTab){
+    adminTab.style.display='none';
+    adminTab.disabled=true;
+  }
+
+  // Branch login always opens the Branch login mode.
+  const branchNav=document.getElementById('navBranch');
+  if(branchNav){
+    branchNav.addEventListener('click',function(){
+      if(typeof showLogin==='function')showLogin('branch');
+      if(adminTab)adminTab.style.display='none';
+    },true);
+  }
+
+  // Admin login is available only through Home -> विभागीय कार्यालय प्रवेश.
+  if(office){
+    office.onclick=function(e){
+      e.preventDefault();
+      e.stopImmediatePropagation();
+      if(typeof showLogin==='function')showLogin('admin');
+      if(adminTab)adminTab.style.display='none';
+      return false;
+    };
+  }
+});
+</script>
+
+<script>
+(function(){
+  const $=id=>document.getElementById(id);
+
+  function req(d){
+    try{
+      const a=JSON.parse(localStorage.getItem('JDCC_SIMPLE_REQUESTS_V1')||'[]');
+      return Array.isArray(a)?a.find(x=>String(x.date)===String(d))||null:null;
+    }catch(e){return null}
+  }
+  function branchData(){
+    try{return JSON.parse(localStorage.getItem('JDCC_SIMPLE_BRANCH_DATA_V1')||'{}')||{}}
+    catch(e){return {}}
+  }
+
+  // Admin aggregate editor: edit the Admin request itself (title, letter,
+  // columns) and keep the same date. Branch-submitted values are retained.
+  window.editAdminAggregate=function(d){
+    if(!(typeof loggedIn!=='undefined' && loggedIn && role==='admin')){
+      alert('Edit करण्यासाठी Admin Login आवश्यक आहे.');
+      return;
+    }
+    const q=req(d);
+    if(!q)return;
+    const date=$('reqDate'),title=$('reqTitle'),letter=$('reqLetter'),fields=$('reqFields');
+    if(typeof showAdmin==='function')showAdmin();
+    setTimeout(function(){
+      if(date)date.value=d;
+      if(title)title.value=q.title||'';
+      if(letter)letter.value=q.letter||'';
+      if(fields)fields.value=(q.fields||[]).join(', ');
+      $('adminArea')?.scrollIntoView({behavior:'smooth',block:'start'});
+    },50);
+  };
+
+  // Replace the Admin daily list with date + title + aggregate report + Edit.
+  function renderAdminAggregateList(){
+    const box=$('adminDaily');
+    if(!box || !(typeof loggedIn!=='undefined' && loggedIn && role==='admin'))return;
+    const a=[];
+    try{
+      const x=JSON.parse(localStorage.getItem('JDCC_SIMPLE_REQUESTS_V1')||'[]');
+      if(Array.isArray(x))a.push(...x);
+    }catch(e){}
+    a.sort((x,y)=>String(y.date).localeCompare(String(x.date)));
+
+    box.innerHTML='<div class="bar"><div><h3>दैनिक माहिती</h3><span class="muted">तारीख व शीर्षक — एकत्रित माहिती</span></div></div>'+
+      (a.length?'<div class="tablebox"><table><thead><tr><th>तारीख</th><th>माहितीचे शीर्षक</th><th>एकत्रित माहिती</th><th>Admin Edit</th></tr></thead><tbody>'+
+      a.map(x=>'<tr><td>'+esc(x.date)+'</td><td>'+esc(x.title)+'</td>'+
+        '<td><button type="button" class="btn out" data-report="'+esc(x.date)+'">रिपोर्ट</button></td>'+
+        '<td><button type="button" class="btn" data-edit="'+esc(x.date)+'">Edit</button></td></tr>').join('')+
+      '</tbody></table></div>':'<p class="hint">अद्याप माहिती जतन केलेली नाही.</p>');
+
+    box.querySelectorAll('[data-report]').forEach(b=>b.onclick=function(){
+      const d=this.dataset.report;
+      const report=$('adminReport');
+      if(report && typeof aggregateHTML==='function'){
+        report.innerHTML=aggregateHTML(d,'adminReport');
+        report.classList.remove('hidden');
+        report.scrollIntoView({behavior:'smooth',block:'start'});
+      }
+    });
+    box.querySelectorAll('[data-edit]').forEach(b=>b.onclick=function(){
+      editAdminAggregate(this.dataset.edit);
+    });
+  }
+
+  // Home: exactly the same date/title list, with the aggregate report opened
+  // by clicking the date/title. No Edit button is exposed to Branch users.
+  function renderHomeDatewise(){
+    const box=$('homeDaily');
+    if(!box)return;
+    let a=[];
+    try{
+      const x=JSON.parse(localStorage.getItem('JDCC_SIMPLE_REQUESTS_V1')||'[]');
+      if(Array.isArray(x))a=x;
+    }catch(e){}
+    a.sort((x,y)=>String(y.date).localeCompare(String(x.date)));
+
+    box.innerHTML='<div class="bar"><div><h3>दैनिक माहिती</h3><span class="muted">तारीखनुसार जतन केलेली माहिती</span></div></div>'+
+      (a.length?'<div class="tablebox"><table><thead><tr><th>तारीख</th><th>माहितीचे शीर्षक</th></tr></thead><tbody>'+
+      a.map(x=>'<tr class="home-date-row" data-date="'+esc(x.date)+'" style="cursor:pointer"><td>'+esc(x.date)+'</td><td>'+esc(x.title)+'</td></tr>').join('')+
+      '</tbody></table></div>':'<p class="hint">Admin ने अद्याप माहिती जतन केलेली नाही.</p>');
+
+    box.querySelectorAll('.home-date-row').forEach(r=>r.onclick=function(){
+      const d=this.dataset.date;
+      const report=$('homeReport');
+      if(report && typeof aggregateHTML==='function'){
+        report.innerHTML=aggregateHTML(d,'homeReport');
+        report.classList.remove('hidden');
+        report.scrollIntoView({behavior:'smooth',block:'start'});
+      }
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded',function(){
+    setTimeout(function(){
+      renderHomeDatewise();
+      renderAdminAggregateList();
+    },80);
+
+    const oldShowHome=window.showHome;
+    if(typeof oldShowHome==='function'){
+      window.showHome=function(){
+        oldShowHome.apply(this,arguments);
+        setTimeout(renderHomeDatewise,40);
+      };
+    }
+
+    const oldShowAdmin=window.showAdmin;
+    if(typeof oldShowAdmin==='function'){
+      window.showAdmin=function(){
+        oldShowAdmin.apply(this,arguments);
+        setTimeout(renderAdminAggregateList,60);
+      };
+    }
+
+    // After Admin saves, refresh both Admin and Home views immediately.
+    const oldSave=window.saveAdminRequest;
+    if(typeof oldSave==='function'){
+      window.saveAdminRequest=function(){
+        const r=oldSave.apply(this,arguments);
+        setTimeout(function(){
+          renderAdminAggregateList();
+          renderHomeDatewise();
+        },80);
+        return r;
+      };
+    }
+  });
+})();
+</script>
+
+<script>
+(function(){
+  const $=id=>document.getElementById(id);
+
+  function getReq(d){
+    try{
+      const a=JSON.parse(localStorage.getItem('JDCC_SIMPLE_REQUESTS_V1')||'[]');
+      return Array.isArray(a)?a.find(x=>String(x.date)===String(d))||null:null;
+    }catch(e){return null}
+  }
+  function getData(){
+    try{return JSON.parse(localStorage.getItem('JDCC_SIMPLE_BRANCH_DATA_V1')||'{}')||{}}
+    catch(e){return {}}
+  }
+
+  // Rebuild the bottom Admin aggregate report with:
+  // 1) Edit button at the report header
+  // 2) Total row at the bottom
+  window.renderAdminBottomReport=function(d){
+    const box=$('adminReport');
+    if(!box)return;
+    const q=getReq(d);
+    if(!q){box.classList.add('hidden');return;}
+
+    const all=getData();
+    const fields=q.fields||[];
+    const branches=Array.isArray(window.BRANCHES)?window.BRANCHES:[];
+    const rows=branches.map(b=>{
+      const r=all[b]?.[d];
+      return {b,r};
+    });
+
+    const body=rows.map(x=>'<tr><td>'+esc(x.b)+'</td>'+
+      fields.map((f,i)=>'<td>'+esc(x.r?.values?.[i]||'-')+'</td>').join('')+
+      '<td>'+(x.r?'जमा':'प्रलंबित')+'</td></tr>').join('');
+
+    // Numeric totals for values that can be parsed as numbers.
+    const totals=fields.map((f,i)=>{
+      let sum=0,has=false;
+      rows.forEach(x=>{
+        const raw=x.r?.values?.[i];
+        if(raw!==undefined && raw!==null && String(raw).trim()!==''){
+          const n=Number(String(raw).replace(/,/g,'').trim());
+          if(Number.isFinite(n)){sum+=n;has=true;}
+        }
+      });
+      return has?sum.toLocaleString('en-IN'):'-';
+    });
+
+    const submitted=rows.filter(x=>x.r).length;
+
+    box.innerHTML=
+      '<div class="bar"><div><h3>एकत्रित रिपोर्ट</h3>'+
+      '<span class="muted">तारीख: '+esc(d)+' | '+esc(q.title||'')+'</span></div>'+
+      '<button type="button" class="btn" id="bottomReportEdit">Edit</button></div>'+
+      '<div class="warning"><b>'+esc(q.title||'माहिती मागणी')+'</b><br>'+
+      esc(q.letter||'')+'<div style="margin-top:6px">माहिती भरलेल्या शाखा: '+submitted+' / '+branches.length+'</div></div>'+
+      '<div class="tablebox"><table><thead><tr><th>शाखा</th>'+
+      fields.map(f=>'<th>'+esc(f)+'</th>').join('')+
+      '<th>स्थिती</th></tr></thead><tbody>'+body+
+      '<tr style="font-weight:700;background:#eef8ff"><td>TOTAL</td>'+
+      totals.map(x=>'<td>'+esc(x)+'</td>').join('')+
+      '<td>'+submitted+' जमा / '+(branches.length-submitted)+' प्रलंबित</td></tr>'+
+      '</tbody></table></div>';
+
+    $('bottomReportEdit').onclick=function(){
+      if(typeof editAdminAggregate==='function')editAdminAggregate(d);
+      else{
+        $('reqDate').value=d;
+        if(typeof loadRequestEditor==='function')loadRequestEditor();
+        $('reqDate').scrollIntoView({behavior:'smooth',block:'center'});
+      }
+    };
+    box.classList.remove('hidden');
+  };
+
+  document.addEventListener('DOMContentLoaded',function(){
+    // Hook the Admin date list/report button to the new bottom report.
+    document.addEventListener('click',function(e){
+      const b=e.target.closest('[data-report]');
+      if(b && typeof loggedIn!=='undefined' && loggedIn && role==='admin'){
+        renderAdminBottomReport(b.dataset.report);
+      }
+    },true);
+
+    // If Admin report already has a date selected, rebuild it.
+    setTimeout(function(){
+      const d=$('reqDate')?.value;
+      if(d && typeof loggedIn!=='undefined' && loggedIn && role==='admin')
+        renderAdminBottomReport(d);
+    },100);
+  });
+})();
+</script>
+
+<style>
+#adminReport .report-edit-btn{
+  margin-left:auto;
+  padding:8px 18px;
+  border-radius:7px;
+}
+#adminReport .report-total-row{
+  font-weight:800;
+  background:#eef8ff;
+}
+</style>
+<script>
+(function(){
+  const $=id=>document.getElementById(id);
+
+  function getReq(d){
+    try{
+      const a=JSON.parse(localStorage.getItem('JDCC_SIMPLE_REQUESTS_V1')||'[]');
+      return Array.isArray(a)?a.find(x=>String(x.date)===String(d))||null:null;
+    }catch(e){return null}
+  }
+  function getData(){
+    try{return JSON.parse(localStorage.getItem('JDCC_SIMPLE_BRANCH_DATA_V1')||'{}')||{}}
+    catch(e){return {}}
+  }
+
+  // This is the exact Admin report shown at the bottom of Admin Login.
+  // It always renders all 17 branches, an Edit button, and a final Total row.
+  window.renderAdmin17BranchReport=function(d){
+    const box=$('adminReport');
+    const q=getReq(d);
+    if(!box||!q)return;
+
+    const branches=Array.isArray(window.BRANCHES)?window.BRANCHES:[];
+    const all=getData();
+    const fields=Array.isArray(q.fields)?q.fields:[];
+    const rows=branches.map(b=>({b,r:all?.[b]?.[d]||null}));
+    const submitted=rows.filter(x=>x.r).length;
+
+    const totals=fields.map((f,i)=>{
+      let sum=0,has=false;
+      rows.forEach(x=>{
+        const raw=x.r?.values?.[i];
+        const n=Number(String(raw??'').replace(/,/g,'').trim());
+        if(Number.isFinite(n) && String(raw??'').trim()!==''){sum+=n;has=true;}
+      });
+      return has?sum.toLocaleString('en-IN'):'-';
+    });
+
+    const body=rows.map(x =>
+      '<tr><td>'+esc(x.b)+'</td>'+
+      fields.map((f,i)=>'<td>'+esc(x.r?.values?.[i]??'-')+'</td>').join('')+
+      '<td>'+(x.r?'जमा':'प्रलंबित')+'</td></tr>'
+    ).join('');
+
+    box.innerHTML=
+      '<div class="bar"><div><h3>एकत्रित माहिती</h3>'+
+      '<span class="muted">तारीख: '+esc(d)+' | '+esc(q.title||'')+
+      '</span></div>'+
+      '<button type="button" class="btn report-edit-btn" id="adminBottomEdit">Edit</button></div>'+
+      '<div class="warning"><b>'+esc(q.title||'माहिती मागणी')+'</b><br>'+
+      '<span style="white-space:pre-wrap">'+esc(q.letter||'')+'</span>'+
+      '<div style="margin-top:6px">माहिती भरलेल्या शाखा: '+submitted+' / '+branches.length+'</div></div>'+
+      '<div class="tablebox"><table><thead><tr><th>शाखा</th>'+
+      fields.map(f=>'<th>'+esc(f)+'</th>').join('')+
+      '<th>स्थिती</th></tr></thead><tbody>'+body+
+      '<tr class="report-total-row"><td>TOTAL (17 शाखा)</td>'+
+      totals.map(x=>'<td>'+esc(x)+'</td>').join('')+
+      '<td>'+submitted+' जमा / '+(branches.length-submitted)+' प्रलंबित</td></tr>'+
+      '</tbody></table></div>';
+
+    $('adminBottomEdit').onclick=function(){
+      if(typeof editAggregateReportData==='function'){
+        editAggregateReportData(d);
+      }else if(typeof editAdminAggregate==='function'){
+        editAdminAggregate(d);
+      }else{
+        alert('एकत्रित रिपोर्ट Edit सुविधा उपलब्ध नाही.');
+      }
+    };
+
+    box.classList.remove('hidden');
+  };
+
+  document.addEventListener('DOMContentLoaded',function(){
+    // Keep the selected Admin date report synchronized with the new renderer.
+    const rd=$('reqDate');
+    if(rd){
+      rd.addEventListener('change',function(){
+        setTimeout(function(){renderAdmin17BranchReport(rd.value)},20);
+      },true);
+    }
+    setTimeout(function(){
+      if(typeof loggedIn!=='undefined' && loggedIn && role==='admin'){
+        const d=rd?.value;
+        if(d)renderAdmin17BranchReport(d);
+      }
+    },120);
+
+    // Clicking the Report button in Admin's daily list opens this exact report.
+    document.addEventListener('click',function(e){
+      const b=e.target.closest('[data-report]');
+      if(b && typeof loggedIn!=='undefined' && loggedIn && role==='admin'){
+        renderAdmin17BranchReport(b.dataset.report);
+      }
+    },true);
+  });
+})();
+</script>
+
+<script>
+(function(){
+  function fixAggregateEditButton(){
+    const box=document.getElementById('adminReport');
+    if(!box) return;
+    const h=box.querySelector('.bar');
+    if(!h) return;
+
+    // Remove the old close button and put Edit in exactly the same place.
+    const old=[...h.querySelectorAll('button')].find(b =>
+      (b.textContent||'').trim()==='बंद करा' || b.id==='closeHomeAggregate'
+    );
+    if(old){
+      const d=box.querySelector('.muted')?.textContent||'';
+      const m=d.match(/तारीख:\s*([0-9]{4}-[0-9]{2}-[0-9]{2})/);
+      const date=m?m[1]:(document.getElementById('reqDate')?.value||'');
+      old.textContent='Edit';
+      old.id='aggregateEditButton';
+      old.className='btn';
+      old.onclick=function(e){
+        e.preventDefault();
+        if(typeof editAdminAggregate==='function') editAdminAggregate(date);
+        else if(typeof showAdmin==='function'){
+          showAdmin();
+          setTimeout(function(){
+            const rd=document.getElementById('reqDate');
+            if(rd){rd.value=date;rd.dispatchEvent(new Event('change'));}
+          },50);
+        }
+      };
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded',function(){
+    setTimeout(fixAggregateEditButton,100);
+    const oldAdmin=window.renderAdmin17BranchReport;
+    if(typeof oldAdmin==='function'){
+      window.renderAdmin17BranchReport=function(){
+        const r=oldAdmin.apply(this,arguments);
+        setTimeout(fixAggregateEditButton,20);
+        return r;
+      };
+    }
+  });
+})();
+</script>
+
+<style>
+#adminReport .aggregate-edit-input{
+  width:100%;
+  min-width:70px;
+  box-sizing:border-box;
+  padding:6px;
+  border:1px solid #9aaabd;
+  border-radius:5px;
+}
+#adminReport .aggregate-save-btn{margin-left:8px}
+</style>
+<script>
+(function(){
+  const $=id=>document.getElementById(id);
+  function getReq(d){
+    try{
+      const a=JSON.parse(localStorage.getItem('JDCC_SIMPLE_REQUESTS_V1')||'[]');
+      return Array.isArray(a)?a.find(x=>String(x.date)===String(d))||null:null;
+    }catch(e){return null}
+  }
+  function getData(){
+    try{return JSON.parse(localStorage.getItem('JDCC_SIMPLE_BRANCH_DATA_V1')||'{}')||{}}
+    catch(e){return {}}
+  }
+  function saveData(x){localStorage.setItem('JDCC_SIMPLE_BRANCH_DATA_V1',JSON.stringify(x))}
+
+  // Edit the ACTUAL aggregate report values, not the Admin notice/columns.
+  window.editAggregateReportData=function(d){
+    if(!(typeof loggedIn!=='undefined' && loggedIn && role==='admin')){
+      alert('एकत्रित रिपोर्ट Edit करण्यासाठी Admin Login आवश्यक आहे.');
+      return;
+    }
+    const q=getReq(d), box=$('adminReport');
+    if(!q||!box)return;
+    const all=getData(), branches=Array.isArray(window.BRANCHES)?window.BRANCHES:[],
+          fields=q.fields||[];
+
+    const rows=branches.map(b=>{
+      const r=all[b]?.[d];
+      return '<tr><td>'+esc(b)+'</td>'+
+        fields.map((f,i)=>'<td><input class="aggregate-edit-input" data-branch="'+esc(b)+'" data-index="'+i+'" value="'+esc(r?.values?.[i]??'')+'"></td>').join('')+
+        '<td>'+(r?'जमा':'प्रलंबित')+'</td></tr>';
+    }).join('');
+
+    box.innerHTML=
+      '<div class="bar"><div><h3>एकत्रित माहिती Edit</h3>'+
+      '<span class="muted">तारीख: '+esc(d)+' | '+esc(q.title||'')+'</span></div>'+
+      '<div><button type="button" class="btn" id="saveAggregateReport">Save Report</button>'+
+      '<button type="button" class="btn out aggregate-save-btn" id="cancelAggregateEdit">Cancel</button></div></div>'+
+      '<div class="warning"><b>'+esc(q.title||'माहिती मागणी')+'</b><br>'+
+      '<span style="white-space:pre-wrap">'+esc(q.letter||'')+'</span></div>'+
+      '<div class="tablebox"><table><thead><tr><th>शाखा</th>'+
+      fields.map(f=>'<th>'+esc(f)+'</th>').join('')+
+      '<th>स्थिती</th></tr></thead><tbody>'+rows+'</tbody></table></div>';
+
+    $('saveAggregateReport').onclick=function(){
+      const data=getData();
+      branches.forEach(b=>{
+        const inputs=[...box.querySelectorAll('.aggregate-edit-input[data-branch="'+CSS.escape(b)+'"]')];
+        if(!inputs.length)return;
+        if(!data[b])data[b]={};
+        if(!data[b][d])data[b][d]={branch:b,date:d,values:[]};
+        data[b][d].values=inputs.sort((a,z)=>Number(a.dataset.index)-Number(z.dataset.index)).map(x=>x.value);
+        data[b][d].updated=new Date().toISOString();
+      });
+      saveData(data);
+      alert('एकत्रित रिपोर्टची माहिती जतन झाली.');
+      if(typeof renderAdmin17BranchReport==='function')renderAdmin17BranchReport(d);
+      else if(typeof renderAdminBottomReport==='function')renderAdminBottomReport(d);
+    };
+    $('cancelAggregateEdit').onclick=function(){
+      if(typeof renderAdmin17BranchReport==='function')renderAdmin17BranchReport(d);
+      else if(typeof renderAdminBottomReport==='function')renderAdminBottomReport(d);
+    };
+  };
+
+  function replaceAggregateEditButton(){
+    const box=$('adminReport');
+    if(!box)return;
+    const dateText=box.querySelector('.muted')?.textContent||'';
+    const m=dateText.match(/तारीख:\s*([0-9]{4}-[0-9]{2}-[0-9]{2})/);
+    const d=m?m[1]:($('reqDate')?.value||'');
+    const buttons=[...box.querySelectorAll('button')];
+    const b=buttons.find(x=>x.id==='adminBottomEdit' || x.id==='aggregateReportEdit');
+    if(b && d){
+      b.textContent='Edit';
+      b.id='aggregateReportEdit';
+      b.onclick=function(e){e.preventDefault();e.stopPropagation();editAggregateReportData(d)};
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded',function(){
+    setTimeout(replaceAggregateEditButton,150);
+    const old=window.renderAdmin17BranchReport;
+    if(typeof old==='function'){
+      window.renderAdmin17BranchReport=function(){
+        const r=old.apply(this,arguments);
+        setTimeout(replaceAggregateEditButton,30);
+        return r;
+      };
+    }
+  });
+})();
+</script>
+
+<style>
+#navBranch{display:inline-block!important}
+#officeBtn{display:inline-block!important}
+#branchTab{display:inline-block!important}
+#adminTab{display:none!important}
+</style>
+<script>
+(function(){
+  const $=id=>document.getElementById(id);
+
+  function openBranchLogin(e){
+    if(e){e.preventDefault();e.stopImmediatePropagation();}
+    if(typeof showLogin==='function') showLogin('branch');
+    if($('navBranch')) $('navBranch').classList.add('menu-selected');
+    if($('navHome')) $('navHome').classList.remove('menu-selected');
+    if($('adminTab')) $('adminTab').style.display='none';
+    return false;
+  }
+
+  function openAdminLogin(e){
+    if(e){e.preventDefault();e.stopImmediatePropagation();}
+    if(typeof showLogin==='function') showLogin('admin');
+    if($('navHome')) $('navHome').classList.remove('menu-selected');
+    if($('navBranch')) $('navBranch').classList.remove('menu-selected');
+    if($('adminTab')) $('adminTab').style.display='none';
+    return false;
+  }
+
+  document.addEventListener('DOMContentLoaded',function(){
+    if($('navBranch')){
+      $('navBranch').onclick=openBranchLogin;
+    }
+    if($('officeBtn')){
+      $('officeBtn').onclick=openAdminLogin;
+    }
+
+    // Never expose Admin as an alternative inside Branch Login.
+    if($('adminTab')){
+      $('adminTab').style.display='none';
+      $('adminTab').disabled=true;
+    }
+  });
+})();
+</script>
+
+<style>
+#adminReport .admin17-total{
+  font-weight:800;
+  background:#eef8ff;
+}
+#adminReport .admin17-edit{
+  margin-left:auto;
+}
+</style>
+<script>
+(function(){
+  const $=id=>document.getElementById(id);
+
+  function qFor(d){
+    try{
+      const a=JSON.parse(localStorage.getItem('JDCC_SIMPLE_REQUESTS_V1')||'[]');
+      return Array.isArray(a)?a.find(x=>String(x.date)===String(d))||null:null;
+    }catch(e){return null}
+  }
+  function dataFor(){
+    try{return JSON.parse(localStorage.getItem('JDCC_SIMPLE_BRANCH_DATA_V1')||'{}')||{}}
+    catch(e){return {}}
+  }
+  function saveData(x){localStorage.setItem('JDCC_SIMPLE_BRANCH_DATA_V1',JSON.stringify(x))}
+
+  // FINAL Admin report: exactly 17 branches + Total at the bottom.
+  window.showAdmin17ReportFinal=function(d){
+    const box=$('adminReport'), q=qFor(d);
+    if(!box||!q)return;
+    const branches=Array.isArray(window.BRANCHES)?window.BRANCHES:[];
+    const all=dataFor(), fields=Array.isArray(q.fields)?q.fields:[];
+    const rows=branches.map(b=>({branch:b,row:all?.[b]?.[d]||null}));
+    const submitted=rows.filter(x=>x.row).length;
+
+    const totals=fields.map((f,i)=>{
+      let sum=0, has=false;
+      rows.forEach(x=>{
+        const raw=x.row?.values?.[i];
+        if(raw!==undefined && raw!==null && String(raw).trim()!==''){
+          const n=Number(String(raw).replace(/,/g,'').trim());
+          if(Number.isFinite(n)){sum+=n;has=true;}
+        }
+      });
+      return has?sum.toLocaleString('en-IN'):'-';
+    });
+
+    const body=rows.map(x=>'<tr><td>'+esc(x.branch)+'</td>'+
+      fields.map((f,i)=>'<td>'+esc(x.row?.values?.[i]??'-')+'</td>').join('')+
+      '<td>'+(x.row?'जमा':'प्रलंबित')+'</td></tr>').join('');
+
+    box.innerHTML=
+      '<div class="bar"><div><h3>एकत्रित रिपोर्ट</h3>'+
+      '<span class="muted">तारीख: '+esc(d)+' | '+esc(q.title||'')+
+      '</span></div>'+
+      '<button type="button" class="btn admin17-edit" id="admin17ReportEdit">Edit</button></div>'+
+      '<div class="warning"><b>'+esc(q.title||'माहिती मागणी')+'</b><br>'+
+      '<span style="white-space:pre-wrap">'+esc(q.letter||'')+'</span>'+
+      '<div style="margin-top:6px">माहिती भरलेल्या शाखा: '+submitted+' / 17</div></div>'+
+      '<div class="tablebox"><table><thead><tr><th>शाखा</th>'+
+      fields.map(f=>'<th>'+esc(f)+'</th>').join('')+
+      '<th>स्थिती</th></tr></thead><tbody>'+body+
+      '<tr class="admin17-total"><td>TOTAL (17 शाखा)</td>'+
+      totals.map(x=>'<td>'+esc(x)+'</td>').join('')+
+      '<td>'+submitted+' जमा / '+(17-submitted)+' प्रलंबित</td></tr>'+
+      '</tbody></table></div>';
+
+    $('admin17ReportEdit').onclick=function(){
+      if(typeof editAggregateReportData==='function'){
+        editAggregateReportData(d);
+      }else{
+        alert('एकत्रित रिपोर्ट Edit सुविधा उपलब्ध नाही.');
+      }
+    };
+    box.classList.remove('hidden');
+  };
+
+  // Force every Admin report opening path to use the 17-branch report above.
+  window.renderAdminReport=function(d){
+    const q=qFor(d);
+    if(!q){$('adminReport')?.classList.add('hidden');return;}
+    showAdmin17ReportFinal(d);
+  };
+
+  document.addEventListener('DOMContentLoaded',function(){
+    // Re-render immediately when Admin opens.
+    setTimeout(function(){
+      if(typeof loggedIn!=='undefined' && loggedIn && role==='admin'){
+        const d=$('reqDate')?.value||'';
+        if(d)showAdmin17ReportFinal(d);
+      }
+    },80);
+  });
+})();
+</script>
+
+<script>
+(function(){
+  const $=id=>document.getElementById(id);
+
+  function getReq(d){
+    try{
+      const a=JSON.parse(localStorage.getItem('JDCC_SIMPLE_REQUESTS_V1')||'[]');
+      return Array.isArray(a)?a.find(x=>String(x.date)===String(d))||null:null;
+    }catch(e){return null}
+  }
+  function getBranchData(){
+    try{return JSON.parse(localStorage.getItem('JDCC_SIMPLE_BRANCH_DATA_V1')||'{}')||{}}
+    catch(e){return {}}
+  }
+
+  // Home uses the SAME 17-branch report data as the Admin report.
+  window.showHomeSame17BranchReport=function(d){
+    const box=$('homeReport'), q=getReq(d);
+    if(!box||!q)return;
+
+    const branches=Array.isArray(window.BRANCHES)?window.BRANCHES:[];
+    const all=getBranchData(), fields=Array.isArray(q.fields)?q.fields:[];
+    const rows=branches.map(b=>({branch:b,row:all?.[b]?.[d]||null}));
+    const submitted=rows.filter(x=>x.row).length;
+
+    const totals=fields.map((f,i)=>{
+      let sum=0,has=false;
+      rows.forEach(x=>{
+        const raw=x.row?.values?.[i];
+        const n=Number(String(raw??'').replace(/,/g,'').trim());
+        if(String(raw??'').trim()!=='' && Number.isFinite(n)){sum+=n;has=true;}
+      });
+      return has?sum.toLocaleString('en-IN'):'-';
+    });
+
+    const body=rows.map(x=>
+      '<tr><td>'+esc(x.branch)+'</td>'+
+      fields.map((f,i)=>'<td>'+esc(x.row?.values?.[i]??'-')+'</td>').join('')+
+      '<td>'+(x.row?'जमा':'प्रलंबित')+'</td></tr>'
+    ).join('');
+
+    box.innerHTML=
+      '<div class="bar"><div><h3>एकत्रित रिपोर्ट</h3>'+
+      '<span class="muted">तारीख: '+esc(d)+' | '+esc(q.title||'')+'</span></div></div>'+
+      '<div class="warning"><b>'+esc(q.title||'माहिती मागणी')+'</b><br>'+
+      '<span style="white-space:pre-wrap">'+esc(q.letter||'')+'</span>'+
+      '<div style="margin-top:6px">माहिती भरलेल्या शाखा: '+submitted+' / 17</div></div>'+
+      '<div class="tablebox"><table><thead><tr><th>शाखा</th>'+
+      fields.map(f=>'<th>'+esc(f)+'</th>').join('')+
+      '<th>स्थिती</th></tr></thead><tbody>'+body+
+      '<tr style="font-weight:800;background:#eef8ff"><td>TOTAL (17 शाखा)</td>'+
+      totals.map(x=>'<td>'+esc(x)+'</td>').join('')+
+      '<td>'+submitted+' जमा / '+(17-submitted)+' प्रलंबित</td></tr>'+
+      '</tbody></table></div>';
+
+    box.classList.remove('hidden');
+  };
+
+  function connectHomeRows(){
+    const box=$('homeDaily');
+    if(!box)return;
+    box.querySelectorAll('tbody tr').forEach(row=>{
+      const d=row.cells[0]?.textContent?.trim();
+      if(!d)return;
+      row.onclick=function(e){
+        if(e.target.closest('button'))return;
+        showHomeSame17BranchReport(d);
+        $('homeReport')?.scrollIntoView({behavior:'smooth',block:'start'});
+      };
+      row.style.cursor='pointer';
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded',function(){
+    setTimeout(connectHomeRows,100);
+    const oldShowHome=window.showHome;
+    if(typeof oldShowHome==='function'){
+      window.showHome=function(){
+        oldShowHome.apply(this,arguments);
+        setTimeout(connectHomeRows,60);
+      };
+    }
+  });
+})();
+</script>
+
+<script>
+(function(){
+  const $=id=>document.getElementById(id);
+  function reqByDate(d){
+    try{
+      const a=JSON.parse(localStorage.getItem('JDCC_SIMPLE_REQUESTS_V1')||'[]');
+      return Array.isArray(a)?a.find(x=>String(x.date)===String(d))||null:null;
+    }catch(e){return null;}
+  }
+  function branchStore(){
+    try{return JSON.parse(localStorage.getItem('JDCC_SIMPLE_BRANCH_DATA_V1')||'{}')||{};}
+    catch(e){return {};}
+  }
+  function finalHomeReport(d){
+    const box=$('homeReport'), q=reqByDate(d);
+    if(!box||!q)return;
+    const branches=Array.isArray(window.BRANCHES)?window.BRANCHES:[];
+    const all=branchStore(), fields=Array.isArray(q.fields)?q.fields:[];
+    const rows=branches.map(b=>({b,r:all?.[b]?.[d]||null}));
+    const submitted=rows.filter(x=>x.r).length;
+    const totals=fields.map((f,i)=>{
+      let sum=0,has=false;
+      rows.forEach(x=>{
+        const raw=x.r?.values?.[i], n=Number(String(raw??'').replace(/,/g,'').trim());
+        if(String(raw??'').trim()!==''&&Number.isFinite(n)){sum+=n;has=true;}
+      });
+      return has?sum.toLocaleString('en-IN'):'-';
+    });
+    const body=rows.map(x=>'<tr><td>'+esc(x.b)+'</td>'+
+      fields.map((f,i)=>'<td>'+esc(x.r?.values?.[i]??'-')+'</td>').join('')+
+      '<td>'+(x.r?'जमा':'प्रलंबित')+'</td></tr>').join('');
+    box.innerHTML='<div class="bar"><div><h3>एकत्रित रिपोर्ट</h3>'+
+      '<span class="muted">तारीख: '+esc(d)+' | '+esc(q.title||'')+'</span></div></div>'+
+      '<div class="warning"><b>'+esc(q.title||'माहिती मागणी')+'</b><br>'+
+      '<span style="white-space:pre-wrap">'+esc(q.letter||'')+'</span>'+
+      '<div style="margin-top:6px">माहिती भरलेल्या शाखा: '+submitted+' / 17</div></div>'+
+      '<div class="tablebox"><table><thead><tr><th>शाखा</th>'+
+      fields.map(f=>'<th>'+esc(f)+'</th>').join('')+'<th>स्थिती</th></tr></thead><tbody>'+
+      body+'<tr style="font-weight:800;background:#eef8ff"><td>TOTAL (17 शाखा)</td>'+
+      totals.map(x=>'<td>'+esc(x)+'</td>').join('')+
+      '<td>'+submitted+' जमा / '+(17-submitted)+' प्रलंबित</td></tr></tbody></table></div>';
+    box.classList.remove('hidden');
+  }
+  function bindHomeDates(){
+    const box=$('homeDaily'); if(!box)return;
+    box.querySelectorAll('tbody tr').forEach(row=>{
+      if(row.dataset.finalHomeBound==='1')return;
+      const d=row.cells[0]?.textContent?.trim(); if(!d)return;
+      row.dataset.finalHomeBound='1'; row.style.cursor='pointer';
+      row.onclick=function(e){
+        if(e.target.closest('button'))return;
+        finalHomeReport(d);
+        $('homeReport')?.scrollIntoView({behavior:'smooth',block:'start'});
+      };
+    });
+  }
+  document.addEventListener('DOMContentLoaded',function(){
+    setTimeout(bindHomeDates,100);
+    const oldHome=window.showHome;
+    if(typeof oldHome==='function'){
+      window.showHome=function(){oldHome.apply(this,arguments);setTimeout(bindHomeDates,60);}
+    }
+  });
+})();
+</script>
+
+<script>
+(function(){
+  const $=id=>document.getElementById(id);
+  function getReq(d){
+    try{
+      const a=JSON.parse(localStorage.getItem('JDCC_SIMPLE_REQUESTS_V1')||'[]');
+      return Array.isArray(a)?a.find(x=>String(x.date)===String(d))||null:null;
+    }catch(e){return null}
+  }
+  function getData(){
+    try{return JSON.parse(localStorage.getItem('JDCC_SIMPLE_BRANCH_DATA_V1')||'{}')||{}}
+    catch(e){return {}}
+  }
+  function saveData(x){localStorage.setItem('JDCC_SIMPLE_BRANCH_DATA_V1',JSON.stringify(x))}
+
+  window.editAggregate17Final=function(d){
+    if(!(typeof loggedIn!=='undefined'&&loggedIn&&role==='admin')){
+      alert('एकत्रित रिपोर्ट Edit करण्यासाठी Admin Login आवश्यक आहे.'); return;
+    }
+    const q=getReq(d), box=$('adminReport');
+    if(!q||!box)return;
+    const branches=Array.isArray(window.BRANCHES)?window.BRANCHES:[];
+    const all=getData(), fields=Array.isArray(q.fields)?q.fields:[];
+    const rows=branches.map(b=>{
+      const r=all?.[b]?.[d];
+      return '<tr><td>'+esc(b)+'</td>'+
+        fields.map((f,i)=>'<td><input class="aggregate-edit-input" data-b="'+esc(b)+'" data-i="'+i+'" value="'+esc(r?.values?.[i]??'')+'"></td>').join('')+
+        '<td>'+(r?'जमा':'प्रलंबित')+'</td></tr>';
+    }).join('');
+
+    box.innerHTML=
+      '<div class="bar"><div><h3>एकत्रित रिपोर्ट Edit</h3>'+
+      '<span class="muted">तारीख: '+esc(d)+' | '+esc(q.title||'')+'</span></div>'+
+      '<div><button type="button" class="btn" id="saveAggregate17">Save Report</button>'+
+      '<button type="button" class="btn out" id="cancelAggregate17">Cancel</button></div></div>'+
+      '<div class="tablebox"><table><thead><tr><th>शाखा</th>'+
+      fields.map(f=>'<th>'+esc(f)+'</th>').join('')+'<th>स्थिती</th></tr></thead><tbody>'+
+      rows+'</tbody></table></div>';
+
+    $('saveAggregate17').onclick=function(){
+      const data=getData();
+      branches.forEach(b=>{
+        const inputs=[...box.querySelectorAll('[data-b="'+CSS.escape(b)+'"]')]
+          .sort((a,z)=>Number(a.dataset.i)-Number(z.dataset.i));
+        if(!inputs.length)return;
+        if(!data[b])data[b]={};
+        if(!data[b][d])data[b][d]={branch:b,date:d,values:[]};
+        data[b][d].values=inputs.map(x=>x.value);
+        data[b][d].updated=new Date().toISOString();
+      });
+      saveData(data);
+      alert('एकत्रित रिपोर्टची माहिती जतन झाली.');
+      showAdmin17Final(d);
+    };
+    $('cancelAggregate17').onclick=function(){showAdmin17Final(d)};
+  };
+
+  window.showAdmin17Final=function(d){
+    const box=$('adminReport'), q=getReq(d);
+    if(!box||!q)return;
+    const branches=Array.isArray(window.BRANCHES)?window.BRANCHES:[];
+    const all=getData(), fields=Array.isArray(q.fields)?q.fields:[];
+    const rows=branches.map(b=>({b,r:all?.[b]?.[d]||null}));
+    const submitted=rows.filter(x=>x.r).length;
+    const totals=fields.map((f,i)=>{
+      let sum=0,has=false;
+      rows.forEach(x=>{
+        const raw=x.r?.values?.[i], n=Number(String(raw??'').replace(/,/g,'').trim());
+        if(String(raw??'').trim()!==''&&Number.isFinite(n)){sum+=n;has=true;}
+      });
+      return has?sum.toLocaleString('en-IN'):'-';
+    });
+    const body=rows.map(x=>'<tr><td>'+esc(x.b)+'</td>'+
+      fields.map((f,i)=>'<td>'+esc(x.r?.values?.[i]??'-')+'</td>').join('')+
+      '<td>'+(x.r?'जमा':'प्रलंबित')+'</td></tr>').join('');
+    box.innerHTML=
+      '<div class="bar"><div><h3>एकत्रित रिपोर्ट</h3>'+
+      '<span class="muted">तारीख: '+esc(d)+' | '+esc(q.title||'')+'</span></div>'+
+      '<button type="button" class="btn" id="aggregate17Edit">Edit</button></div>'+
+      '<div class="warning"><b>'+esc(q.title||'माहिती मागणी')+'</b><br>'+
+      '<span style="white-space:pre-wrap">'+esc(q.letter||'')+'</span>'+
+      '<div style="margin-top:6px">माहिती भरलेल्या शाखा: '+submitted+' / 17</div></div>'+
+      '<div class="tablebox"><table><thead><tr><th>शाखा</th>'+
+      fields.map(f=>'<th>'+esc(f)+'</th>').join('')+'<th>स्थिती</th></tr></thead><tbody>'+body+
+      '<tr style="font-weight:800;background:#eef8ff"><td>TOTAL (17 शाखा)</td>'+
+      totals.map(x=>'<td>'+esc(x)+'</td>').join('')+
+      '<td>'+submitted+' जमा / '+(17-submitted)+' प्रलंबित</td></tr></tbody></table></div>';
+    $('aggregate17Edit').onclick=function(){editAggregate17Final(d)};
+    box.classList.remove('hidden');
+  };
+
+  window.renderAdminReport=function(d){
+    if(!getReq(d)){ $('adminReport')?.classList.add('hidden'); return; }
+    showAdmin17Final(d);
+  };
+})();
+</script>
+
+<script>
+(function(){
+  const $=id=>document.getElementById(id);
+  function rq(d){
+    try{
+      const a=JSON.parse(localStorage.getItem('JDCC_SIMPLE_REQUESTS_V1')||'[]');
+      return Array.isArray(a)?a.find(x=>String(x.date)===String(d))||null:null;
+    }catch(e){return null}
+  }
+  function bd(){
+    try{return JSON.parse(localStorage.getItem('JDCC_SIMPLE_BRANCH_DATA_V1')||'{}')||{}}
+    catch(e){return {}}
+  }
+
+  // Branch-wise aggregate report: one row per branch, followed by one Total row.
+  window.renderBranchwiseAggregateReport=function(d,targetId){
+    const box=$(targetId||'adminReport'), q=rq(d);
+    if(!box||!q)return;
+
+    const branches=Array.isArray(window.BRANCHES)?window.BRANCHES:[];
+    const data=bd(), fields=flatten(q);
+    const rows=branches.map(b=>({branch:b,row:data?.[b]?.[d]||null}));
+    const submitted=rows.filter(x=>x.row).length;
+
+    const totals=fields.map((f,i)=>{
+      let sum=0,has=false;
+      rows.forEach(x=>{
+        const raw=x.row?.values?.[i];
+        const n=Number(String(raw??'').replace(/,/g,'').trim());
+        if(String(raw??'').trim()!==''&&Number.isFinite(n)){
+          sum+=n;has=true;
+        }
+      });
+      return has?sum.toLocaleString('en-IN'):'-';
+    });
+
+    const body=rows.map(x=>
+      '<tr><td>'+esc(x.branch)+'</td>'+
+      fields.map((f,i)=>'<td>'+esc(x.row?.values?.[i]??'-')+'</td>').join('')+
+      '<td>'+(x.row?'जमा':'प्रलंबित')+'</td></tr>'
+    ).join('');
+
+    box.innerHTML=
+      '<div class="bar"><div><h3>शाखानुसार एकत्रित रिपोर्ट</h3>'+
+      '<span class="muted">तारीख: '+esc(d)+' | '+esc(q.title||'')+'</span></div>'+
+      (targetId==='adminReport'?'<button type="button" class="btn" id="branchwiseEditBtn">Edit</button>':'')+
+      '</div>'+
+      '<div class="warning"><b>'+esc(q.title||'माहिती मागणी')+'</b><br>'+
+      '<span style="white-space:pre-wrap">'+esc(q.letter||'')+'</span>'+
+      '<div style="margin-top:6px">माहिती भरलेल्या शाखा: '+submitted+' / 17</div></div>'+
+      '<div class="tablebox"><table><thead><tr><th>शाखा</th>'+
+      fields.map(f=>'<th>'+esc(f)+'</th>').join('')+
+      '<th>स्थिती</th></tr></thead><tbody>'+body+
+      '<tr style="font-weight:800;background:#eef8ff"><td>TOTAL (17 शाखा)</td>'+
+      totals.map(x=>'<td>'+esc(x)+'</td>').join('')+
+      '<td>'+submitted+' जमा / '+(17-submitted)+' प्रलंबित</td></tr>'+
+      '</tbody></table></div>';
+
+    box.classList.remove('hidden');
+
+    if(targetId==='adminReport' && $('branchwiseEditBtn')){
+      $('branchwiseEditBtn').onclick=function(){
+        if(typeof editAggregate17Final==='function')editAggregate17Final(d);
+        else alert('Edit सुविधा उपलब्ध नाही.');
+      };
+    }
+  };
+
+  // Admin report always uses the branch-wise version.
+  window.renderAdminReport=function(d){
+    if(!rq(d)){ $('adminReport')?.classList.add('hidden'); return; }
+    renderBranchwiseAggregateReport(d,'adminReport');
+  };
+
+  // Home report uses the same branch-wise report, without Edit.
+  window.showHomeBranchwiseFinal=function(d){
+    renderBranchwiseAggregateReport(d,'homeReport');
+  };
+
+  function bindHome(){
+    const box=$('homeDaily');if(!box)return;
+    box.querySelectorAll('tbody tr').forEach(row=>{
+      const d=row.cells[0]?.textContent?.trim();if(!d)return;
+      row.onclick=function(e){
+        if(e.target.closest('button'))return;
+        showHomeBranchwiseFinal(d);
+        $('homeReport')?.scrollIntoView({behavior:'smooth',block:'start'});
+      };
+      row.style.cursor='pointer';
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded',function(){
+    setTimeout(bindHome,100);
+  });
+})();
+</script>
+
+<script>
+(function(){
+  const $=id=>document.getElementById(id);
+
+  function requestList(){
+    try{
+      const x=JSON.parse(localStorage.getItem('JDCC_SIMPLE_REQUESTS_V1')||'[]');
+      return Array.isArray(x)?x:[];
+    }catch(e){return []}
+  }
+  function saveRequestList(x){localStorage.setItem('JDCC_SIMPLE_REQUESTS_V1',JSON.stringify(x))}
+  function getReq(d){return requestList().find(x=>String(x.date)===String(d))||null}
+
+  // Convert old flat fields into the new Main Column/Sub-column structure.
+  function normalizeColumns(q){
+    if(Array.isArray(q?.columns)&&q.columns.length){
+      return q.columns.map(c=>({
+        title:String(c.title||''),
+        subs:Array.isArray(c.subs)?c.subs.map(s=>String(s||'')).filter(Boolean):[]
+      })).filter(c=>c.title||c.subs.length);
+    }
+    return (q?.fields||[]).map(f=>({title:String(f),subs:[]}));
+  }
+
+  function flattenColumns(columns){
+    const flat=[];
+    columns.forEach(c=>{
+      if(c.subs&&c.subs.length)c.subs.forEach(s=>flat.push({main:c.title,sub:s,label:c.title+' - '+s}));
+      else if(c.title)flat.push({main:c.title,sub:'',label:c.title});
+    });
+    return flat;
+  }
+
+  function syncHiddenFields(){
+    const cols=readBuilder();
+    $('reqFields').value=flattenColumns(cols).map(x=>x.label).join(', ');
+  }
+
+  function makeMainCard(c,idx){
+    const card=document.createElement('div');
+    card.className='main-col-card';
+    card.dataset.index=idx;
+    card.innerHTML=
+      '<div class="main-col-head">'+
+      '<input class="main-title" placeholder="मुख्य Column उदा. LMS माहिती" value="'+esc(c.title||'')+'">'+
+      '<button type="button" class="btn out small-btn add-sub">+ Sub-Column</button>'+
+      '<button type="button" class="btn out small-btn remove-main">काढा</button>'+
+      '</div>'+
+      '<div class="sub-list"></div>'+
+      '<div class="column-help">या मुख्य Column खाली हवे तितके Sub-Columns जोडा.</div>';
+    const list=card.querySelector('.sub-list');
+    (c.subs||[]).forEach(s=>addSubRow(list,s));
+    card.querySelector('.add-sub').onclick=()=>addSubRow(list,'');
+    card.querySelector('.remove-main').onclick=()=>{card.remove();syncHiddenFields()};
+    card.querySelector('.main-title').oninput=syncHiddenFields;
+    return card;
+  }
+
+  function addSubRow(list,value){
+    const row=document.createElement('div');
+    row.className='sub-row';
+    row.innerHTML='<input class="sub-title" placeholder="Sub-Column उदा. LMS सदस्य संख्या" value="'+esc(value||'')+'">'+
+      '<button type="button" class="btn out small-btn remove-sub">काढा</button>';
+    row.querySelector('.sub-title').oninput=syncHiddenFields;
+    row.querySelector('.remove-sub').onclick=()=>{row.remove();syncHiddenFields()};
+    list.appendChild(row);
+    syncHiddenFields();
+  }
+
+  function readBuilder(){
+    return [...$('columnBuilder').querySelectorAll('.main-col-card')].map(card=>({
+      title:card.querySelector('.main-title')?.value.trim()||'',
+      subs:[...card.querySelectorAll('.sub-title')].map(x=>x.value.trim())
+    })).filter(c=>c.title||c.subs.length);
+  }
+
+  function renderBuilder(columns){
+    const box=$('columnBuilder'); if(!box)return;
+    box.className='column-builder';
+    box.innerHTML='';
+    (columns||[]).forEach((c,i)=>box.appendChild(makeMainCard(c,i)));
+    syncHiddenFields();
+  }
+
+  window.loadRequestEditor=function(){
+    const d=$('reqDate').value||latestDate();
+    const q=getReq(d)||{title:'',letter:'',fields:[],columns:[]};
+    $('reqTitle').value=q.title||'';
+    $('reqLetter').value=q.letter||'';
+    renderBuilder(normalizeColumns(q));
+  };
+
+  window.saveAdminRequest=function(){
+    const d=$('reqDate').value.trim(), title=$('reqTitle').value.trim();
+    if(!d||!title){alert('तारीख आणि माहितीचे शीर्षक आवश्यक आहे.');return}
+    const columns=readBuilder();
+    if(!columns.length){alert('किमान एक मुख्य Column जोडा.');return}
+    const flat=flattenColumns(columns);
+    const item={
+      date:d,
+      title:title,
+      letter:$('reqLetter').value.trim(),
+      columns:columns,
+      fields:flat.map(x=>x.label)
+    };
+    const a=requestList(),i=a.findIndex(x=>String(x.date)===d);
+    if(i>=0)a[i]=item;else a.push(item);
+    a.sort((x,y)=>String(x.date).localeCompare(String(y.date)));
+    saveRequestList(a);
+    selectedDate=d;
+    alert('Admin माहिती मागणी जतन झाली.');
+    if(typeof renderAdminDaily==='function')renderAdminDaily();
+    if(typeof renderAdminReport==='function')renderAdminReport(d);
+    if(typeof renderHome==='function')renderHome();
+  };
+
+  // Use flattened sub-columns for data entry, but show Main → Sub as labels.
+  window.renderBranchForm=function(){
+    const d=$('branchDate').value||latestDate(),q=getReq(d);
+    selectedDate=d;
+    $('branchRequest').innerHTML=q?
+      '<b>'+esc(q.title)+'</b><br>तारीख: '+esc(d)+'<br>'+esc(q.letter||''):'<b>या तारखेसाठी Admin माहिती उपलब्ध नाही.</b>';
+    const all=branchData(),saved=all[activeBranch]?.[d]||{};
+    const flat=flattenColumns(normalizeColumns(q||{}));
+    $('branchFields').innerHTML=flat.length?flat.map((f,i)=>
+      '<div><label>'+esc(f.main+(f.sub?' → '+f.sub:''))+'</label>'+
+      '<input id="bf_'+i+'" value="'+esc(saved.values?.[i]||'')+'" placeholder="'+esc(f.sub||f.main)+'"></div>'
+    ).join(''):'<div class="full hint">या तारखेसाठी Admin ने कोणतेही Columns जतन केलेले नाहीत.</div>';
+  };
+
+  window.saveBranch=function(){
+    const d=$('branchDate').value,q=getReq(d);
+    if(!q){alert('या तारखेसाठी Admin ने माहिती मागणी जतन केलेली नाही.');return}
+    const flat=flattenColumns(normalizeColumns(q));
+    const values=flat.map((f,i)=>$('bf_'+i)?.value||'');
+    const all=branchData();
+    if(!all[activeBranch])all[activeBranch]={};
+    all[activeBranch][d]={branch:activeBranch,date:d,values,updated:new Date().toISOString()};
+    saveBranchData(all);
+    alert('शाखेची माहिती '+d+' साठी जतन झाली.');
+    renderBranchForm();
+  };
+
+  function columnHeaders(columns){
+    let h='<tr><th rowspan="2">शाखा</th>';
+    columns.forEach(c=>{
+      const n=c.subs?.length||1;
+      h+='<th colspan="'+n+'">'+esc(c.title)+'</th>';
+    });
+    h+='<th rowspan="2">स्थिती</th></tr><tr>';
+    columns.forEach(c=>{
+      if(c.subs?.length)c.subs.forEach(s=>h+='<th>'+esc(s||'')+'</th>');
+      else h+='<th>'+esc(c.title)+'</th>';
+    });
+    return h+'</tr>';
+  }
+
+  // Canonical report renderer with grouped Main Column headers.
+  window.renderGroupedReport=function(d,targetId,adminEdit){
+    const box=$(targetId),q=getReq(d); if(!box||!q)return;
+    const columns=normalizeColumns(q),flat=flattenColumns(columns);
+    const all=branchData(),branches=Array.isArray(window.BRANCHES)?window.BRANCHES:[];
+    const rows=branches.map(b=>({b,r:all?.[b]?.[d]||null}));
+    const submitted=rows.filter(x=>x.r).length;
+    const totals=flat.map((f,i)=>{
+      let sum=0,has=false;
+      rows.forEach(x=>{
+        const raw=x.r?.values?.[i],n=Number(String(raw??'').replace(/,/g,'').trim());
+        if(String(raw??'').trim()!==''&&Number.isFinite(n)){sum+=n;has=true}
+      });
+      return has?sum.toLocaleString('en-IN'):'-';
+    });
+    const body=rows.map(x=>'<tr><td>'+esc(x.b)+'</td>'+
+      flat.map((f,i)=>'<td>'+esc(x.r?.values?.[i]??'-')+'</td>').join('')+
+      '<td>'+(x.r?'जमा':'प्रलंबित')+'</td></tr>').join('');
+    box.innerHTML='<div class="bar"><div><h3>शाखानुसार एकत्रित रिपोर्ट</h3>'+
+      '<span class="muted">तारीख: '+esc(d)+' | '+esc(q.title||'')+'</span></div>'+
+      (adminEdit?'<button type="button" class="btn" id="groupReportEdit">Edit</button>':'')+
+      '</div><div class="warning"><b>'+esc(q.title||'माहिती मागणी')+'</b><br>'+
+      '<span style="white-space:pre-wrap">'+esc(q.letter||'')+'</span>'+
+      '<div style="margin-top:6px">माहिती भरलेल्या शाखा: '+submitted+' / 17</div></div>'+
+      '<div class="tablebox"><table><thead>'+columnHeaders(columns)+
+      '</thead><tbody>'+body+'<tr style="font-weight:800;background:#eef8ff"><td>TOTAL (17 शाखा)</td>'+
+      totals.map(x=>'<td>'+esc(x)+'</td>').join('')+
+      '<td>'+submitted+' जमा / '+(17-submitted)+' प्रलंबित</td></tr></tbody></table></div>';
+    if(adminEdit && $('groupReportEdit')){
+      $('groupReportEdit').onclick=()=>editAggregate17Final(d);
+    }
+    box.classList.remove('hidden');
+  };
+
+  // Rebuild Admin report with grouped headers.
+  window.renderAdminReport=function(d){
+    if(!getReq(d)){$('adminReport')?.classList.add('hidden');return}
+    renderGroupedReport(d,'adminReport',true);
+  };
+
+  // Rebuild Home report with the same grouped headers.
+  window.showHomeBranchwiseFinal=function(d){
+    renderGroupedReport(d,'homeReport',false);
+  };
+
+  document.addEventListener('DOMContentLoaded',function(){
+    const add=$('addMainColumn');
+    if(add)add.onclick=()=>{const box=$('columnBuilder');box.appendChild(makeMainCard({title:'',subs:[]},box.children.length));syncHiddenFields()};
+    setTimeout(function(){
+      if($('reqDate')?.value)loadRequestEditor();
+    },100);
+  });
+})();
+</script>
+
+<script>
+(function(){
+  const $=id=>document.getElementById(id);
+
+  function reqList(){
+    try{
+      const a=JSON.parse(localStorage.getItem('JDCC_SIMPLE_REQUESTS_V1')||'[]');
+      return Array.isArray(a)?a:[];
+    }catch(e){return []}
+  }
+  function reqByDate(d){
+    return reqList().find(x=>String(x.date)===String(d))||null;
+  }
+  function saveReqList(a){
+    localStorage.setItem('JDCC_SIMPLE_REQUESTS_V1',JSON.stringify(a));
+  }
+  function branchStore(){
+    try{return JSON.parse(localStorage.getItem('JDCC_SIMPLE_BRANCH_DATA_V1')||'{}')||{}}
+    catch(e){return {}}
+  }
+  function flatten(q){
+    if(Array.isArray(q?.columns)&&q.columns.length){
+      const r=[];
+      q.columns.forEach(c=>{
+        const main=String(c.title||'').trim();
+        const subs=Array.isArray(c.subs)?c.subs.map(x=>String(x??'').trim()):[];
+        if(subs.length)subs.forEach(s=>r.push({main,sub:s,label:main+' - '+s}));
+        else if(main)r.push({main,sub:'',label:main});
+      });
+      if(r.length)return r;
+    }
+    return (q?.fields||[]).map(f=>({main:String(f),sub:'',label:String(f)}));
+  }
+
+  // Fix: explicitly bind the Admin Save button AFTER the new builder code.
+  // This prevents the old handler from saving only the old flat-column state.
+  window.saveAdminRequestFinal=function(){
+    const d=$('reqDate')?.value?.trim()||'';
+    const title=$('reqTitle')?.value?.trim()||'';
+    const letter=$('reqLetter')?.value?.trim()||'';
+    if(!d||!title){alert('तारीख आणि माहितीचे शीर्षक आवश्यक आहे.');return;}
+
+    const cards=[...($('columnBuilder')?.querySelectorAll('.main-col-card')||[])];
+    const columns=cards.map(card=>({
+      title:card.querySelector('.main-title')?.value?.trim()||'',
+      subs:[...card.querySelectorAll('.sub-title')||[]].map(x=>x.value.trim())
+    })).filter(c=>c.title||c.subs.length);
+
+    if(!columns.length){
+      alert('किमान एक मुख्य Column जोडा.');
+      return;
+    }
+
+    const fields=flatten({columns}).map(x=>x.label);
+    const a=reqList();
+    const item={date:d,title,letter,columns,fields};
+    const i=a.findIndex(x=>String(x.date)===d);
+    if(i>=0)a[i]=item;else a.push(item);
+    a.sort((x,y)=>String(y.date).localeCompare(String(x.date)));
+    saveReqList(a);
+
+    // Make the selected date immediately available to Branch Login.
+    if(typeof selectedDate!=='undefined')selectedDate=d;
+    if(typeof renderBranchDates==='function')renderBranchDates();
+
+    alert('Admin माहिती मागणी जतन झाली. आता हीच माहिती Branch Login मध्ये दिसेल.');
+
+    if(typeof renderAdmin==='function')renderAdmin();
+    if(typeof renderHome==='function')renderHome();
+    if(typeof renderAdminReport==='function')renderAdminReport(d);
+  };
+
+  // Fix Branch Login: always read the saved request for the selected date,
+  // including the new Main Column/Sub-column structure.
+  window.renderBranchForm=function(){
+    const d=$('branchDate')?.value || (typeof latestDate==='function'?latestDate():'');
+    const q=reqByDate(d);
+    if(typeof selectedDate!=='undefined')selectedDate=d;
+
+    if($('branchRequest')){
+      $('branchRequest').innerHTML=q
+        ? '<b>'+esc(q.title)+'</b><br>तारीख: '+esc(d)+'<br>'+
+          '<span style="white-space:pre-wrap">'+esc(q.letter||'')+'</span>'
+        : '<b>या तारखेसाठी Admin माहिती उपलब्ध नाही.</b>';
+    }
+
+    const all=branchStore();
+    const active=(typeof activeBranch!=='undefined'?activeBranch:'');
+    const saved=all?.[active]?.[d]||{};
+    const flat=flatten(q||{});
+
+    if($('branchFields')){
+      $('branchFields').innerHTML=flat.length
+        ? flat.map((f,i)=>
+          '<div><label>'+esc(f.main+(f.sub?' → '+f.sub:''))+'</label>'+
+          '<input id="bf_'+i+'" value="'+esc(saved.values?.[i]??'')+'" '+
+          'placeholder="'+esc(f.sub||f.main)+'"></div>'
+        ).join('')
+        : '<div class="full hint">या तारखेसाठी Admin ने कोणतीही माहिती मागणी जतन केलेली नाही.</div>';
+    }
+  };
+
+  window.saveBranchFinal=function(){
+    const d=$('branchDate')?.value||'';
+    const q=reqByDate(d);
+    if(!q){alert('या तारखेसाठी Admin ने माहिती मागणी जतन केलेली नाही.');return;}
+
+    const flat=flatten(q);
+    const values=flat.map((f,i)=>$('bf_'+i)?.value||'');
+    const all=branchStore();
+    const active=(typeof activeBranch!=='undefined'?activeBranch:'');
+    if(!active){alert('कृपया शाखा Login करा.');return;}
+    if(!all[active])all[active]={};
+    all[active][d]={branch:active,date:d,values,updated:new Date().toISOString()};
+    localStorage.setItem('JDCC_SIMPLE_BRANCH_DATA_V1',JSON.stringify(all));
+
+    alert('शाखेची माहिती '+d+' साठी जतन झाली.');
+    renderBranchForm();
+  };
+
+  document.addEventListener('DOMContentLoaded',function(){
+    // Rebind handlers so the new builder and the old page code cannot conflict.
+    if($('saveRequest'))$('saveRequest').onclick=saveAdminRequestFinal;
+    if($('branchDate'))$('branchDate').onchange=renderBranchForm;
+    if($('branchForm'))$('branchForm').onsubmit=function(e){
+      e.preventDefault();saveBranchFinal();
+    };
+
+    // Refresh Branch Login when it is opened.
+    const oldShowBranch=window.showBranch;
+    if(typeof oldShowBranch==='function'){
+      window.showBranch=function(){
+        oldShowBranch.apply(this,arguments);
+        setTimeout(renderBranchForm,30);
+      };
+    }
+  });
+})();
+</script>
+
+<style>
+.branch-main-column{
+  border:1px solid #c8dfe3;border-radius:8px;background:#fff;margin:12px 0;padding:12px;
+}
+.branch-main-column-title{
+  font-weight:800;background:#e7f5f7;padding:10px;border-radius:6px;margin-bottom:8px;
+}
+.branch-sub-columns{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:10px;
+}
+.branch-sub-column label{display:block;font-weight:600;margin-bottom:5px}
+.branch-sub-column input{width:100%;box-sizing:border-box}
+</style>
+<script>
+(function(){
+  const $=id=>document.getElementById(id);
+
+  function reqByDateFinal(d){
+    try{
+      const a=JSON.parse(localStorage.getItem('JDCC_SIMPLE_REQUESTS_V1')||'[]');
+      return Array.isArray(a)?a.find(x=>String(x.date)===String(d))||null:null;
+    }catch(e){return null}
+  }
+  function branchDataFinal(){
+    try{return JSON.parse(localStorage.getItem('JDCC_SIMPLE_BRANCH_DATA_V1')||'{}')||{}}
+    catch(e){return {}}
+  }
+  function groupedColumns(q){
+    if(Array.isArray(q?.columns)&&q.columns.length)return q.columns;
+    return (q?.fields||[]).map(x=>({title:String(x),subs:[]}));
+  }
+
+  // Branch Login: display the saved Main Column with all its Sub-Columns.
+  window.renderBranchForm=function(){
+    const d=$('branchDate')?.value || '';
+    const q=reqByDateFinal(d);
+    if(typeof selectedDate!=='undefined')selectedDate=d;
+
+    if($('branchRequest')){
+      $('branchRequest').innerHTML=q
+        ? '<b>'+esc(q.title)+'</b><br>तारीख: '+esc(d)+'<br>'+
+          '<span style="white-space:pre-wrap">'+esc(q.letter||'')+'</span>'
+        : '<b>या तारखेसाठी Admin माहिती उपलब्ध नाही.</b>';
+    }
+
+    const all=branchDataFinal();
+    const active=(typeof activeBranch!=='undefined'?activeBranch:'');
+    const saved=all?.[active]?.[d]||{};
+    const columns=groupedColumns(q||{});
+    let valueIndex=0;
+
+    if($('branchFields')){
+      $('branchFields').innerHTML=columns.length ? columns.map((c,ci)=>{
+        const main=String(c.title||'').trim();
+        const subs=Array.isArray(c.subs)?c.subs.map(x=>String(x??'').trim()):[];
+        if(subs.length){
+          const html=subs.map(s=>{
+            const i=valueIndex++;
+            return '<div class="branch-sub-column"><label>'+esc(String(s))+'</label>'+
+              '<input id="bf_'+i+'" value="'+esc(saved.values?.[i]??'')+'" placeholder="'+esc(String(s))+'"></div>';
+          }).join('');
+          return '<div class="branch-main-column"><div class="branch-main-column-title">'+
+            esc(main)+'</div><div class="branch-sub-columns">'+html+'</div></div>';
+        }else{
+          const i=valueIndex++;
+          return '<div class="branch-main-column"><div class="branch-main-column-title">'+
+            esc(main)+'</div><div class="branch-sub-columns"><div class="branch-sub-column">'+
+            '<label>'+esc(main)+'</label><input id="bf_'+i+'" value="'+
+            esc(saved.values?.[i]??'')+'" placeholder="'+esc(main)+'"></div></div></div>';
+        }
+      }).join('') : '<div class="full hint">या तारखेसाठी Admin ने कोणतीही माहिती मागणी जतन केलेली नाही.</div>';
+    }
+  };
+
+  // Ensure Branch Login refreshes its fields whenever the date changes.
+  document.addEventListener('DOMContentLoaded',function(){
+    if($('branchDate'))$('branchDate').addEventListener('change',renderBranchForm);
+    setTimeout(function(){
+      if($('branchDate')?.value)renderBranchForm();
+    },120);
+  });
+})();
+</script>
+<script>
+/* V12 FINAL FIX: blank Sub-Columns are real fields and every Branch value is saved. */
+(function(){
+  const $=id=>document.getElementById(id);
+  function req(d){try{const a=JSON.parse(localStorage.getItem('JDCC_SIMPLE_REQUESTS_V1')||'[]');return Array.isArray(a)?a.find(x=>String(x.date)===String(d))||null:null}catch(e){return null}}
+  function store(){try{return JSON.parse(localStorage.getItem('JDCC_SIMPLE_BRANCH_DATA_V1')||'{}')||{}}catch(e){return {}}}
+  function flattenAll(q){
+    const out=[];
+    if(Array.isArray(q?.columns)&&q.columns.length){
+      q.columns.forEach(c=>{
+        const main=String(c?.title??'').trim();
+        const subs=Array.isArray(c?.subs)?c.subs.map(x=>String(x??'').trim()):[];
+        if(subs.length) subs.forEach(s=>out.push({main,sub:s,label:s||main}));
+        else if(main) out.push({main,sub:'',label:main});
+      });
+      if(out.length)return out;
+    }
+    return Array.isArray(q?.fields)?q.fields.map(f=>({main:String(f),sub:'',label:String(f)})):[];
+  }
+  window.__V12_flatten=flattenAll;
+  window.renderBranchForm=function(){
+    const d=$('branchDate')?.value||'', q=req(d), active=(typeof activeBranch!=='undefined'?activeBranch:'');
+    const all=store(), saved=all?.[active]?.[d]||{}, flat=flattenAll(q||{});
+    if($('branchFields')) $('branchFields').innerHTML=flat.length?flat.map((f,i)=>
+      '<div><label>'+esc(f.main+(f.sub?' → '+f.sub:''))+'</label>'+\
+      '<input id="bf_'+i+'" value="'+esc(saved.values?.[i]??'')+'" placeholder="'+esc(f.sub||'माहिती भरा')+'"></div>'
+    ).join(''):'<div class="full hint">या तारखेसाठी Admin ने कोणतीही माहिती मागणी जतन केलेली नाही.</div>';
+  };
+  window.saveBranchFinal=function(){
+    const d=$('branchDate')?.value||'', q=req(d), active=(typeof activeBranch!=='undefined'?activeBranch:'');
+    if(!q){alert('या तारखेसाठी Admin ने माहिती मागणी जतन केलेली नाही.');return;}
+    if(!active){alert('कृपया शाखा Login करा.');return;}
+    const flat=flattenAll(q), values=flat.map((f,i)=>String($('bf_'+i)?.value??''));
+    const all=store(); if(!all[active])all[active]={};
+    all[active][d]={branch:active,date:d,values,updated:new Date().toISOString()};
+    localStorage.setItem('JDCC_SIMPLE_BRANCH_DATA_V1',JSON.stringify(all));
+    alert('शाखेची सर्व माहिती '+d+' साठी जतन झाली.');
+    renderBranchForm();
+  };
+  window.renderGroupedReport=function(d,targetId,adminEdit){
+    const box=$(targetId),q=req(d); if(!box||!q)return;
+    const flat=flattenAll(q), cols=Array.isArray(q.columns)?q.columns:[], all=store();
+    const branches=Array.isArray(window.BRANCHES)?window.BRANCHES:[], rows=branches.map(b=>({b,r:all?.[b]?.[d]||null}));
+    const submitted=rows.filter(x=>x.r).length;
+    const totals=flat.map((f,i)=>{let sum=0,has=false;rows.forEach(x=>{const raw=x.r?.values?.[i];const n=Number(String(raw??'').replace(/,/g,'').trim());if(String(raw??'').trim()!==''&&Number.isFinite(n)){sum+=n;has=true}});return has?sum.toLocaleString('en-IN'):'-'});
+    let head='<tr><th rowspan="2">शाखा</th>'; cols.forEach(c=>{const n=Array.isArray(c.subs)&&c.subs.length?c.subs.length:1;head+='<th colspan="'+n+'">'+esc(c.title||'')+'</th>'}); head+='<th rowspan="2">स्थिती</th></tr><tr>'; cols.forEach(c=>{if(Array.isArray(c.subs)&&c.subs.length)c.subs.forEach(s=>head+='<th>'+esc(s||'')+'</th>');else head+='<th>'+esc(c.title||'')+'</th>'}); head+='</tr>';
+    const body=rows.map(x=>'<tr><td>'+esc(x.b)+'</td>'+flat.map((f,i)=>'<td>'+esc(x.r?.values?.[i]??'-')+'</td>').join('')+'<td>'+(x.r?'जमा':'प्रलंबित')+'</td></tr>').join('');
+    box.innerHTML='<div class="bar"><div><h3>शाखानुसार एकत्रित रिपोर्ट</h3><span class="muted">तारीख: '+esc(d)+' | '+esc(q.title||'')+'</span></div>'+(adminEdit?'<button type="button" class="btn" id="groupReportEdit">Edit</button>':'')+'</div><div class="warning"><b>'+esc(q.title||'माहिती मागणी')+'</b><br><span style="white-space:pre-wrap">'+esc(q.letter||'')+'</span><div style="margin-top:6px">माहिती भरलेल्या शाखा: '+submitted+' / '+branches.length+'</div></div><div class="tablebox"><table><thead>'+head+'</thead><tbody>'+body+'<tr style="font-weight:800;background:#eef8ff"><td>TOTAL ('+branches.length+' शाखा)</td>'+totals.map(x=>'<td>'+esc(x)+'</td>').join('')+'<td>'+submitted+' जमा / '+(branches.length-submitted)+' प्रलंबित</td></tr></tbody></table></div>';
+  };
+  document.addEventListener('DOMContentLoaded',function(){
+    if($('branchForm'))$('branchForm').onsubmit=function(e){e.preventDefault();saveBranchFinal()};
+    if($('branchDate'))$('branchDate').onchange=renderBranchForm;
+    setTimeout(function(){if($('branchDate')?.value)renderBranchForm()},150);
+  });
+})();
+</script>
+
+<script>
+/* FINAL REPORT BUTTON + REPORT DISPLAY FIX
+   Keeps the old "Report" button workflow, while showing all real branches
+   and all saved branch values in the same field order used by Branch Login.
+*/
+(function(){
+  function getReq14(d){
+    try{
+      const a=JSON.parse(localStorage.getItem('JDCC_SIMPLE_REQUESTS_V1')||'[]');
+      return Array.isArray(a) ? a.find(x=>String(x.date)===String(d)) || null : null;
+    }catch(e){ return null; }
+  }
+  function getBranchData14(){
+    try{
+      return JSON.parse(localStorage.getItem('JDCC_SIMPLE_BRANCH_DATA_V1')||'{}') || {};
+    }catch(e){ return {}; }
+  }
+  function getBranches14(){
+    try{
+      if(typeof BRANCHES!=='undefined' && Array.isArray(BRANCHES) && BRANCHES.length) return BRANCHES;
+    }catch(e){}
+    return Array.isArray(window.BRANCHES) ? window.BRANCHES : [];
+  }
+  function getFields14(q){
+    if(Array.isArray(q.fields) && q.fields.length) return q.fields.map(x=>String(x));
+    if(typeof flatten==='function'){
+      try{
+        const f=flatten(q);
+        if(Array.isArray(f) && f.length) return f.map(x=>String(x.label||x.main||''));
+      }catch(e){}
+    }
+    return [];
+  }
+
+  window.openAdminReport14=function(d){
+    const box=document.getElementById('adminReport');
+    const q=getReq14(d);
+    if(!box || !q) return;
+
+    const branches=getBranches14();
+    const all=getBranchData14();
+    const fields=getFields14(q);
+
+    const submitted=branches.filter(b=>all?.[b]?.[d]).length;
+
+    const rows=branches.map(function(b){
+      const r=all?.[b]?.[d];
+      return '<tr><td>'+esc(b)+'</td>'+
+        fields.map(function(f,i){
+          const v=(r && Array.isArray(r.values)) ? (r.values[i] ?? '') : '';
+          return '<td>'+esc(String(v).trim()!=='' ? v : '-')+'</td>';
+        }).join('')+
+        '<td>'+(r?'जमा':'प्रलंबित')+'</td></tr>';
+    }).join('');
+
+    const totals=fields.map(function(f,i){
+      let sum=0, has=false;
+      branches.forEach(function(b){
+        const raw=all?.[b]?.[d]?.values?.[i];
+        if(String(raw??'').trim()!==''){
+          const n=Number(String(raw).replace(/,/g,'').trim());
+          if(Number.isFinite(n)){ sum+=n; has=true; }
+        }
+      });
+      return has ? sum.toLocaleString('en-IN') : '-';
+    });
+
+    box.innerHTML =
+      '<div class="bar"><div><h3>एकत्रित माहिती</h3>'+
+      '<span class="muted">तारीख: '+esc(d)+' | '+esc(q.title||'')+'</span></div>'+
+      '<button type="button" class="btn out" id="closeReport14">बंद करा</button></div>'+
+      '<div class="warning"><b>'+esc(q.title||'')+'</b><br>'+
+      '<span style="white-space:pre-wrap">'+esc(q.letter||'')+'</span>'+
+      '<div style="margin-top:6px">माहिती भरलेल्या शाखा: '+submitted+' / '+branches.length+'</div></div>'+
+      '<div class="tablebox"><table><thead><tr><th>शाखा</th>'+
+      fields.map(f=>'<th>'+esc(f)+'</th>').join('')+
+      '<th>स्थिती</th></tr></thead><tbody>'+
+      rows+
+      '<tr style="font-weight:800;background:#eef8ff"><td>TOTAL ('+branches.length+' शाखा)</td>'+
+      totals.map(x=>'<td>'+esc(x)+'</td>').join('')+
+      '<td>'+submitted+' जमा / '+(branches.length-submitted)+' प्रलंबित</td></tr>'+
+      '</tbody></table></div>';
+
+    box.classList.remove('hidden');
+    document.getElementById('closeReport14').onclick=function(){
+      box.classList.add('hidden');
+    };
+    box.scrollIntoView({behavior:'smooth',block:'start'});
+  };
+
+  window.openHomeReport14=function(d){
+    const box=document.getElementById('homeReport');
+    if(!box) return;
+    /* Reuse the exact same report, but without Admin controls. */
+    const q=getReq14(d);
+    if(!q) return;
+    const branches=getBranches14(), all=getBranchData14(), fields=getFields14(q);
+    const submitted=branches.filter(b=>all?.[b]?.[d]).length;
+    const rows=branches.map(function(b){
+      const r=all?.[b]?.[d];
+      return '<tr><td>'+esc(b)+'</td>'+
+        fields.map(function(f,i){
+          const v=(r && Array.isArray(r.values)) ? (r.values[i] ?? '') : '';
+          return '<td>'+esc(String(v).trim()!=='' ? v : '-')+'</td>';
+        }).join('')+
+        '<td>'+(r?'जमा':'प्रलंबित')+'</td></tr>';
+    }).join('');
+    const totals=fields.map(function(f,i){
+      let sum=0,has=false;
+      branches.forEach(function(b){
+        const raw=all?.[b]?.[d]?.values?.[i];
+        if(String(raw??'').trim()!==''){
+          const n=Number(String(raw).replace(/,/g,'').trim());
+          if(Number.isFinite(n)){sum+=n;has=true;}
+        }
+      });
+      return has?sum.toLocaleString('en-IN'):'-';
+    });
+    box.innerHTML='<div class="bar"><div><h3>एकत्रित माहिती</h3>'+
+      '<span class="muted">तारीख: '+esc(d)+' | '+esc(q.title||'')+'</span></div>'+
+      '<button type="button" class="btn out" id="closeHomeReport14">बंद करा</button></div>'+
+      '<div class="warning"><b>'+esc(q.title||'')+'</b><br>'+
+      '<span style="white-space:pre-wrap">'+esc(q.letter||'')+'</span>'+
+      '<div style="margin-top:6px">माहिती भरलेल्या शाखा: '+submitted+' / '+branches.length+'</div></div>'+
+      '<div class="tablebox"><table><thead><tr><th>शाखा</th>'+
+      fields.map(f=>'<th>'+esc(f)+'</th>').join('')+
+      '<th>स्थिती</th></tr></thead><tbody>'+rows+
+      '<tr style="font-weight:800;background:#eef8ff"><td>TOTAL ('+branches.length+' शाखा)</td>'+
+      totals.map(x=>'<td>'+esc(x)+'</td>').join('')+
+      '<td>'+submitted+' जमा / '+(branches.length-submitted)+' प्रलंबित</td></tr>'+
+      '</tbody></table></div>';
+    box.classList.remove('hidden');
+    document.getElementById('closeHomeReport14').onclick=function(){box.classList.add('hidden');};
+    box.scrollIntoView({behavior:'smooth',block:'start'});
+  };
+
+  /* Capture the Report button before older duplicate handlers can override it. */
+  document.addEventListener('click',function(e){
+    const b=e.target.closest && e.target.closest('[data-report]');
+    if(!b) return;
+    const d=b.getAttribute('data-report');
+    if(!d) return;
+    e.preventDefault();
+    e.stopImmediatePropagation();
+    if(document.getElementById('adminReport')) openAdminReport14(d);
+  },true);
+
+  /* Also repair Home date/report rows if present. */
+  document.addEventListener('click',function(e){
+    const r=e.target.closest && e.target.closest('[data-home-report],[data-date-report]');
+    if(!r) return;
+    const d=r.getAttribute('data-home-report')||r.getAttribute('data-date-report');
+    if(!d) return;
+    e.preventDefault();
+    e.stopImmediatePropagation();
+    openHomeReport14(d);
+  },true);
+})();
+</script>
+
+
+<script>
+/* V15: REPORT MUST USE THE SAME FIELD ORDER AS BRANCH LOGIN.
+   Do not trust old q.fields when Main/Sub columns were changed.
+   Build the report fields from q.columns first, then extend to the
+   largest saved values array so no branch-entered value is hidden.
+*/
+(function(){
+  function req15(d){
+    try{
+      const a=JSON.parse(localStorage.getItem('JDCC_SIMPLE_REQUESTS_V1')||'[]');
+      return Array.isArray(a)?a.find(x=>String(x.date)===String(d))||null:null;
+    }catch(e){return null}
+  }
+  function store15(){
+    try{return JSON.parse(localStorage.getItem('JDCC_SIMPLE_BRANCH_DATA_V1')||'{}')||{}}
+    catch(e){return {}}
+  }
+  function branches15(){
+    try{
+      if(typeof BRANCHES!=='undefined' && Array.isArray(BRANCHES) && BRANCHES.length) return BRANCHES;
+    }catch(e){}
+    return Array.isArray(window.BRANCHES)?window.BRANCHES:[];
+  }
+  function fields15(q, all, d){
+    const out=[];
+    if(Array.isArray(q?.columns) && q.columns.length){
+      q.columns.forEach(c=>{
+        const main=String(c?.title??'').trim();
+        const subs=Array.isArray(c?.subs)?c.subs.map(x=>String(x??'').trim()):[];
+        if(subs.length){
+          subs.forEach(s=>out.push({label:(main?main+' - ':'')+s, main, sub:s}));
+        }else if(main){
+          out.push({label:main, main, sub:''});
+        }
+      });
+    }
+    /* If old data has more stored values than the current column definition,
+       retain those values instead of silently dropping them. */
+    let maxSaved=0;
+    branches15().forEach(b=>{
+      const n=Array.isArray(all?.[b]?.[d]?.values)?all[b][d].values.length:0;
+      if(n>maxSaved)maxSaved=n;
+    });
+    const old=Array.isArray(q?.fields)?q.fields.map(x=>String(x)):[];
+
+    while(out.length<maxSaved){
+      const i=out.length;
+      out.push({
+        label: old[i] || ('Sub-Column '+(i+1)),
+        main: old[i] || ('Sub-Column '+(i+1)),
+        sub:''
+      });
+    }
+    if(!out.length && old.length){
+      old.forEach(x=>out.push({label:x,main:x,sub:''}));
+    }
+    return out;
+  }
+
+  function render15(d,targetId){
+    const box=document.getElementById(targetId||'adminReport');
+    const q=req15(d);
+    if(!box||!q)return;
+    const all=store15(), bs=branches15(), fs=fields15(q,all,d);
+    const submitted=bs.filter(b=>all?.[b]?.[d]).length;
+
+    const rows=bs.map(b=>{
+      const r=all?.[b]?.[d];
+      return '<tr><td>'+esc(b)+'</td>'+
+        fs.map((f,i)=>{
+          const v=Array.isArray(r?.values)?r.values[i]:undefined;
+          return '<td>'+esc(String(v??'').trim()!==''?String(v):'-')+'</td>';
+        }).join('')+
+        '<td>'+(r?'जमा':'प्रलंबित')+'</td></tr>';
+    }).join('');
+
+    const totals=fs.map((f,i)=>{
+      let sum=0,has=false;
+      bs.forEach(b=>{
+        const raw=all?.[b]?.[d]?.values?.[i];
+        if(String(raw??'').trim()!==''){
+          const n=Number(String(raw).replace(/,/g,'').trim());
+          if(Number.isFinite(n)){sum+=n;has=true;}
+        }
+      });
+      return has?sum.toLocaleString('en-IN'):'-';
+    });
+
+    /* Grouped header from q.columns, then any legacy/extra fields. */
+    let head='<tr><th rowspan="2">शाखा</th>';
+    let used=0;
+    if(Array.isArray(q.columns)&&q.columns.length){
+      q.columns.forEach(c=>{
+        const main=String(c?.title??'').trim();
+        const subs=Array.isArray(c?.subs)?c.subs.map(x=>String(x??'').trim()):[];
+        const n=subs.length||1;
+        head+='<th colspan="'+n+'">'+esc(main)+'</th>';
+        used+=n;
+      });
+    }else{
+      head+='<th colspan="'+fs.length+'">माहिती</th>';
+      used=fs.length;
+    }
+    if(used<fs.length) head+='<th colspan="'+(fs.length-used)+'">अतिरिक्त माहिती</th>';
+    head+='<th rowspan="2">स्थिती</th></tr><tr>';
+
+    if(Array.isArray(q.columns)&&q.columns.length){
+      q.columns.forEach(c=>{
+        const subs=Array.isArray(c?.subs)?c.subs.map(x=>String(x??'').trim()):[];
+        if(subs.length) subs.forEach(s=>head+='<th>'+esc(s||'')+'</th>');
+        else head+='<th>'+esc(c?.title||'')+'</th>';
+      });
+    }else{
+      fs.forEach(f=>head+='<th>'+esc(f.label)+'</th>');
+    }
+    while(used<fs.length){ head+='<th>'+esc(fs[used].label)+'</th>'; used++; }
+    head+='</tr>';
+
+    box.innerHTML=
+      '<div class="bar"><div><h3>एकत्रित माहिती</h3>'+
+      '<span class="muted">तारीख: '+esc(d)+' | '+esc(q.title||'')+'</span></div>'+
+      '<button type="button" class="btn out" id="closeReport15">बंद करा</button></div>'+
+      '<div class="warning"><b>'+esc(q.title||'')+'</b><br>'+
+      '<span style="white-space:pre-wrap">'+esc(q.letter||'')+'</span>'+
+      '<div style="margin-top:6px">माहिती भरलेल्या शाखा: '+submitted+' / '+bs.length+'</div></div>'+
+      '<div class="tablebox"><table><thead>'+head+'</thead><tbody>'+
+      rows+
+      '<tr style="font-weight:800;background:#eef8ff"><td>TOTAL ('+bs.length+' शाखा)</td>'+
+      totals.map(x=>'<td>'+esc(x)+'</td>').join('')+
+      '<td>'+submitted+' जमा / '+(bs.length-submitted)+' प्रलंबित</td></tr>'+
+      '</tbody></table></div>';
+
+    box.classList.remove('hidden');
+    document.getElementById('closeReport15').onclick=function(){box.classList.add('hidden');};
+    box.scrollIntoView({behavior:'smooth',block:'start'});
+  }
+
+  /* Override the Report action used by V14. */
+  window.openAdminReport14=function(d){ render15(d,'adminReport'); };
+
+  document.addEventListener('click',function(e){
+    const b=e.target.closest&&e.target.closest('[data-report]');
+    if(!b)return;
+    const d=b.getAttribute('data-report');
+    if(!d)return;
+    e.preventDefault();
+    e.stopImmediatePropagation();
+    render15(d,'adminReport');
+  },true);
+})();
+</script>
+
+
+<script>
+/* V16 REPORT DISPLAY:
+   Show ONLY Main Column headers at the top. Blank Sub-Columns are data
+   positions for branches, so their duplicate/empty header row is hidden.
+   All saved branch values remain in their original positions.
+*/
+(function(){
+  function req16(d){
+    try{
+      const a=JSON.parse(localStorage.getItem('JDCC_SIMPLE_REQUESTS_V1')||'[]');
+      return Array.isArray(a)?a.find(x=>String(x.date)===String(d))||null:null;
+    }catch(e){return null}
+  }
+  function data16(){
+    try{return JSON.parse(localStorage.getItem('JDCC_SIMPLE_BRANCH_DATA_V1')||'{}')||{}}
+    catch(e){return {}}
+  }
+  function branches16(){
+    try{
+      if(typeof BRANCHES!=='undefined' && Array.isArray(BRANCHES) && BRANCHES.length)return BRANCHES;
+    }catch(e){}
+    return Array.isArray(window.BRANCHES)?window.BRANCHES:[];
+  }
+  function fields16(q,all,d){
+    const f=[];
+    if(Array.isArray(q?.columns)&&q.columns.length){
+      q.columns.forEach(c=>{
+        const main=String(c?.title||'').trim();
+        const subs=Array.isArray(c?.subs)?c.subs.map(x=>String(x||'').trim()):[];
+        if(subs.length) subs.forEach(s=>f.push({main,sub:s}));
+        else if(main) f.push({main,sub:''});
+      });
+    }
+    let max=0;
+    branches16().forEach(b=>{
+      const n=Array.isArray(all?.[b]?.[d]?.values)?all[b][d].values.length:0;
+      if(n>max)max=n;
+    });
+    while(f.length<max)f.push({main:'',sub:''});
+    return f;
+  }
+
+  window.renderMainOnlyReport16=function(d,targetId){
+    const box=document.getElementById(targetId||'adminReport'), q=req16(d);
+    if(!box||!q)return;
+    const all=data16(), bs=branches16(), fs=fields16(q,all,d);
+    const submitted=bs.filter(b=>all?.[b]?.[d]).length;
+
+    /* Determine grouped Main Columns and their span, but render only one header row. */
+    const groups=[];
+    if(Array.isArray(q.columns)&&q.columns.length){
+      q.columns.forEach(c=>{
+        const main=String(c?.title||'').trim();
+        const n=(Array.isArray(c?.subs)&&c.subs.length)?c.subs.length:1;
+        if(main)groups.push({title:main,span:n});
+      });
+    }
+    const used=groups.reduce((s,g)=>s+g.span,0);
+    if(used<fs.length)groups.push({title:'',span:fs.length-used});
+
+    const head='<tr><th>शाखा</th>'+
+      groups.map(g=>'<th colspan="'+g.span+'">'+esc(g.title)+'</th>').join('')+
+      '<th>स्थिती</th></tr>';
+
+    const body=bs.map(b=>{
+      const r=all?.[b]?.[d];
+      return '<tr><td>'+esc(b)+'</td>'+
+        fs.map((f,i)=>{
+          const v=Array.isArray(r?.values)?r.values[i]:undefined;
+          return '<td>'+esc(String(v??'').trim()!==''?String(v):'-')+'</td>';
+        }).join('')+
+        '<td>'+(r?'जमा':'प्रलंबित')+'</td></tr>';
+    }).join('');
+
+    const totals=fs.map((f,i)=>{
+      let sum=0,has=false;
+      bs.forEach(b=>{
+        const raw=all?.[b]?.[d]?.values?.[i];
+        if(String(raw??'').trim()!==''){
+          const n=Number(String(raw).replace(/,/g,'').trim());
+          if(Number.isFinite(n)){sum+=n;has=true;}
+        }
+      });
+      return has?sum.toLocaleString('en-IN'):'-';
+    });
+
+    box.innerHTML=
+      '<div class="bar"><div><h3>एकत्रित माहिती</h3>'+
+      '<span class="muted">तारीख: '+esc(d)+' | '+esc(q.title||'')+'</span></div>'+
+      '<button type="button" class="btn out" id="closeReport16">बंद करा</button></div>'+
+      '<div class="warning"><b>'+esc(q.title||'')+'</b><br>'+
+      '<span style="white-space:pre-wrap">'+esc(q.letter||'')+'</span>'+
+      '<div style="margin-top:6px">माहिती भरलेल्या शाखा: '+submitted+' / '+bs.length+'</div></div>'+
+      '<div class="tablebox"><table><thead>'+head+'</thead><tbody>'+body+
+      '<tr style="font-weight:800;background:#eef8ff"><td>TOTAL ('+bs.length+' शाखा)</td>'+
+      totals.map(x=>'<td>'+esc(x)+'</td>').join('')+
+      '<td>'+submitted+' जमा / '+(bs.length-submitted)+' प्रलंबित</td></tr>'+
+      '</tbody></table></div>';
+
+    box.classList.remove('hidden');
+    const close=document.getElementById('closeReport16');
+    if(close)close.onclick=()=>box.classList.add('hidden');
+    box.scrollIntoView({behavior:'smooth',block:'start'});
+  };
+
+  /* Replace the V15 report action. */
+  window.openAdminReport14=function(d){renderMainOnlyReport16(d,'adminReport');};
+  window.renderAdminReport=function(d){renderMainOnlyReport16(d,'adminReport');};
+  window.renderBranchwiseAggregateReport=function(d,targetId){renderMainOnlyReport16(d,targetId||'adminReport');};
+
+  document.addEventListener('click',function(e){
+    const b=e.target.closest&&e.target.closest('[data-report]');
+    if(!b)return;
+    const d=b.getAttribute('data-report');
+    if(!d)return;
+    e.preventDefault();e.stopImmediatePropagation();
+    renderMainOnlyReport16(d,'adminReport');
+  },true);
+})();
+</script>
+
+
+<script>
+/* V17: Main-column totals.
+   The report keeps the clean Main-Column-only header, while TOTAL shows
+   the numeric total for each Main Column (e.g. कायम कर्मचारी, करारातील
+   कर्मचारी, शिपाई). Non-numeric/name fields are not added.
+*/
+(function(){
+  function req17(d){
+    try{
+      const a=JSON.parse(localStorage.getItem('JDCC_SIMPLE_REQUESTS_V1')||'[]');
+      return Array.isArray(a)?a.find(x=>String(x.date)===String(d))||null:null;
+    }catch(e){return null}
+  }
+  function data17(){
+    try{return JSON.parse(localStorage.getItem('JDCC_SIMPLE_BRANCH_DATA_V1')||'{}')||{}}
+    catch(e){return {}}
+  }
+  function branches17(){
+    try{
+      if(typeof BRANCHES!=='undefined'&&Array.isArray(BRANCHES)&&BRANCHES.length)return BRANCHES;
+    }catch(e){}
+    return Array.isArray(window.BRANCHES)?window.BRANCHES:[];
+  }
+  function fieldGroups17(q,all,d){
+    const groups=[];
+    if(Array.isArray(q?.columns)&&q.columns.length){
+      let idx=0;
+      q.columns.forEach(c=>{
+        const title=String(c?.title||'').trim();
+        const subs=Array.isArray(c?.subs)?c.subs.map(x=>String(x||'').trim()):[];
+        const count=subs.length||1;
+        groups.push({title,start:idx,count});
+        idx+=count;
+      });
+      let max=0;
+      branches17().forEach(b=>{
+        const n=Array.isArray(all?.[b]?.[d]?.values)?all[b][d].values.length:0;
+        if(n>max)max=n;
+      });
+      if(max>idx && groups.length) groups[groups.length-1].count += max-idx;
+      return groups;
+    }
+    const n=(Array.isArray(q?.fields)?q.fields.length:0);
+    return n?[{title:'माहिती',start:0,count:n}]:[];
+  }
+  function numericTotalForGroup17(all,bs,d,g){
+    let sum=0,has=false;
+    for(let bi=0;bi<bs.length;bi++){
+      const vals=all?.[bs[bi]]?.[d]?.values;
+      if(!Array.isArray(vals))continue;
+      for(let i=g.start;i<g.start+g.count;i++){
+        const raw=vals[i];
+        if(String(raw??'').trim()==='')continue;
+        const n=Number(String(raw).replace(/,/g,'').trim());
+        if(Number.isFinite(n)){sum+=n;has=true;}
+      }
+    }
+    return has?sum.toLocaleString('en-IN'):'-';
+  }
+
+  window.renderMainOnlyReport17=function(d,targetId){
+    const box=document.getElementById(targetId||'adminReport'),q=req17(d);
+    if(!box||!q)return;
+    const all=data17(),bs=branches17(),groups=fieldGroups17(q,all,d);
+    const totalFields=groups.reduce((s,g)=>s+g.count,0);
+    const submitted=bs.filter(b=>all?.[b]?.[d]).length;
+
+    const head='<tr><th>शाखा</th>'+
+      groups.map(g=>'<th colspan="'+g.count+'">'+esc(g.title)+'</th>').join('')+
+      '<th>स्थिती</th></tr>';
+
+    const body=bs.map(b=>{
+      const r=all?.[b]?.[d];
+      return '<tr><td>'+esc(b)+'</td>'+
+        Array.from({length:totalFields},(_,i)=>{
+          const v=Array.isArray(r?.values)?r.values[i]:undefined;
+          return '<td>'+esc(String(v??'').trim()!==''?String(v):'-')+'</td>';
+        }).join('')+
+        '<td>'+(r?'जमा':'प्रलंबित')+'</td></tr>';
+    }).join('');
+
+    /* TOTAL: show a single value for each Main Column, spanning its
+       underlying blank Sub-Columns. This is the requested
+       "कायम किती / करारावर किती / शिपाई किती" summary. */
+    const totalRow='<tr class="main-total-row" style="font-weight:800;background:#eef8ff">'+
+      '<td>TOTAL ('+bs.length+' शाखा)</td>'+
+      groups.map(g=>{
+        const label=g.title||'एकूण';
+        const val=numericTotalForGroup17(all,bs,d,g);
+        return '<td colspan="'+g.count+'"><b>'+esc(label)+': '+esc(val)+'</b></td>';
+      }).join('')+
+      '<td>'+submitted+' जमा / '+(bs.length-submitted)+' प्रलंबित</td></tr>';
+
+    box.innerHTML=
+      '<div class="bar"><div><h3>एकत्रित माहिती</h3>'+
+      '<span class="muted">तारीख: '+esc(d)+' | '+esc(q.title||'')+'</span></div>'+
+      '<button type="button" class="btn out" id="closeReport17">बंद करा</button></div>'+
+      '<div class="warning"><b>'+esc(q.title||'')+'</b><br>'+
+      '<span style="white-space:pre-wrap">'+esc(q.letter||'')+'</span>'+
+      '<div style="margin-top:6px">माहिती भरलेल्या शाखा: '+submitted+' / '+bs.length+'</div></div>'+
+      '<div class="tablebox"><table><thead>'+head+'</thead><tbody>'+
+      body+totalRow+
+      '</tbody></table></div>';
+
+    box.classList.remove('hidden');
+    const close=document.getElementById('closeReport17');
+    if(close)close.onclick=()=>box.classList.add('hidden');
+    box.scrollIntoView({behavior:'smooth',block:'start'});
+  };
+
+  window.renderAdminReport=function(d){renderMainOnlyReport17(d,'adminReport');};
+  window.openAdminReport14=function(d){renderMainOnlyReport17(d,'adminReport');};
+  window.renderBranchwiseAggregateReport=function(d,targetId){renderMainOnlyReport17(d,targetId||'adminReport');};
+
+  document.addEventListener('click',function(e){
+    const b=e.target.closest&&e.target.closest('[data-report]');
+    if(!b)return;
+    const d=b.getAttribute('data-report');
+    if(!d)return;
+    e.preventDefault();e.stopImmediatePropagation();
+    renderMainOnlyReport17(d,'adminReport');
+  },true);
+})();
+</script>
+
+
+<script>
+/* V18: TOTAL means COUNT OF FILLED CELLS, not numeric sum.
+   Example: कायम कर्मचारी: 12 means 12 branch entries are filled
+   in that Main Column. */
+(function(){
+  function req18(d){
+    try{
+      const a=JSON.parse(localStorage.getItem('JDCC_SIMPLE_REQUESTS_V1')||'[]');
+      return Array.isArray(a)?a.find(x=>String(x.date)===String(d))||null:null;
+    }catch(e){return null}
+  }
+  function data18(){
+    try{return JSON.parse(localStorage.getItem('JDCC_SIMPLE_BRANCH_DATA_V1')||'{}')||{}}
+    catch(e){return {}}
+  }
+  function branches18(){
+    try{
+      if(typeof BRANCHES!=='undefined'&&Array.isArray(BRANCHES)&&BRANCHES.length)return BRANCHES;
+    }catch(e){}
+    return Array.isArray(window.BRANCHES)?window.BRANCHES:[];
+  }
+  function groups18(q,all,d){
+    const g=[];
+    if(Array.isArray(q?.columns)&&q.columns.length){
+      let idx=0;
+      q.columns.forEach(c=>{
+        const title=String(c?.title||'').trim();
+        const subs=Array.isArray(c?.subs)?c.subs.map(x=>String(x||'').trim()):[];
+        const count=subs.length||1;
+        if(title)g.push({title,start:idx,count});
+        idx+=count;
+      });
+      let max=0;
+      branches18().forEach(b=>{
+        const n=Array.isArray(all?.[b]?.[d]?.values)?all[b][d].values.length:0;
+        if(n>max)max=n;
+      });
+      if(max>idx&&g.length)g[g.length-1].count+=max-idx;
+    }
+    return g;
+  }
+  function filledCount18(all,bs,d,g){
+    let count=0;
+    bs.forEach(b=>{
+      const vals=all?.[b]?.[d]?.values;
+      if(!Array.isArray(vals))return;
+      for(let i=g.start;i<g.start+g.count;i++){
+        if(String(vals[i]??'').trim()!=='') count++;
+      }
+    });
+    return count;
+  }
+
+  window.renderMainOnlyReport18=function(d,targetId){
+    const box=document.getElementById(targetId||'adminReport'),q=req18(d);
+    if(!box||!q)return;
+    const all=data18(),bs=branches18(),gs=groups18(q,all,d);
+    const totalFields=gs.reduce((s,g)=>s+g.count,0);
+    const submitted=bs.filter(b=>all?.[b]?.[d]).length;
+
+    const head='<tr><th>शाखा</th>'+
+      gs.map(g=>'<th colspan="'+g.count+'">'+esc(g.title)+'</th>').join('')+
+      '<th>स्थिती</th></tr>';
+
+    const body=bs.map(b=>{
+      const r=all?.[b]?.[d];
+      return '<tr><td>'+esc(b)+'</td>'+
+        Array.from({length:totalFields},(_,i)=>{
+          const v=Array.isArray(r?.values)?r.values[i]:undefined;
+          return '<td>'+esc(String(v??'').trim()!==''?String(v):'-')+'</td>';
+        }).join('')+
+        '<td>'+(r?'जमा':'प्रलंबित')+'</td></tr>';
+    }).join('');
+
+    const totalRow='<tr style="font-weight:800;background:#eef8ff">'+
+      '<td>TOTAL ('+bs.length+' शाखा)</td>'+
+      gs.map(g=>{
+        const n=filledCount18(all,bs,d,g);
+        return '<td colspan="'+g.count+'">'+esc(g.title)+': <b>'+n+'</b></td>';
+      }).join('')+
+      '<td>'+submitted+' जमा / '+(bs.length-submitted)+' प्रलंबित</td></tr>';
+
+    box.innerHTML=
+      '<div class="bar"><div><h3>एकत्रित माहिती</h3>'+
+      '<span class="muted">तारीख: '+esc(d)+' | '+esc(q.title||'')+'</span></div>'+
+      '<button type="button" class="btn out" id="closeReport18">बंद करा</button></div>'+
+      '<div class="warning"><b>'+esc(q.title||'')+'</b><br>'+
+      '<span style="white-space:pre-wrap">'+esc(q.letter||'')+'</span>'+
+      '<div style="margin-top:6px">माहिती भरलेल्या शाखा: '+submitted+' / '+bs.length+'</div></div>'+
+      '<div class="tablebox"><table><thead>'+head+'</thead><tbody>'+
+      body+totalRow+
+      '</tbody></table></div>';
+
+    box.classList.remove('hidden');
+    const close=document.getElementById('closeReport18');
+    if(close)close.onclick=()=>box.classList.add('hidden');
+    box.scrollIntoView({behavior:'smooth',block:'start'});
+  };
+
+  window.renderAdminReport=function(d){renderMainOnlyReport18(d,'adminReport');};
+  window.openAdminReport14=function(d){renderMainOnlyReport18(d,'adminReport');};
+  window.renderBranchwiseAggregateReport=function(d,targetId){renderMainOnlyReport18(d,targetId||'adminReport');};
+
+  document.addEventListener('click',function(e){
+    const b=e.target.closest&&e.target.closest('[data-report]');
+    if(!b)return;
+    const d=b.getAttribute('data-report');
+    if(!d)return;
+    e.preventDefault();e.stopImmediatePropagation();
+    renderMainOnlyReport18(d,'adminReport');
+  },true);
+})();
+</script>
+
+
+<script>
+/* V19: TOTAL row shows numbers only. No Main-Column labels/headings in TOTAL. */
+(function(){
+  function req19(d){
+    try{
+      const a=JSON.parse(localStorage.getItem('JDCC_SIMPLE_REQUESTS_V1')||'[]');
+      return Array.isArray(a)?a.find(x=>String(x.date)===String(d))||null:null;
+    }catch(e){return null}
+  }
+  function data19(){
+    try{return JSON.parse(localStorage.getItem('JDCC_SIMPLE_BRANCH_DATA_V1')||'{}')||{}}
+    catch(e){return {}}
+  }
+  function branches19(){
+    try{
+      if(typeof BRANCHES!=='undefined'&&Array.isArray(BRANCHES)&&BRANCHES.length)return BRANCHES;
+    }catch(e){}
+    return Array.isArray(window.BRANCHES)?window.BRANCHES:[];
+  }
+  function groups19(q,all,d){
+    const g=[];
+    if(Array.isArray(q?.columns)&&q.columns.length){
+      let idx=0;
+      q.columns.forEach(c=>{
+        const title=String(c?.title||'').trim();
+        const subs=Array.isArray(c?.subs)?c.subs.map(x=>String(x||'').trim()):[];
+        const count=subs.length||1;
+        if(title)g.push({title,start:idx,count});
+        idx+=count;
+      });
+      let max=0;
+      branches19().forEach(b=>{
+        const n=Array.isArray(all?.[b]?.[d]?.values)?all[b][d].values.length:0;
+        if(n>max)max=n;
+      });
+      if(max>idx&&g.length)g[g.length-1].count+=max-idx;
+    }
+    return g;
+  }
+  function filled19(all,bs,d,g){
+    let n=0;
+    bs.forEach(b=>{
+      const vals=all?.[b]?.[d]?.values;
+      if(!Array.isArray(vals))return;
+      for(let i=g.start;i<g.start+g.count;i++){
+        if(String(vals[i]??'').trim()!=='') n++;
+      }
+    });
+    return n;
+  }
+
+  window.renderMainOnlyReport19=function(d,targetId){
+    const box=document.getElementById(targetId||'adminReport'),q=req19(d);
+    if(!box||!q)return;
+    const all=data19(),bs=branches19(),gs=groups19(q,all,d);
+    const totalFields=gs.reduce((s,g)=>s+g.count,0);
+    const submitted=bs.filter(b=>all?.[b]?.[d]).length;
+
+    const head='<tr><th>शाखा</th>'+
+      gs.map(g=>'<th colspan="'+g.count+'">'+esc(g.title)+'</th>').join('')+
+      '<th>स्थिती</th></tr>';
+
+    const body=bs.map(b=>{
+      const r=all?.[b]?.[d];
+      return '<tr><td>'+esc(b)+'</td>'+
+        Array.from({length:totalFields},(_,i)=>{
+          const v=Array.isArray(r?.values)?r.values[i]:undefined;
+          return '<td>'+esc(String(v??'').trim()!==''?String(v):'-')+'</td>';
+        }).join('')+
+        '<td>'+(r?'जमा':'प्रलंबित')+'</td></tr>';
+    }).join('');
+
+    /* TOTAL: numbers only — no column names/head labels. */
+    const totalRow='<tr style="font-weight:800;background:#eef8ff">'+
+      '<td>TOTAL ('+bs.length+' शाखा)</td>'+
+      gs.map(g=>{
+        const n=filled19(all,bs,d,g);
+        return '<td colspan="'+g.count+'">'+n+'</td>';
+      }).join('')+
+      '<td>'+submitted+'</td></tr>';
+
+    box.innerHTML=
+      '<div class="bar"><div><h3>एकत्रित माहिती</h3>'+
+      '<span class="muted">तारीख: '+esc(d)+' | '+esc(q.title||'')+'</span></div>'+
+      '<button type="button" class="btn out" id="closeReport19">बंद करा</button></div>'+
+      '<div class="warning"><b>'+esc(q.title||'')+'</b><br>'+
+      '<span style="white-space:pre-wrap">'+esc(q.letter||'')+'</span>'+
+      '<div style="margin-top:6px">माहिती भरलेल्या शाखा: '+submitted+' / '+bs.length+'</div></div>'+
+      '<div class="tablebox"><table><thead>'+head+'</thead><tbody>'+
+      body+totalRow+
+      '</tbody></table></div>';
+
+    box.classList.remove('hidden');
+    const close=document.getElementById('closeReport19');
+    if(close)close.onclick=()=>box.classList.add('hidden');
+    box.scrollIntoView({behavior:'smooth',block:'start'});
+  };
+
+  window.renderAdminReport=function(d){renderMainOnlyReport19(d,'adminReport');};
+  window.openAdminReport14=function(d){renderMainOnlyReport19(d,'adminReport');};
+  window.renderBranchwiseAggregateReport=function(d,targetId){renderMainOnlyReport19(d,targetId||'adminReport');};
+
+  document.addEventListener('click',function(e){
+    const b=e.target.closest&&e.target.closest('[data-report]');
+    if(!b)return;
+    const d=b.getAttribute('data-report');
+    if(!d)return;
+    e.preventDefault();e.stopImmediatePropagation();
+    renderMainOnlyReport19(d,'adminReport');
+  },true);
+})();
+</script>
+
+
+<script>
+/* V20: Both Admin Edit buttons go to the Admin "माहिती मागणी" editor.
+   The Report card also gets an Edit button so its Main/Sub-column request
+   can be edited directly. Branch-entered report values are not changed
+   by this Edit action. */
+(function(){
+  function openRequestEditor20(d){
+    const dateEl=document.getElementById('reqDate');
+    if(dateEl) dateEl.value=d;
+    if(typeof window.loadRequestEditor==='function') window.loadRequestEditor();
+    const area=document.getElementById('adminArea');
+    if(area) area.scrollIntoView({behavior:'smooth',block:'start'});
+  }
+
+  /* Daily list Edit button: force the intended Admin request editor. */
+  document.addEventListener('click',function(e){
+    const b=e.target.closest&&e.target.closest('.admin-edit');
+    if(!b)return;
+    const d=b.getAttribute('data-date');
+    if(!d)return;
+    e.preventDefault();
+    e.stopImmediatePropagation();
+    openRequestEditor20(d);
+  },true);
+
+  /* Put an Edit button into the currently displayed aggregate report. */
+  const oldRender=window.renderMainOnlyReport19;
+  if(typeof oldRender==='function'){
+    window.renderMainOnlyReport19=function(d,targetId){
+      oldRender(d,targetId);
+      setTimeout(function(){
+        const box=document.getElementById(targetId||'adminReport');
+        if(!box)return;
+        const bar=box.querySelector('.bar');
+        if(!bar)return;
+        let edit=bar.querySelector('#reportRequestEdit20');
+        if(!edit){
+          edit=document.createElement('button');
+          edit.type='button';
+          edit.id='reportRequestEdit20';
+          edit.className='btn';
+          edit.textContent='Edit';
+          const close=bar.querySelector('#closeReport19');
+          if(close) close.parentNode.insertBefore(edit,close);
+          else bar.appendChild(edit);
+        }
+        edit.onclick=function(){
+          openRequestEditor20(d);
+        };
+      },0);
+    };
+  }
+
+  /* V19's final function is already installed; wrap it so the Edit button
+     is added after every report render. */
+  const oldFinal=window.renderAdminReport;
+  window.renderAdminReport=function(d){
+    if(typeof oldFinal==='function') oldFinal(d);
+    setTimeout(function(){
+      const box=document.getElementById('adminReport');
+      if(!box)return;
+      const bar=box.querySelector('.bar');
+      if(!bar)return;
+      let edit=bar.querySelector('#reportRequestEdit20');
+      if(!edit){
+        edit=document.createElement('button');
+        edit.type='button';
+        edit.id='reportRequestEdit20';
+        edit.className='btn';
+        edit.textContent='Edit';
+        const close=bar.querySelector('#closeReport19');
+        if(close) close.parentNode.insertBefore(edit,close);
+        else bar.appendChild(edit);
+      }
+      edit.onclick=function(){openRequestEditor20(d);};
+    },20);
+  };
+})();
+</script>
+
+
+<style>
+#adminReport .report-correct-input{
+  width:100%;
+  min-width:90px;
+  box-sizing:border-box;
+  padding:8px;
+  border:1px solid #9fb9c2;
+  border-radius:6px;
+  font-size:14px;
+}
+#adminReport .branch-save-btn{
+  white-space:nowrap;
+  padding:7px 10px;
+  font-size:12px;
+}
+#adminReport .edit-note{
+  margin:8px 0;
+  padding:8px 10px;
+  background:#fff7dc;
+  border-radius:6px;
+}
+</style>
+<script>
+/* V21:
+   Admin report Edit is now for CORRECTING BRANCH-SUBMITTED DATA.
+   The Admin "माहिती मागणी" Edit remains available from the Daily Information
+   Edit button. The Report Edit button opens branch correction mode.
+*/
+(function(){
+  const $=id=>document.getElementById(id);
+
+  function getReq21(d){
+    try{
+      const a=JSON.parse(localStorage.getItem('JDCC_SIMPLE_REQUESTS_V1')||'[]');
+      return Array.isArray(a)?a.find(x=>String(x.date)===String(d))||null:null;
+    }catch(e){return null}
+  }
+  function getData21(){
+    try{return JSON.parse(localStorage.getItem('JDCC_SIMPLE_BRANCH_DATA_V1')||'{}')||{}}
+    catch(e){return {}}
+  }
+  function saveData21(x){localStorage.setItem('JDCC_SIMPLE_BRANCH_DATA_V1',JSON.stringify(x));}
+  function esc21(x){
+    return typeof esc==='function'?esc(String(x??'')):String(x??'')
+      .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+      .replace(/"/g,'&quot;');
+  }
+
+  window.editAggregateReportData=function(d){
+    if(!(typeof loggedIn!=='undefined' && loggedIn && role==='admin')){
+      alert('दुरुस्ती करण्यासाठी Admin Login आवश्यक आहे.');
+      return;
+    }
+    renderCorrection21(d);
+  };
+
+  function renderCorrection21(d){
+    const box=$('adminReport'),q=getReq21(d);
+    if(!box||!q)return;
+
+    const all=getData21();
+    const branches=Array.isArray(window.BRANCHES)?window.BRANCHES:[];
+    const fields=Array.isArray(q.fields)?q.fields:[];
+    const rows=branches.map(b=>({b,r:all?.[b]?.[d]||null}));
+
+    const body=rows.map((x,ri)=>{
+      const vals=Array.isArray(x.r?.values)?x.r.values:[];
+      return '<tr>'+
+        '<td><b>'+esc21(x.b)+'</b></td>'+
+        fields.map((f,i)=>
+          '<td><input class="report-correct-input" data-r="'+ri+'" data-i="'+i+'" '+
+          'value="'+esc21(vals[i]??'')+'" placeholder="माहिती भरा"></td>'
+        ).join('')+
+        '<td><button type="button" class="btn branch-save-btn" data-save-row="'+ri+'">जतन करा</button></td>'+
+      '</tr>';
+    }).join('');
+
+    box.innerHTML=
+      '<div class="bar"><div><h3>एकत्रित माहिती — दुरुस्ती</h3>'+
+      '<span class="muted">तारीख: '+esc21(d)+' | '+esc21(q.title||'')+
+      '</span></div>'+
+      '<button type="button" class="btn out" id="backReport21">Report</button></div>'+
+      '<div class="edit-note">⚠️ चुकीची शाखेची माहिती दुरुस्त करा. प्रत्येक शाखेच्या ओळीत बदल करून <b>जतन करा</b> दाबा.</div>'+
+      '<div class="tablebox"><table><thead><tr><th>शाखा</th>'+
+      fields.map(f=>'<th>'+esc21(f)+'</th>').join('')+
+      '<th>Action</th></tr></thead><tbody>'+body+'</tbody></table></div>';
+
+    box.classList.remove('hidden');
+
+    box.querySelectorAll('[data-save-row]').forEach(btn=>{
+      btn.onclick=function(){
+        const ri=Number(this.getAttribute('data-save-row'));
+        const branch=branches[ri];
+        if(!branch)return;
+        const data=getData21();
+        if(!data[branch])data[branch]={};
+        if(!data[branch][d])data[branch][d]={};
+        const vals=[];
+        fields.forEach((f,i)=>{
+          const inp=box.querySelector('[data-r="'+ri+'"][data-i="'+i+'"]');
+          vals[i]=inp?inp.value:'';
+        });
+        data[branch][d].values=vals;
+        data[branch][d].updatedAt=new Date().toISOString();
+        saveData21(data);
+        alert(branch+' ची माहिती दुरुस्त होऊन जतन झाली.');
+        renderCorrection21(d);
+      };
+    });
+
+    const back=$('backReport21');
+    if(back)back.onclick=function(){
+      if(typeof window.renderAdmin17BranchReport==='function')window.renderAdmin17BranchReport(d);
+      else if(typeof window.renderAdminReport==='function')window.renderAdminReport(d);
+    };
+    box.scrollIntoView({behavior:'smooth',block:'start'});
+  }
+
+  /* Make the existing Report Edit button open correction mode. */
+  const old17=window.renderAdmin17BranchReport;
+  if(typeof old17==='function'){
+    window.renderAdmin17BranchReport=function(d){
+      old17(d);
+      setTimeout(function(){
+        const b=$('adminReport')?.querySelector('#adminBottomEdit');
+        if(b)b.onclick=function(){editAggregateReportData(d);};
+        const b2=$('adminReport')?.querySelector('#bottomReportEdit');
+        if(b2)b2.onclick=function(){editAggregateReportData(d);};
+        const b3=$('adminReport')?.querySelector('#reportRequestEdit20');
+        if(b3)b3.onclick=function(){editAggregateReportData(d);};
+      },20);
+    };
+  }
+
+  /* Also intercept the report Edit button created by V20 if it is present. */
+  document.addEventListener('click',function(e){
+    const b=e.target.closest&&e.target.closest('#reportRequestEdit20,#adminBottomEdit,#bottomReportEdit,#aggregateEditButton');
+    if(!b)return;
+    const box=$('adminReport');
+    const txt=box?.querySelector('.muted')?.textContent||'';
+    const m=txt.match(/तारीख:\s*([0-9]{4}-[0-9]{2}-[0-9]{2})/);
+    const d=m?m[1]:$('reqDate')?.value;
+    if(d){
+      e.preventDefault();e.stopImmediatePropagation();
+      editAggregateReportData(d);
+    }
+  },true);
+})();
+</script>
+
+
+<style>
+/* V22: Remove the Admin Edit buttons from the Daily Information date list.
+   Report Edit remains available for correcting branch-submitted information. */
+.daily-info .admin-edit,
+#dailyInfo .admin-edit,
+button.admin-edit,
+a.admin-edit,
+[data-admin-edit],
+.admin-edit-btn {
+  display:none !important;
+}
+</style>
+<script>
+(function(){
+  function hideDailyEdits22(){
+    document.querySelectorAll(
+      '.daily-info .admin-edit,#dailyInfo .admin-edit,'+
+      'button.admin-edit,a.admin-edit,[data-admin-edit],.admin-edit-btn'
+    ).forEach(function(el){ el.style.display='none'; });
+  }
+  hideDailyEdits22();
+  new MutationObserver(hideDailyEdits22).observe(document.body,{childList:true,subtree:true});
+})();
+</script>
+
+
+<script>
+/* V23:
+   Replace the Admin Edit buttons in the Daily Information list with
+   "Report Edit". Clicking it opens the report for that date and then
+   the Report Edit mode is available for correcting branch data.
+*/
+(function(){
+  function reportEdit23(d){
+    if(typeof window.renderAdminReport==='function'){
+      window.renderAdminReport(d);
+      setTimeout(function(){
+        const b=document.querySelector('#adminReport #reportRequestEdit20,#adminReport #adminBottomEdit,#adminReport #bottomReportEdit,#adminReport #aggregateEditButton');
+        if(b) b.click();
+        else if(typeof window.editAggregateReportData==='function') window.editAggregateReportData(d);
+      },80);
+    } else if(typeof window.editAggregateReportData==='function'){
+      window.editAggregateReportData(d);
+    }
+  }
+
+  function convert23(){
+    document.querySelectorAll('.admin-edit,button.admin-edit,a.admin-edit,[data-admin-edit],.admin-edit-btn').forEach(function(el){
+      el.style.display='';
+      el.textContent='Report Edit';
+      el.setAttribute('title','Report मधील शाखेची माहिती दुरुस्त करा');
+      const old=el.cloneNode(true);
+      el.parentNode.replaceChild(old,el);
+      old.classList.remove('admin-edit','admin-edit-btn');
+      old.removeAttribute('data-admin-edit');
+      old.onclick=function(e){
+        e.preventDefault();
+        e.stopImmediatePropagation();
+        const d=old.getAttribute('data-date') || old.closest('tr')?.querySelector('td')?.textContent?.trim();
+        if(d) reportEdit23(d.replace(/\s+/g,''));
+      };
+    });
+  }
+
+  convert23();
+  new MutationObserver(convert23).observe(document.body,{childList:true,subtree:true});
+})();
+</script>
+
+
+
+<style>
+.report-download-bar{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0;}
+.report-download-bar .btn{font-size:14px;padding:9px 13px;}
+@media print{#reportDownloadBar29{display:none!important;}}
+</style>
+<script>
+/* V29: Export/Print only the currently opened "एकत्रित माहिती" report. */
+(function(){
+  function getReport29(){
+    const box=document.getElementById('adminReport');
+    return (box && !box.classList.contains('hidden')) ? box : null;
+  }
+  function cleanClone29(){
+    const box=getReport29();
+    if(!box){alert('कृपया आधी एकत्रित Report उघडा.');return null;}
+    const clone=box.cloneNode(true);
+    clone.querySelectorAll('#reportDownloadBar29,button,.btn').forEach(el=>el.remove());
+    return clone;
+  }
+  function excel29(){
+    const clone=cleanClone29();
+    if(!clone)return;
+    const table=clone.querySelector('table');
+    if(!table){alert('एकत्रित Report ची माहिती उपलब्ध नाही.');return;}
+    const rows=[...table.querySelectorAll('tr')].map(tr=>
+      [...tr.querySelectorAll('th,td')].map(td=>{
+        const v=String(td.innerText||'').replace(/\r?\n|\r/g,' ').trim();
+        return '"'+v.replace(/"/g,'""')+'"';
+      }).join(',')
+    );
+    const blob=new Blob(['\uFEFF'+rows.join('\r\n')],{type:'text/csv;charset=utf-8;'});
+    const url=URL.createObjectURL(blob);
+    const a=document.createElement('a');
+    const date=(clone.textContent.match(/\d{4}-\d{2}-\d{2}/)||['report'])[0];
+    a.href=url;a.download='JDCC_Ekatrik_Report_'+date+'.csv';
+    document.body.appendChild(a);a.click();a.remove();
+    setTimeout(()=>URL.revokeObjectURL(url),1000);
+  }
+  function isolatedPrint29(size){
+    const clone=cleanClone29();
+    if(!clone)return;
+    const w=window.open('','_blank');
+    if(!w){alert('Print window उघडता आली नाही.');return;}
+    const css=`
+      @page{size:${size};margin:10mm;}
+      html,body{margin:0!important;padding:0!important;background:#fff!important;}
+      body{font-family:Arial,"Noto Sans Devanagari",sans-serif;color:#173d50;}
+      .hidden{display:none!important;}
+      .tablebox{width:100%!important;overflow:visible!important;}
+      table{width:100%!important;border-collapse:collapse!important;table-layout:auto!important;font-size:10pt;}
+      th,td{border:1px solid #999!important;padding:5px!important;vertical-align:top;text-align:left;}
+      th{font-weight:700;}
+    `;
+    w.document.open();
+    w.document.write('<!doctype html><html><head><meta charset="utf-8"><title>एकत्रित माहिती Report</title><style>'+css+'</style></head><body>'+clone.outerHTML+'</body></html>');
+    w.document.close();
+    w.focus();
+    setTimeout(()=>w.print(),400);
+  }
+  function addButtons29(){
+    const box=getReport29();
+    if(!box)return;
+    if(box.querySelector('#reportDownloadBar29'))return;
+    const bar=document.createElement('div');
+    bar.id='reportDownloadBar29';
+    bar.className='report-download-bar';
+    bar.innerHTML='<button type="button" class="btn" id="reportExcel29">Excel Download</button>'+
+      '<button type="button" class="btn" id="reportA429">A4 Print</button>'+ 
+      '<button type="button" class="btn" id="reportA329">A3 Print</button>';
+    const table=box.querySelector('.tablebox');
+    if(table)table.parentNode.insertBefore(bar,table); else box.appendChild(bar);
+    document.getElementById('reportExcel29').onclick=excel29;
+    document.getElementById('reportA429').onclick=()=>isolatedPrint29('A4 portrait');
+    document.getElementById('reportA329').onclick=()=>isolatedPrint29('A3 landscape');
+  }
+  new MutationObserver(addButtons29).observe(document.body,{childList:true,subtree:true});
+  addButtons29();
+})();
+</script>
+
+
+<style id="v31-admin-login-clean">
+/* Admin login screen: remove the "शाखा लॉगिन" tab above Admin लॉगिन. */
+#loginBox.admin-only #branchTab{display:none!important}
+#loginBox.admin-only .tabs{justify-content:flex-start}
+</style>
+<script>
+(function(){
+  function applyAdminTabFix31(){
+    const box=document.getElementById('loginBox');
+    const admin=document.getElementById('adminTab');
+    const branch=document.getElementById('branchTab');
+    if(!box||!admin||!branch)return;
+    const isAdmin=admin.classList.contains('on') || (window.loginMode==='admin');
+    box.classList.toggle('admin-only',isAdmin);
+    branch.style.display=isAdmin?'none':'';
+  }
+  const oldShowLogin=window.showLogin;
+  if(typeof oldShowLogin==='function'){
+    window.showLogin=function(which){
+      const r=oldShowLogin.apply(this,arguments);
+      window.loginMode=which;
+      setTimeout(applyAdminTabFix31,0);
+      return r;
+    };
+  }
+  document.addEventListener('click',function(e){
+    if(e.target && e.target.id==='adminTab'){
+      setTimeout(()=>{window.loginMode='admin';applyAdminTabFix31();},0);
+    }
+    if(e.target && e.target.id==='branchTab'){
+      setTimeout(()=>{window.loginMode='branch';applyAdminTabFix31();},0);
+    }
+  },true);
+  new MutationObserver(applyAdminTabFix31).observe(document.body,{subtree:true,childList:true,attributes:true,attributeFilter:['class']});
+  applyAdminTabFix31();
+})();
+</script>
+
+</body></html>
