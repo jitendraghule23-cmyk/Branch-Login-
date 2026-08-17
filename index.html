@@ -8,6 +8,23 @@
 .home-row:hover,.admin-date-row:hover{background:#eef8ff}
 #homeReport,#adminReport{margin-top:18px}
 </style>
+  <style>
+.hero{
+  background:linear-gradient(135deg,#075b83,#008fb5);
+  color:#fff;
+  padding:55px 25px;
+  margin:0;
+}
+.hero h1{
+  font-size:42px;
+  margin:0 0 15px;
+  font-weight:700;
+}
+.hero p{
+  font-size:22px;
+  margin:0;
+}
+</style>
 
 <style>
 .column-builder{border:1px solid #d5e4e7;border-radius:7px;padding:12px;background:#f8fbfb}
@@ -55,12 +72,26 @@
 </header>
 <main class="wrap screen">
   <section id="homePage">
+
+  <div class="hero">
+    <div class="wrap">
+      <h1>शाखा माहिती संकलन</h1>
+      <p>शाखांची माहिती एकाच ठिकाणी जमा व एकत्रीकरणासाठी डेमो प्रणाली.</p>
+    </div>
+  </div>
+
+  <div class="wrap">
     <div class="bar">
-      <div><h3>मुख्यपृष्ठ</h3><span class="muted">बँकेची रोजची माहिती — तारीख व शीर्षकानुसार</span></div>
-      <
+      <h3>मुख्यपृष्ठ — दिनांकवार माहिती</h3>
+      <span class="muted">दररोजची माहिती फक्त तारीख व माहितीच्या शीर्षकानुसार येथे दिसेल.</span>
+    </div>
+
     <section id="homeDaily" class="panel"></section>
+
     <section id="homeReport" class="panel hidden"></section>
-  </section>
+  </div>
+
+</section>
 
   <section id="loginBox" class="login hidden">
     <div class="tabs">
