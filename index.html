@@ -12,7 +12,7 @@
 .hero{
   background:linear-gradient(135deg,#075b83,#008fb5);
   color:#fff;
-  padding:55px 25px;
+  padding:0;
   margin:0;
 }
 .hero h1{
@@ -263,7 +263,7 @@ function logout(){loggedIn=false;role='';activeBranch='';selectedDate='';showHom
 function renderHome(){
   const a=requests().sort((x,y)=>String(y.date).localeCompare(String(x.date)));
   $('homeDaily').innerHTML='<div class="bar"><div><h3>दैनिक माहिती</h3><span class="muted">तारीख व माहितीचे शीर्षक</span></div></div>'+
-    (a.length?'<div class="tablebox"><table><thead><tr><th>तारीख</th><th>माहितीचे शीर्षक</th></tr></thead><tbody>'+
+    (true?'<div class="tablebox"><table><thead><tr><th>तारीख</th><th>माहितीचे शीर्षक</th></tr></thead><tbody>'+
     a.map(x=>'<tr class="home-row" data-date="'+esc(x.date)+'"><td>'+esc(x.date)+'</td><td>'+esc(x.title)+'</td></tr>').join('')+
     '</tbody></table></div>':'<p class="hint">Admin ने अजून तारीखवार माहिती जतन केलेली नाही.</p>');
   $('homeDaily').querySelectorAll('.home-row').forEach(r=>r.onclick=()=>showHomeReport(r.dataset.date));
