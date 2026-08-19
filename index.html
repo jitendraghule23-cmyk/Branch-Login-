@@ -101,7 +101,7 @@ body.print-a3 { page: printA3; }
   <div class="wrap">
     <div class="brand">
       <div class="logo-box">
-        <!-- तुमचा बँकींग लोगो -->
+        <!-- बँक लोगो -->
         <img src="logo.jpg" alt="JDCC Bank Logo" onerror="this.onerror=null; this.src='https://via.placeholder.com/70?text=JDCC';">
       </div>
       <div>
@@ -584,9 +584,9 @@ function renderConsolidatedReport(){
       html += '</tr>';
     }
 
-    // BRANCH SUBTOTAL ROW
+    // SUBTOTAL ROW - WITH COLSPAN=3
     html += '<tr style="background:#e6f3f3; font-weight:700; border-bottom:2px solid var(--navy);">' +
-      '<td style="border:1px solid #c7dadd; color:var(--navy); padding:6px 10px;">' + esc(bName) + ' एकूण (Subtotal)</td>';
+      '<td colspan="3" style="border:1px solid #c7dadd; color:var(--navy); padding:6px 10px; text-align:right;">' + esc(bName) + ' एकूण (Subtotal)</td>';
 
     req.columns.forEach(function(col, cIdx){
       if(isNumericCol[cIdx] && branchSubtotals[cIdx] > 0){
@@ -598,7 +598,7 @@ function renderConsolidatedReport(){
     html += '</tr>';
   });
 
-  // GRAND TOTAL ROW
+  // GRAND TOTAL ROW - WITH COLSPAN=3
   html += '<tr style="background:var(--navy); color:#fff; font-weight:700; font-size:15px;">' +
     '<td colspan="3" style="text-align:right; padding:12px; border:1px solid #c7dadd;">सर्व १७ शाखांची एकत्रित एकूण (Grand Total):</td>';
 
