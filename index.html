@@ -50,7 +50,7 @@ th{background:#e6f3f3;color:#29556a;font-weight:600}
 .col-builder-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:15px;margin-top:10px}
 .col-card{border:1px solid #c7dadd;background:#f8fcff;padding:12px;border-radius:6px;box-shadow:0 2px 5px rgba(0,0,0,0.03)}
 .subcol-box{margin-top:10px;padding-left:10px;border-left:2px solid var(--teal)}
-.foot{text-align:center;background:#003b68;color:#dcecf1;padding:15px;margin-top:40px;font-size:13px}
+.foot{text-align:center;background:#003b68;color:#dcecf1;padding:15px;margin-top:40px;font-size:14px;font-weight:600}
 </style>
 </head>
 <body>
@@ -127,11 +127,13 @@ th{background:#e6f3f3;color:#29556a;font-weight:600}
         <div class="grid">
           <div><label>शाखा</label><input id="branchDisplay" readonly></div>
           <div><label>माहिती दिनांक *</label><input id="branchDate" type="date" required onchange="loadBranchForm()"></div>
-         
+          <div><label>शाखा व्यवस्थापक *</label><input id="manager" required></div>
+          <div><label>मोबाईल क्रमांक *</label><input id="phone" required></div>
+        </div>
 
         <div style="margin-top:20px; border-top: 1px solid var(--line); padding-top:15px;">
           <h4 style="margin:0 0 10px; color:var(--navy)">अतिरिक्त कॉलम माहिती</h4>
-          <div id="customBranchFields" class="tablebox"></div>
+          <div id="customBranchFields"></div>
         </div>
 
         <div style="margin-top:15px;">
@@ -150,6 +152,19 @@ th{background:#e6f3f3;color:#29556a;font-weight:600}
       <div><h3>विभागीय कार्यालय भुसावळ — Admin डॅशबोर्ड</h3></div>
       <button class="btn out sm" onclick="logout()">लॉगआउट</button>
     </div>
+
+    <!-- 17 Branches Consolidated Report Section -->
+    <section class="panel" style="border: 2px solid var(--teal);">
+      <h3 style="color:var(--navy);">📊 १७ शाखांचा एकत्रित रिपोर्ट (Consolidated Report)</h3>
+      <p class="hint">दिनांक निवडून भुसावळ तालुक्यातील सर्व १७ शाखांचा एकत्रित अहवाल व खालील एकूण (Total) पाहा.</p>
+      
+      <div style="display:flex; gap:15px; align-items:center; margin-bottom:15px;">
+        <div style="max-width:200px;"><label>अहवाल दिनांक:</label><input id="adminReportDate" type="date" onchange="renderAdminConsolidatedReport()"></div>
+        <button class="btn teal sm" style="margin-top:22px" onclick="window.print()">🖨️ रिपोर्ट प्रिंट करा</button>
+      </div>
+
+      <div id="adminConsolidatedReportContainer" class="tablebox"></div>
+    </section>
 
     <!-- Column Builder Panel -->
     <section class="panel">
@@ -186,11 +201,18 @@ th{background:#e6f3f3;color:#29556a;font-weight:600}
 
 </main>
 
-<footer class="foot">© 2026 दि. जळगाव जिल्हा मध्यवर्ती सहकारी बँक लि., जळगाव — भुसावळ शाखा प्रणाली</footer>
+<footer class="foot">© 2026 दि. जळगाव जिल्हा मध्यवर्ती सहकारी बँक लि., जळगाव — भुसावळ तालुका प्रणाली @ J S GHULE</footer>
 
 <script>
-const STORE_ENTRIES = 'JDCC_ENTRIES_V5';
-const STORE_REQUESTS = 'JDCC_REQUESTS_V5';
+const STORE_ENTRIES = 'JDCC_ENTRIES_V6';
+const STORE_REQUESTS = 'JDCC_REQUESTS_V6';
+
+const ALL_17_BRANCHES = [
+  'वरणगाव', 'पिंपळगाव खु.', 'शिंदी', 'भुसावळ', 'पिंपळगाव बु.',
+  'फेकरी', 'किन्ही', 'तळवेल', 'फुलगाव', 'कठोरा',
+  'कुऱ्हे पानाचे', 'साक्री', 'साकेगाव', 'सुनसगाव', 'वराडसीम',
+  'भुसावळ वि. कक्ष', 'न्यू एरिया भुसावळ'
+];
 
 let activeRole = 'branch';
 let activeBranch = '';
@@ -291,8 +313,10 @@ function logout(){
 // ADMIN BUILDER
 function initAdminPanel(){
   document.getElementById('reqDate').value = today();
+  document.getElementById('adminReportDate').value = today();
   loadAdminRequestForDate();
   renderAdminHistory();
+  renderAdminConsolidatedReport();
 }
 
 function loadAdminRequestForDate(){
@@ -306,7 +330,7 @@ function loadAdminRequestForDate(){
     document.getElementById('reqTitle').value = 'माहिती मागणी';
     document.getElementById('reqLetter').value = '';
     builderColumns = [
-      { title: 'संस्था', subColumns: ['संस्था नाव', 'खाते क्र'] },
+      { title: 'संस्था नाव', subColumns: ['खाते क्र'] },
       { title: 'करंट खाते बॅलन्स', subColumns: ['रक्कम', 'शेरा'] },
       { title: '२% मार्जिन खाती बॅलन्स', subColumns: ['रक्कम', 'विवरण'] }
     ];
@@ -384,12 +408,11 @@ function saveAdminRequest(){
   const d = document.getElementById('reqDate').value;
   if(!d){ alert('दिनांक निवडा'); return; }
 
-  // नाव लिहिलेले नसेल तरी सर्व Sub-columns सेव्ह करा (डिफॉल्ट नाव देऊन)
   const cleanedColumns = builderColumns.map(col => {
     const mainTitle = (col.title || '').trim() || 'कॉलम';
     const subs = (col.subColumns || []).map((s, idx) => {
       const subName = (s || '').trim();
-      return subName !== '' ? subName : `भाग ${idx + 1}`; // नाव नसेल तर ऑटोमॅटिक भाग १, भाग २ नाव देईल
+      return subName !== '' ? subName : `भाग ${idx + 1}`;
     });
 
     return {
@@ -416,10 +439,121 @@ function saveAdminRequest(){
   else list.push(reqData);
 
   saveRequests(list);
-  alert('Admin कडून सर्व ५ च्या ५ Sub-columns यशस्विरित्या सेव्ह झाले आहेत!');
+  alert('Admin कडून सर्व Sub-columns यशस्विरित्या सेव्ह झाले आहेत!');
   renderAdminHistory();
+  renderAdminConsolidatedReport();
 }
 
+function renderAdminHistory(){
+  const list = getRequests().sort((a,b)=>b.date.localeCompare(a.date));
+  const box = document.getElementById('adminHistory');
+  if(!list.length){ box.innerHTML = '<p class="hint">अद्याप माहिती मागणी नाही.</p>'; return; }
+
+  box.innerHTML = `
+    <table>
+      <thead><tr><th>दिनांक</th><th>शीर्षक</th><th>कॉलम संख्या</th><th>कृती</th></tr></thead>
+      <tbody>
+        ${list.map(r => `
+          <tr>
+            <td>${esc(fmtDate(r.date))}</td>
+            <td>${esc(r.title)}</td>
+            <td>${(r.columns||[]).length}</td>
+            <td><button class="btn out sm" onclick="editRequest('${r.date}')">Edit / पाहा</button></td>
+          </tr>
+        `).join('')}
+      </tbody>
+    </table>`;
+}
+
+function editRequest(d){
+  document.getElementById('reqDate').value = d;
+  document.getElementById('adminReportDate').value = d;
+  loadAdminRequestForDate();
+  renderAdminConsolidatedReport();
+}
+
+// 17 BRANCHES CONSOLIDATED REPORT FOR ADMIN
+function renderAdminConsolidatedReport(){
+  const d = document.getElementById('adminReportDate').value || today();
+  const req = getRequestForDate(d);
+  const container = document.getElementById('adminConsolidatedReportContainer');
+
+  if(!req || !req.columns || req.columns.length === 0){
+    container.innerHTML = '<p class="hint">या निवडलेल्या तारखेसाठी कोणतीही माहिती मागणी उपलब्ध नाही.</p>';
+    return;
+  }
+
+  const allEntries = getEntries().filter(e => e.date === d);
+
+  let html = `<table style="width:100%; border-collapse:collapse; background:#fff"><thead>`;
+  let row1 = '<tr><th rowspan="2" style="background:#003b68; color:#fff; text-align:center; border:1px solid #c7dadd;">अ.क्र.</th><th rowspan="2" style="background:#003b68; color:#fff; border:1px solid #c7dadd;">शाखेचे नाव</th><th rowspan="2" style="background:#003b68; color:#fff; border:1px solid #c7dadd;">व्यवस्थापक</th>';
+  let row2 = '<tr>';
+  let hasSub = false;
+
+  let totalColumnsCount = 0;
+
+  req.columns.forEach(col => {
+    const subs = col.subColumns || [];
+    if(subs.length > 0){
+      hasSub = true;
+      row1 += `<th colspan="${subs.length}" style="text-align:center; background:#e6f3f3; color:#004a79; border:1px solid #c7dadd;">${esc(col.title)}</th>`;
+      subs.forEach(s => {
+        row2 += `<th style="text-align:center; background:#f0f8f8; font-size:12px; border:1px solid #c7dadd;">${esc(s)}</th>`;
+        totalColumnsCount++;
+      });
+    } else {
+      row1 += `<th rowspan="2" style="text-align:center; background:#e6f3f3; color:#004a79; border:1px solid #c7dadd; vertical-align:middle;">${esc(col.title)}</th>`;
+      totalColumnsCount++;
+    }
+  });
+
+  row1 += '</tr>';
+  row2 += '</tr>';
+
+  html += row1;
+  if(hasSub) html += row2;
+  html += `</thead><tbody>`;
+
+  // Array to store totals for numeric values
+  let columnTotals = new Array(totalColumnsCount).fill(0);
+  let columnHasNumber = new Array(totalColumnsCount).fill(false);
+
+  ALL_17_BRANCHES.forEach((bName, index) => {
+    const bEntry = allEntries.find(e => e.branch === bName);
+    html += `<tr>
+      <td style="text-align:center; border:1px solid #c7dadd; font-weight:600;">${index + 1}</td>
+      <td style="border:1px solid #c7dadd; font-weight:600; color:var(--navy);">${esc(bName)}</td>
+      <td style="border:1px solid #c7dadd;">${esc(bEntry ? bEntry.manager : '-')}</td>`;
+
+    for(let c = 0; c < totalColumnsCount; c++){
+      const val = bEntry && bEntry.custom && bEntry.custom[c] !== undefined ? bEntry.custom[c] : '-';
+      html += `<td style="border:1px solid #c7dadd; text-align:center;">${esc(val)}</td>`;
+
+      if(val !== '-' && !isNaN(parseFloat(val))){
+        columnTotals[c] += parseFloat(val);
+        columnHasNumber[c] = true;
+      }
+    }
+    html += `</tr>`;
+  });
+
+  // Add Total Row at the bottom
+  html += `<tr style="background:#e8f4f8; font-weight:bold; font-size:15px; color:var(--navy);">
+    <td colspan="3" style="text-align:right; padding:10px; border:1px solid #c7dadd;">एकूण (TOTAL):</td>`;
+
+  for(let c = 0; c < totalColumnsCount; c++){
+    if(columnHasNumber[c]){
+      html += `<td style="text-align:center; border:1px solid #c7dadd; color:#000; font-size:16px;">${columnTotals[c]}</td>`;
+    } else {
+      html += `<td style="text-align:center; border:1px solid #c7dadd;">-</td>`;
+    }
+  }
+
+  html += `</tr></tbody></table>`;
+  container.innerHTML = html;
+}
+
+// BRANCH LOGIC (VERTICAL CARDS FOR EASY INPUT)
 function loadBranchForm(){
   const d = document.getElementById('branchDate').value || today();
   const req = getRequestForDate(d);
@@ -436,7 +570,6 @@ function loadBranchForm(){
   const existing = getEntries().find(e => e.branch === activeBranch && e.date === d);
   let valIdx = 0;
 
-  // Admin सारखे एका खाली एक ग्रिड कार्ड्स (Vertical Cards) तयार करणे
   let cardsHtml = `<div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap:15px; margin-top:10px;">`;
 
   req.columns.forEach(col => {
@@ -480,6 +613,60 @@ function loadBranchForm(){
     if(document.getElementById('remarks')) document.getElementById('remarks').value = existing.remarks || '';
   }
 }
+
+function saveBranchEntry(e){
+  e.preventDefault();
+  const d = document.getElementById('branchDate').value;
+  const req = getRequestForDate(d);
+  
+  let customVals = [];
+  let idx = 0;
+  while(document.getElementById('branch_input_' + idx)){
+    customVals.push(document.getElementById('branch_input_' + idx).value);
+    idx++;
+  }
+
+  const entry = {
+    branch: activeBranch,
+    date: d,
+    manager: document.getElementById('manager').value,
+    phone: document.getElementById('phone').value,
+    remarks: document.getElementById('remarks').value,
+    title: req ? req.title : 'माहिती नोंदणी',
+    custom: customVals
+  };
+
+  const entries = getEntries();
+  const i = entries.findIndex(x => x.branch === activeBranch && x.date === d);
+  if(i >= 0) entries[i] = entry; else entries.push(entry);
+
+  saveEntries(entries);
+  alert('माहिती यशस्विरित्या जतन झाली!');
+  showPage('home');
+}
+
+// HOME DISPLAY
+function renderHome(){
+  const entries = getEntries();
+  const requests = getRequests();
+  const dates = new Map();
+
+  requests.forEach(r => dates.set(r.date, r.title));
+  entries.forEach(e => dates.set(e.date, e.title));
+
+  const list = Array.from(dates.entries()).sort((a,b) => b[0].localeCompare(a[0]));
+  const tbody = document.getElementById('homeRows');
+  
+  if(!list.length){ tbody.innerHTML = '<tr><td colspan="2" class="hint">कोणतीही माहिती उपलब्ध नाही.</td></tr>'; return; }
+
+  tbody.innerHTML = list.map(([d, title]) => `
+    <tr>
+      <td>${esc(fmtDate(d))}</td>
+      <td><button class="btn out sm" onclick="showHomeDetails('${d}', '${esc(title)}')">${esc(title)}</button></td>
+    </tr>
+  `).join('');
+}
+
 function showHomeDetails(d, title){
   const req = getRequestForDate(d);
   const entries = getEntries().filter(e => e.date === d);
