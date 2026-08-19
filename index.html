@@ -204,24 +204,33 @@ function renderColumnBuilder(){
     return;
   }
 
+  // मुख्य कॉलम समोरासमोर (Grid/Flex) दिसण्यासाठी कंटेनरला स्टाइल लावणे
+  container.style.display = 'grid';
+  container.style.gridTemplateColumns = 'repeat(auto-fit, minmax(280px, 1fr))';
+  container.style.gap = '15px';
+
   currentBuilderColumns.forEach((col, cIndex) => {
     let subHtml = '';
     (col.subColumns || []).forEach((sub, sIndex) => {
       subHtml += `
-        <div style="display:flex; gap:10px; margin-top:6px; align-items:center;">
+        <div style="display:flex; gap:6px; margin-top:8px; align-items:center;">
           <input type="text" value="${esc(sub)}" placeholder="Sub-Column चे नाव" oninput="updateSubCol(${cIndex}, ${sIndex}, this.value)">
           <button type="button" class="btn out sm" style="color:red;border-color:red;padding:4px 8px;" onclick="removeSubCol(${cIndex}, ${sIndex})">X</button>
         </div>`;
     });
 
     container.insertAdjacentHTML('beforeend', `
-      <div class="col-card">
-        <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
-          <input type="text" style="font-weight:600; flex:1; min-width:200px;" value="${esc(col.title)}" placeholder="मुख्य कॉलमचे नाव (उदा. चालू ठेव)" oninput="updateMainCol(${cIndex}, this.value)">
-          <button type="button" class="btn teal sm" onclick="addSubColBuilder(${cIndex})">+ Sub-column जोडा</button>
-          <button type="button" class="btn out sm" style="color:red;border-color:red;" onclick="removeMainCol(${cIndex})">कॉलम काढा</button>
+      <div class="col-card" style="margin-bottom:0;">
+        <div style="display:flex; flex-direction:column; gap:8px;">
+          <input type="text" style="font-weight:600; width:100%;" value="${esc(col.title)}" placeholder="मुख्य कॉलमचे नाव" oninput="updateMainCol(${cIndex}, this.value)">
+          
+          <div style="display:flex; gap:6px;">
+            <button type="button" class="btn teal sm" style="flex:1;" onclick="addSubColBuilder(${cIndex})">+ Sub-column</button>
+            <button type="button" class="btn out sm" style="color:red;border-color:red;" onclick="removeMainCol(${cIndex})">काढा</button>
+          </div>
         </div>
-        <div class="subcol-box">
+        
+        <div class="subcol-box" style="margin-left:10px; padding-left:8px; margin-top:10px; border-left:2px solid var(--teal);">
           ${subHtml}
         </div>
       </div>
