@@ -1,82 +1,146 @@
 <!DOCTYPE html>
-<html lang="mr"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>JDCC भुसावळ — शाखा माहिती प्रणाली</title><style>
+<html lang="mr">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>JDCC भुसावळ — शाखा माहिती प्रणाली</title>
+<style>
 @import url('https://fonts.googleapis.com/css2?family=Hind:wght@400;500;600;700&family=Poppins:wght@500;600;700&display=swap');
-:root{--navy:#004a79;--teal:#009a9c;--gold:#b9975b;--pale:#f2f8f8;--ink:#173c52;--line:#d5e4e7}*{box-sizing:border-box}body{margin:0;background:var(--pale);font-family:Hind,Arial,sans-serif;color:#304b5b}.top{background:#003b68;color:white;font-size:13px;padding:9px 0}.wrap{width:min(1080px,92%);margin:auto}.top .wrap{display:flex;justify-content:space-between}header{background:white}.brand{min-height:105px;display:flex;align-items:center;gap:16px}.logo{width:105px;height:105px;object-fit:contain;border-radius:8px}.brand h1{margin:0;color:var(--navy);font:700 20px Poppins,sans-serif}.brand p{margin:3px 0;color:#71818b}.pill{margin-left:auto;background:#e5f5f3;color:#08746f;border-left:4px solid var(--teal);padding:9px 13px;font-weight:600}.hero{background:linear-gradient(110deg,#004a79e8,#008e9bd9),url('https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=1400&q=75') center/cover;color:#fff;padding:42px 0}.hero h2{font-size:34px;margin:0}.hero p{font-size:18px;margin:7px 0 0}.screen{margin:27px auto}.login{max-width:560px;margin:0 auto;background:#fff;padding:29px;border-radius:9px;box-shadow:0 7px 25px #123d521b}.login h3,.panel h3{margin:0;color:var(--ink);font-size:25px}.hint{margin:5px 0 199px;color:#6c7e87}.tabs{display:flex;margin-bottom:20px;border-bottom:1px solid var(--line)}.tabs button{border:0;background:none;padding:11px 16px;color:#4f6877;font:600 15px Hind;cursor:pointer}.tabs button.on{color:var(--navy);border-bottom:3px solid var(--teal)}label{display:block;font-weight:600;margin:12px 0 5px}input,select,textarea{width:100%;border:1px solid #c7dadd;border-radius:5px;padding:11px;font:16px Hind;color:#294452}textarea{min-height:75px;resize:vertical}button{cursor:pointer}.btn{border:0;border-radius:5px;padding:11px 19px;color:#fff;background:var(--navy);font:600 14px Poppins}.btn.teal{background:var(--teal)}.btn.out{color:var(--navy);background:#fff;border:1px solid var(--navy)}.warning{font-size:13px;background:#fff9e9;border-left:4px solid var(--gold);padding:10px;margin-top:18px;color:#705625}.hidden{display:none!important}.bar{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:17px;margin-bottom:22px}.stat,.panel{background:#fff;border-radius:8px;box-shadow:0 5px 19px #16425513;border:1px solid #dfebec}.stat{padding:17px}.stat b{color:var(--teal);font:700 24px Poppins;display:block}.panel{padding:25px;margin-bottom:20px}.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:15px}.full{grid-column:1/-1}.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px}.tablebox{overflow:auto}table{width:100%;border-collapse:collapse}th{text-align:left;padding:10px;background:#e6f3f3;color:#29556a}td{padding:10px;border-bottom:1px solid var(--line)}.muted{color:#758993}.foot{text-align:center;background:#003b68;color:#dcecf1;padding:17px;margin-top:40px;font-size:13px}@media print{body{background:#fff}.top,header,.hero,.login,.foot,.bar .actions,.btn{display:none!important}.screen,.wrap{width:100%;margin:0}.panel{border:0;box-shadow:none;padding:0}.stats{margin:0 0 12px}.stat{box-shadow:none;border:1px solid #bbb;padding:8px}.tablebox{overflow:visible}table{font-size:10pt}th,td{padding:6px;border:1px solid #aaa}.print-title{display:block!important}}@media(max-width:650px){.brand h1{font-size:16px}.pill{display:none}.logo{width:61px}.hero h2{font-size:28px}.stats,.grid{grid-template-columns:1fr}.panel,.login{padding:19px}.top .wrap{font-size:11px}}
-.logo{background:#fff}.logo{object-position:center}.main-nav .btn{min-width:0}.btn.active-nav{background:#0b66d4!important;color:#fff!important;border-color:#0b66d4!important;box-shadow:0 2px 8px rgba(0,0,0,.18)!important}
+:root{--navy:#004a79;--teal:#009a9c;--gold:#b9975b;--pale:#f2f8f8;--ink:#173c52;--line:#d5e4e7}*{box-sizing:border-box}body{margin:0;background:var(--pale);font-family:Hind,Arial,sans-serif;color:#304b5b}.top{background:#003b68;color:white;font-size:13px;padding:9px 0}.wrap{width:min(1080px,92%);margin:auto}.top .wrap{display:flex;justify-content:space-between}header{background:white}.brand{min-height:105px;display:flex;align-items:center;gap:16px}.logo{width:105px;height:105px;object-fit:contain;border-radius:8px}.brand h1{margin:0;color:var(--navy);font:700 20px Poppins,sans-serif}.brand p{margin:3px 0;color:#71818b}.pill{margin-left:auto;background:#e5f5f3;color:#08746f;border-left:4px solid var(--teal);padding:9px 13px;font-weight:600}.hero{background:linear-gradient(110deg,#004a79e8,#008e9bd9),url('https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=1400&q=75') center/cover;color:#fff;padding:42px 0}.hero h2{font-size:34px;margin:0}.hero p{font-size:18px;margin:7px 0 0}.screen{margin:27px auto}.login{max-width:560px;margin:0 auto;background:#fff;padding:29px;border-radius:9px;box-shadow:0 7px 25px #123d521b}.login h3,.panel h3{margin:0;color:var(--ink);font-size:25px}.hint{margin:5px 0 19px;color:#6c7e87}.tabs{display:flex;margin-bottom:20px;border-bottom:1px solid var(--line)}.tabs button{border:0;background:none;padding:11px 16px;color:#4f6877;font:600 15px Hind;cursor:pointer}.tabs button.on{color:var(--navy);border-bottom:3px solid var(--teal)}label{display:block;font-weight:600;margin:12px 0 5px}input,select,textarea{width:100%;border:1px solid #c7dadd;border-radius:5px;padding:11px;font:16px Hind;color:#294452}textarea{min-height:75px;resize:vertical}button{cursor:pointer}.btn{border:0;border-radius:5px;padding:11px 19px;color:#fff;background:var(--navy);font:600 14px Poppins}.btn.teal{background:var(--teal)}.btn.out{color:var(--navy);background:#fff;border:1px solid var(--navy)}.warning{font-size:13px;background:#fff9e9;border-left:4px solid var(--gold);padding:10px;margin-top:18px;color:#705625}.hidden{display:none!important}.bar{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:17px;margin-bottom:22px}.stat,.panel{background:#fff;border-radius:8px;box-shadow:0 5px 19px #16425513;border:1px solid #dfebec}.stat{padding:17px}.stat b{color:var(--teal);font:700 24px Poppins;display:block}.panel{padding:25px;margin-bottom:20px}.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:15px}.full{grid-column:1/-1}.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px}.tablebox{overflow:auto}table{width:100%;border-collapse:collapse}th{text-align:left;padding:10px;background:#e6f3f3;color:#29556a}td{padding:10px;border-bottom:1px solid var(--line)}.muted{color:#758993}.foot{text-align:center;background:#003b68;color:#dcecf1;padding:17px;margin-top:40px;font-size:13px}@media print{body{background:#fff}.top,header,.hero,.login,.foot,.bar .actions,.btn{display:none!important}.screen,.wrap{width:100%;margin:0}.panel{border:0;box-shadow:none;padding:0}.stats{margin:0 0 12px}.stat{box-shadow:none;border:1px solid #bbb;padding:8px}.tablebox{overflow:visible}table{font-size:10pt}th,td{padding:6px;border:1px solid #aaa}.print-title{display:block!important}}@media(max-width:650px){.brand h1{font-size:16px}.pill{display:none}.logo{width:61px}.hero h2{font-size:28px}.stats,.grid{grid-template-columns:1fr}.panel,.login{padding:19px}.top .wrap{font-size:11px}}
+.logo{background:#fff}.logo{object-position:center} /* JDCC Bank supplied logo */.main-nav .btn{min-width:0}.btn.active-nav{background:#0b66d4!important;color:#fff!important;border-color:#0b66d4!important;box-shadow:0 2px 8px rgba(0,0,0,.18)!important}
 @media(max-width:650px){.main-nav .btn{font-size:14px;padding:10px 13px}}
-</style></head><body>
+</style>
+</head>
+<body>
+
 <div class="top"><div class="wrap"><span>दि. जळगाव जिल्हा मध्यवर्ती सहकारी बँक लि., जळगाव</span><span>भुसावळ तालुका</span></div></div>
-<header><div class="wrap brand"><img class="logo" src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBwgHBgkIBwgKCgkLDRYPDQwMDRsUFRAWIB0iIiAdHx8kKDQsJCYxJx8fLT0tMTU3Ojo6Iys/RD84QzQ5OjcBCgoKDQwNGg8PGjclHyU3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3N//AABEIAb8BvwMBIgACEQEDEQH/xAAcAAEAAgIDAQAAAAAAAAAAAAAAAQYFBwIDBAj/xABVEAACAQMCAwQFBwYICQsFAAAAAQIDBAUGERIhMQdBUWETInGRsRQyNnOBwdEVI0JSYqEWMzVDcnSy4RckN1NjdYKSwgglNFRVVmSTlOLwJzhEo9L/xAAbAQEAAgMBAQAAAAAAAAAAAAAAAwUBBAYCB//EAC4RAQACAQIEBgEDBAMAAAAAAAABAgMEEQUSITETMjNBUXFhFCI0FUKRs subterranean" alt="The JDCC BANK लोगो"><div><h1>दि. जळगाव जिल्हा मध्यवर्ती सहकारी बँक लि. जळगाव</h1><p>भुसावळ तालुका — शाखा माहिती संकलन प्रणाली</p></div><div class="pill">१७ शाखांसाठी माहिती नोंदणी</div></div><nav class="wrap main-nav" style="display:flex;gap:10px;padding:0 0 15px;flex-wrap:wrap">
-<button id="navHome" class="btn" onclick="showPage('home')">मुख्यपृष्ठ</button>
-<button id="navBranch" class="btn out" onclick="showPage('branch')">शाखा लॉगिन</button>
-<button id="navOffice" class="btn out" onclick="openAdminLogin()">विभागीय कार्यालय प्रवेश</button>
-</nav></header>
+
+<header>
+  <div class="wrap brand">
+    <img class="logo" src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBwgHBgkIBwgKCgkLDRYPDQwMDRsUFRAWIB0iIiAdHx8kKDQsJCYxJx8fLT0tMTU3Ojo6Iys/RD84QzQ5OjcBCgoKDQwNGg8PGjclHyU3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3N//AABEIAb8BvwMBIgACEQEDEQH/xAAcAAEAAgIDAQAAAAAAAAAAAAAAAQYFBwIDBAj/xABVEAACAQMCAwQFBwYICQsFAAAAAQIDBAUGERIhMQdBUWETInGRsRQyNnOBwdEVI0JSYqEWMzVDcnSy4RckN1NjdYKSwgglNFRVVmSTlOLwJzhEo9L/xAAbAQEAAgMBAQAAAAAAAAAAAAAAAwUBBAYCB//EAC4RAQACAQIEBgEDBAMAAAAAAAABAgMEEQUSITETMjNBUXFhFCI0FUKRs subterranean/AABEIAb8BvwMBIgACEQEDEQH/xAAcAAEAAgIDAQAAAAAAAAAAAAAAAQYFBwIDBAj/xABVEAACAQMCAwQFBwYICQsFAAAAAQIDBAUGERIhMQdBUWETInGRsRQyNnOBwdEVI0JSYqEWMzVDcnSy4RckN1NjdYKSwgglNFRVVmSTlOLwJzhEo9L/xAAbAQEAAgMBAQAAAAAAAAAAAAAAAwUBBAYCB//EAC4RAQACAQIEBgEDBAMAAAAAAAABAgMEEQUSITETMjNBUXFhFCI0FUKRs" alt="The JDCC BANK लोगो">
+    <div>
+      <h1>दि. जळगाव जिल्हा मध्यवर्ती सहकारी बँक लि. जळगाव</h1>
+      <p>भुसावळ तालुका — शाखा माहिती संकलन प्रणाली</p>
+    </div>
+    <div class="pill">१७ शाखांसाठी माहिती नोंदणी</div>
+  </div>
+  <nav class="wrap main-nav" style="display:flex;gap:10px;padding:0 0 15px;flex-wrap:wrap">
+    <button id="navHome" class="btn" onclick="showPage('home')">मुख्यपृष्ठ</button>
+    <button id="navBranch" class="btn out" onclick="showPage('branch')">शाखा लॉगिन</button>
+    <button id="navOffice" class="btn out" onclick="openAdminLogin()">विभागीय कार्यालय प्रवेश</button>
+  </nav>
+</header>
+
 <section class="hero"><div class="wrap"><h2>शाखा माहिती संकलन</h2><p>शाखांची माहिती एकाच ठिकाणी जमा व एकत्रीकरणासाठी डेमो प्रणाली.</p></div></section>
-<main class="wrap screen"><section id="homePage">
-<div class="bar"><div><h3>मुख्यपृष्ठ — दिनांकवार माहिती</h3><span class="muted">दररोजची माहिती फक्त तारीख व माहितीच्या शीर्षकानुसार येथे दिसेल.</span></div></div>
-<section class="panel">
-<div class="tablebox"><table>
-<thead><tr><th>तारीख</th><th>माहितीचे शीर्षक</th></tr></thead>
-<tbody id="homeRows"></tbody>
-</table></div>
-<div id="homeDetails" class="panel hidden" style="margin:18px 0 0;padding:18px">
-  <div class="bar"><h3 id="homeDetailsTitle">माहिती तपशील</h3><button class="btn out" onclick="closeHomeDetails()">बंद करा</button></div>
-  <div id="homeDetailsBody" class="tablebox"></div>
-</div>
-</section>
-</section><section id="loginBox" class="login hidden"><section id="loginNotice" class="warning" style="margin: 0px 0px 18px;"><b>माहिती मागणी</b><br>सर्व शाखांनी आवश्यक माहिती निर्धारित वेळेत भरावी.</section><div id="loginTabs" class="tabs"><button id="branchTab" class="on" onclick="mode('branch')">शाखा लॉगिन</button><button id="adminTab" onclick="mode('admin')">Admin लॉगिन</button></div><h3 id="loginTitle">शाखा लॉगिन</h3><p class="hint" id="loginHint">आपली शाखा निवडा आणि पासवर्ड टाका.</p><label id="branchLabel">शाखेचे नाव</label><select id="loginBranch"><option>वरणगाव</option><option>पिंपळगाव खु.</option><option>शिंदी</option><option>भुसावळ</option><option>पिंपळगाव बु.</option><option>फेकरी</option><option>किन्ही</option><option>तळवेल</option><option>फुलगाव</option><option>कठोरा</option><option>कुऱ्हे पानाचे</option><option>साक्री</option><option>साकेगाव</option><option>सुनसगाव</option><option>वराडसीम</option><option>भुसावळ वि. कक्ष</option><option>न्यू एरिया भुसावळ</option></select><label>पासवर्ड</label><input id="password" type="password" placeholder="पासवर्ड"><div class="actions"><button class="btn" onclick="login()">लॉगिन करा</button></div><div class="warning" id="loginHelp">शाखेसाठी संबंधित शाखेचा लॉगिन पासवर्ड वापरा.</div></section>
-<section id="branchArea" class="hidden">
-<div class="bar"><div><h3 id="branchFormTitle">शाखा माहिती फॉर्म</h3><span class="muted" id="branchName"></span></div>
-<div class="actions" style="margin:0"><button id="backAdmin" class="btn out hidden" type="button" onclick="backToAdmin()">Admin डॅशबोर्डवर परत</button><button class="btn out" onclick="logout()">लॉगआउट</button></div></div>
-<section class="panel">
-<div id="adminBranchCheck" class="warning hidden" style="margin:0 0 15px">
-<b>Admin तपासणी मोड</b><br>Admin लॉगिन कायम ठेवून शाखेची माहिती तपासता येईल.
-<label style="margin-top:10px">तपासायची शाखा</label>
-<select id="adminBranchSelect"></select>
-<div class="actions" style="margin-top:10px"><button class="btn" type="button" onclick="openAdminBranch()">शाखा उघडा</button></div>
-</div>
-<div id="branchDateHint" class="hint" style="margin:10px 0">निवडलेल्या तारखेसाठी Admin ने जतन केलेलेच सूचना व Columns दिसतील.</div>
-<div id="branchDateSync" class="hint">या तारखेचे Admin ने जतन केलेले Columns खाली दिसत आहेत.</div>
-<div id="branchRequestLetter" class="warning"><b>माहिती मागणी</b><br>सर्व शाखांनी आवश्यक माहिती निर्धारित वेळेत भरावी.</div>
-<form id="form"><div class="grid">
-<div><label>शाखा</label><input id="branchDisplay" readonly></div>
-<div><label>माहिती दिनांक *</label><input id="date" type="date" list="adminDateList" required><datalist id="adminDateList"></datalist></div>
-<div><label>शाखा कोड *</label><input id="code" required></div>
-<div class="full"><label>पूर्ण पत्ता *</label><textarea id="address" required></textarea></div>
-<div><label>शाखा व्यवस्थापक *</label><input id="manager" required></div>
-<div><label>मोबाईल क्रमांक *</label><input id="phone" required></div>
-<div><label>ई-मेल</label><input id="email" type="email"></div>
-<div><label>एकूण कर्मचारी</label><input id="staff" type="number" min="0"></div>
-<div><label>शाखेचा ठेव इष्टांक</label><input id="depositTarget" type="number" min="0" step=".01"></div>
-<div id="customFields" class="full grid"></div>
-<div class="full"><label>इतर माहिती / सूचना</label><textarea id="remarks"></textarea></div>
-</div>
-<div class="actions"><button class="btn teal" type="submit">माहिती जतन करा</button><button id="formBackAdmin" class="btn out hidden" type="button" onclick="backToAdmin()">Admin डॅशबोर्डवर परत</button></div>
-</form></section></section>
-<section id="adminArea" class="hidden">
-<section id="adminRequestNotice" class="warning" style="margin:0 0 18px"></section>
-<div class="bar"><div><h3>विभागीय कार्यालय भुसावळ — Admin डॅशबोर्ड</h3><span class="muted">Admin कडून ठरवलेले शीर्षक, लेटर व कॉलम शाखा लॉगिनमध्ये आपोआप दिसतील.</span></div><button class="btn out" onclick="logout()">लॉगआउट</button></div>
-<h2 class="print-title hidden">भुसावळ तालुका — एकत्रित शाखा माहिती</h2>
-<div class="stats"><div class="stat"><b>१७</b><span>एकूण शाखा</span></div><div class="stat"><b id="submitted">०</b><span>माहिती भरलेल्या नोंदी</span></div><div class="stat"><b id="pending">१७</b><span>प्रलंबित शाखा</span></div></div>
 
-<section id="adminHistoryPanel" class="panel"><h3>Admin ने जतन केलेल्या दिनांकवार माहिती मागण्या</h3><div id="adminHistory" class="tablebox" style="margin-top:15px"></div></section>
+<main class="wrap screen">
+  <section id="homePage">
+    <div class="bar"><div><h3>मुख्यपृष्ठ — दिनांकवार माहिती</h3><span class="muted">दररोजची माहिती फक्त तारीख व माहितीच्या शीर्षकानुसार येथे दिसेल.</span></div></div>
+    <section class="panel">
+      <div class="tablebox">
+        <table>
+          <thead><tr><th>तारीख</th><th>माहितीचे शीर्षक</th></tr></thead>
+          <tbody id="homeRows"></tbody>
+        </table>
+      </div>
+      <div id="homeDetails" class="panel hidden" style="margin:18px 0 0;padding:18px">
+        <div class="bar"><h3 id="homeDetailsTitle">माहिती तपशील</h3><button class="btn out" onclick="closeHomeDetails()">बंद करा</button></div>
+        <div id="homeDetailsBody" class="tablebox"></div>
+      </div>
+    </section>
+  </section>
 
-<section id="requestPanel" class="panel">
-<h3>शाखांसाठी माहिती मागणी / लेटर</h3>
-<p class="hint">Admin येथे माहितीचे शीर्षक, सूचना/लेटर आणि आवश्यक कॉलम ठरवेल. हेच शाखा लॉगिननंतर दिसेल.</p>
-<div><label>माहिती मागणीचा दिनांक *</label><input id="reqDate" type="date" required></div>
-<div><label>माहिती मागणीचे शीर्षक</label><input id="reqTitle"></div>
-<div><label>अतिरिक्त कॉलम</label><input id="reqFields" placeholder="उदा. चालू ठेव, कर्ज वसुली"></div>
-<div class="full"><label>सूचनापत्र / लेटर</label><textarea id="reqLetter"></textarea></div>
-</div>
-<div class="actions"><button id="saveRequestBtn" class="btn teal" type="button">माहिती मागणी जतन करा</button></div>
-</section>
+  <section id="loginBox" class="login hidden">
+    <section id="loginNotice" class="warning" style="margin: 0px 0px 18px;"><b>माहिती मागणी</b><br>सर्व शाखांनी आवश्यक माहिती निर्धारित वेळेत भरावी.</section>
+    <div id="loginTabs" class="tabs"><button id="branchTab" class="on" onclick="mode('branch')">शाखा लॉगिन</button><button id="adminTab" onclick="mode('admin')">Admin लॉगिन</button></div>
+    <h3 id="loginTitle">शाखा लॉगिन</h3>
+    <p class="hint" id="loginHint">आपली शाखा निवडा आणि पासवर्ड टाका.</p>
+    <label id="branchLabel">शाखेचे नाव</label>
+    <select id="loginBranch">
+      <option>वरणगाव</option><option>पिंपळगाव खु.</option><option>शिंदी</option><option>भुसावळ</option><option>पिंपळगाव बु.</option><option>फेकरी</option><option>किन्ही</option><option>तळवेल</option><option>फुलगाव</option><option>कठोरा</option><option>कुऱ्हे पानाचे</option><option>साक्री</option><option>साकेगाव</option><option>सुनसगाव</option><option>वराडसीम</option><option>भुसावळ वि. कक्ष</option><option>न्यू एरिया भुसावळ</option>
+    </select>
+    <label>पासवर्ड</label>
+    <input id="password" type="password" placeholder="पासवर्ड">
+    <div class="actions"><button class="btn" onclick="login()">लॉगिन करा</button></div>
+    <div class="warning" id="loginHelp">शाखेसाठी संबंधित शाखेचा लॉगिन पासवर्ड वापरा.</div>
+  </section>
 
-<section class="panel">
-<div class="bar"><h3>दिनांकवार शाखा नोंदी</h3><div class="actions" style="margin:0"><button class="btn teal" onclick="excel()">Excel डाउनलोड</button><button class="btn out" onclick="downloadReport('A4')">A4 रिपोर्ट डाउनलोड</button><button class="btn out" onclick="downloadReport('A3')">A3 रिपोर्ट डाउनलोड</button></div></div>
-<div class="tablebox"><table><thead><tr><th>दिनांक</th><th>शाखा</th><th>माहितीचे शीर्षक</th><th>स्थिती</th><th>Admin एडिट</th></tr></thead><tbody id="rows"></tbody><tfoot id="totals"></tfoot></table></div>
-</section>
-</section></main><footer class="foot">© 2026 दि. जळगाव जिल्हा मध्यवर्ती सहकारी बँक लि., जळगाव — डेमो प्रणाली @ J S GHULE</footer>
+  <section id="branchArea" class="hidden">
+    <div class="bar">
+      <div><h3 id="branchFormTitle">शाखा माहिती फॉर्म</h3><span class="muted" id="branchName"></span></div>
+      <div class="actions" style="margin:0"><button id="backAdmin" class="btn out hidden" type="button" onclick="backToAdmin()">Admin डॅशबोर्डवर परत</button><button class="btn out" onclick="logout()">लॉगआउट</button></div>
+    </div>
+    <section class="panel">
+      <div id="adminBranchCheck" class="warning hidden" style="margin:0 0 15px">
+        <b>Admin तपासणी मोड</b><br>Admin लॉगिन कायम ठेवून शाखेची माहिती तपासता येईल.
+        <label style="margin-top:10px">तपासायची शाखा</label>
+        <select id="adminBranchSelect"></select>
+        <div class="actions" style="margin-top:10px"><button class="btn" type="button" onclick="openAdminBranch()">शाखा उघडा</button></div>
+      </div>
+      <div id="branchDateHint" class="hint" style="margin:10px 0">निवडलेल्या तारखेसाठी Admin ने जतन केलेलेच सूचना व Columns दिसतील.</div>
+      <div id="branchDateSync" class="hint">या तारखेचे Admin ने जतन केलेले Columns खाली दिसत आहेत.</div>
+      <div id="branchRequestLetter" class="warning"><b>माहिती मागणी</b><br>सर्व शाखांनी आवश्यक माहिती निर्धारित वेळेत भरावी.</div>
+      <form id="form">
+        <div class="grid">
+          <div><label>शाखा</label><input id="branchDisplay" readonly></div>
+          <div><label>माहिती दिनांक *</label><input id="date" type="date" list="adminDateList" required><datalist id="adminDateList"></datalist></div>
+          <div><label>शाखा कोड *</label><input id="code" required></div>
+          <div class="full"><label>पूर्ण पत्ता *</label><textarea id="address" required></textarea></div>
+          <div><label>शाखा व्यवस्थापक *</label><input id="manager" required></div>
+          <div><label>मोबाईल क्रमांक *</label><input id="phone" required></div>
+          <div><label>ई-मेल</label><input id="email" type="email"></div>
+          <div><label>एकूण कर्मचारी</label><input id="staff" type="number" min="0"></div>
+          <div><label>शाखेचा ठेव इष्टांक</label><input id="depositTarget" type="number" min="0" step=".01"></div>
+          <div id="customFields" class="full grid"></div>
+          <div class="full"><label>इतर माहिती / सूचना</label><textarea id="remarks"></textarea></div>
+        </div>
+        <div class="actions"><button class="btn teal" type="submit">माहिती जतन करा</button><button id="formBackAdmin" class="btn out hidden" type="button" onclick="backToAdmin()">Admin डॅशबोर्डवर परत</button></div>
+      </form>
+    </section>
+  </section>
+
+  <section id="adminArea" class="hidden">
+    <section id="adminRequestNotice" class="warning" style="margin:0 0 18px"></section>
+    <div class="bar">
+      <div><h3>विभागीय कार्यालय भुसावळ — Admin डॅशबोर्ड</h3><span class="muted">Admin कडून ठरवलेले शीर्षक, लेटर व कॉलम शाखा लॉगिनमध्ये आपोआप दिसतील.</span></div>
+      <button class="btn out" onclick="logout()">लॉगआउट</button>
+    </div>
+    <h2 class="print-title hidden">भुसावळ तालुका — एकत्रित शाखा माहिती</h2>
+    <div class="stats"><div class="stat"><b>१७</b><span>एकूण शाखा</span></div><div class="stat"><b id="submitted">०</b><span>माहिती भरलेल्या नोंदी</span></div><div class="stat"><b id="pending">१७</b><span>प्रलंबित शाखा</span></div></div>
+
+    <section id="adminHistoryPanel" class="panel">
+      <h3>Admin ने जतन केलेल्या दिनांकवार माहिती मागण्या</h3>
+      <div id="adminHistory" class="tablebox" style="margin-top:15px"></div>
+    </section>
+
+    <section id="requestPanel" class="panel">
+      <h3>शाखांसाठी माहिती मागणी / लेटर</h3>
+      <p class="hint">Admin येथे माहितीचे शीर्षक, सूचना/लेटर आणि आवश्यक कॉलम ठरवेल. हेच शाखा लॉगिननंतर दिसेल.</p>
+      <div><label>माहिती मागणीचा दिनांक *</label><input id="reqDate" type="date" required></div>
+      <div><label>माहिती मागणीचे शीर्षक</label><input id="reqTitle"></div>
+      <div><label>अतिरिक्त कॉलम</label><input id="reqFields" placeholder="उदा. चालू ठेव, कर्ज वसुली"></div>
+      <div class="full"><label>सूचनापत्र / लेटर</label><textarea id="reqLetter"></textarea></div>
+      <div class="actions"><button id="saveRequestBtn" class="btn teal" type="button">माहिती मागणी जतन करा</button></div>
+    </section>
+
+    <section class="panel">
+      <div class="bar">
+        <h3>दिनांकवार शाखा नोंदी</h3>
+        <div class="actions" style="margin:0"><button class="btn teal" onclick="excel()">Excel डाउनलोड</button><button class="btn out" onclick="downloadReport('A4')">A4 रिपोर्ट डाउनलोड</button><button class="btn out" onclick="downloadReport('A3')">A3 रिपोर्ट डाउनलोड</button></div>
+      </div>
+      <div class="tablebox">
+        <table>
+          <thead><tr><th>दिनांक</th><th>शाखा</th><th>माहितीचे शीर्षक</th><th>स्थिती</th><th>Admin एडिट</th></tr></thead>
+          <tbody id="rows"></tbody>
+          <tfoot id="totals"></tfoot>
+        </table>
+      </div>
+    </section>
+  </section>
+</main>
+
+<footer class="foot">© 2026 दि. जळगाव जिल्हा मध्यवर्ती सहकारी बँक लि., जळगाव — डेमो प्रणाली @ J S GHULE</footer>
+
 <script>
 const branches=['वरणगाव','पिंपळगाव खु.','शिंदी','भुसावळ','पिंपळगाव बु.','फेकरी','किन्ही','तळवेल','फुलगाव','कठोरा','कुऱ्हे पानाचे','साक्री','साकेगाव','सुनसगाव','वराडसीम','भुसावळ वि. कक्ष','न्यू एरिया भुसावळ'];
 let role='branch',active='',editingIndex=-1;
@@ -128,8 +192,12 @@ function getBranchConfigForDate(d){
   return r ? {title:r.title||'माहिती मागणी',letter:r.letter||'',fields:Array.isArray(r.fields)?r.fields:[]} : defaultConfig();
 }
 
-function configForDate(d){ return getBranchConfigForDate(d); }
-function latestRequestDate(){ return getLatestAdminRequestDate(); }
+function configForDate(d){
+  return getBranchConfigForDate(d);
+}
+function latestRequestDate(){
+  return getLatestAdminRequestDate();
+}
 function currentConfig(){
   const d=document.getElementById('date')?.value || latestRequestDate();
   return configForDate(d);
@@ -510,4 +578,6 @@ function downloadReport(size){
   ensureRequestVisible();renderHome();mode('branch');setNavForSession();
 })();
 </script>
-</body></html>
+
+</body>
+</html>
