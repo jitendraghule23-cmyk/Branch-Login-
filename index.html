@@ -3408,18 +3408,7 @@ function adminEditBranchReport(branch,date){
     var head=document.createElement('div');
     head.style.cssText='font-weight:800;margin-top:10px;padding:7px;background:#e7f5f7';
     head.textContent=c.title||'';
-    rows.appendChild(head);
-
-    list.forEach(function(sub){
-      var row=document.createElement('div');
-      row.className='admin-branch-edit-row';
-
-      var label=document.createElement('label');
-      label.textContent=sub||'';
-      label.style.fontWeight='700';
-
-      var input=document.createElement('input');
-      input.type='text';
+   
       input.value=String(saved.values?.[flatIndex]??'');
       input.dataset.index=flatIndex;
 
