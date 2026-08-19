@@ -1,221 +1,513 @@
 <!DOCTYPE html>
-<html lang="mr">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>दि. जळगाव जिल्हा मध्यवर्ती सहकारी बँक लि., जळगाव</title>
-  <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-    body { background-color: #f4f7f6; color: #333; }
-    header { background-color: #0d47a1; color: white; padding: 15px 20px; text-align: center; }
-    nav { background-color: #1565c0; display: flex; justify-content: center; gap: 10px; padding: 10px; }
-    nav button { background: none; border: none; color: white; padding: 8px 16px; font-size: 16px; cursor: pointer; border-radius: 4px; }
-    nav button.active, nav button:hover { background-color: #0d47a1; font-weight: bold; }
-    .container { max-width: 900px; margin: 20px auto; background: white; padding: 25px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
-    .hidden { display: none !important; }
-    .form-group { margin-bottom: 15px; }
-    label { display: block; margin-bottom: 5px; font-weight: bold; }
-    select, input, button.btn { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; font-size: 16px; }
-    button.btn { background-color: #2e7d32; color: white; border: none; cursor: pointer; margin-top: 10px; font-weight: bold; }
-    button.btn:hover { background-color: #1b5e20; }
-    .tab-buttons { display: flex; gap: 10px; margin-bottom: 20px; }
-    .tab-buttons button { flex: 1; padding: 10px; cursor: pointer; border: 1px solid #1565c0; background: #e3f2fd; font-weight: bold; }
-    .tab-buttons button.on { background: #1565c0; color: white; }
-    footer { text-align: center; padding: 15px; background: #e0e0e0; margin-top: 30px; font-size: 14px; }
-  </style>
-</head>
-<body>
-
-<header>
-  <h2>दि. जळगाव जिल्हा मध्यवर्ती सहकारी बँक लि., जळगाव</h2>
-  <p>शाखा माहिती संकलन प्रणाली (भुसावळ तालुका)</p>
-</header>
-
-<nav>
-  <button id="navHome" onclick="showHome()" class="active">मुख्य पृष्ठ</button>
-  <button id="navBranch" onclick="showBranch()">शाखा विभाग</button>
-  <button id="navAdmin" onclick="showAdmin()">Admin विभाग</button>
-</nav>
-
-<div class="container">
-
-  <!-- १. मुख्य होम पेज -->
-  <section id="homePage">
-    <h3>प्रणालीमध्ये आपले स्वागत आहे</h3>
-    <p style="margin-top: 10px;">कृपया माहिती भरण्यासाठी किंवा पाहण्यासाठी वरील मेनूमधून योग्य पर्याय निवडा.</p>
-  </section>
-
-  <!-- २. लॉगिन बॉक्स -->
-  <section id="loginBox" class="hidden">
-    <div class="tab-buttons">
-      <button id="branchTab" onclick="showLogin('branch')">शाखा लॉगिन</button>
-      <button id="adminTab" onclick="showLogin('admin')">Admin लॉगिन</button>
-    </div>
-
-    <h3 id="loginTitle">शाखा लॉगिन</h3>
-    <p id="loginHint" style="margin-bottom: 15px; color: #666;">आपली शाखा निवडा आणि पासवर्ड टाका.</p>
-
-    <div class="form-group" id="branchLabel">
-      <label>शाखेचे नाव:</label>
-      <select id="loginBranch"></select>
-    </div>
-
-    <div class="form-group">
-      <label>पासवर्ड:</label>
-      <input type="password" id="password" placeholder="पासवर्ड टाका">
-    </div>
-
-    <button class="btn" onclick="login()">लॉगिन करा</button>
-  </section>
-
-  <!-- ३. शाखा एरिया (माहिती भरणे) -->
-  <section id="branchArea" class="hidden">
-    <h3 id="branchName">निवडलेली शाखा: </h3>
-    <br>
-    <div class="form-group">
-      <label>तारीख निवडा:</label>
-      <input type="date" id="branchDate">
-    </div>
-
-    <div id="branchFields"></div>
-
-    <button class="btn" onclick="saveBranch()">माहिती जतन (Save) करा</button>
-  </section>
-
-  <!-- ४. Admin एरिया -->
-  <section id="adminArea" class="hidden">
-    <h3>Admin पॅनेल</h3>
-    <p>येथे Admin नवीन फॉर्म आणि तारखा सेट करू शकतात.</p>
-  </section>
-
+<html lang="mr"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>JDCC भुसावळ — शाखा माहिती प्रणाली</title><style>
+@import url('https://fonts.googleapis.com/css2?family=Hind:wght@400;500;600;700&family=Poppins:wght@500;600;700&display=swap');
+:root{--navy:#004a79;--teal:#009a9c;--gold:#b9975b;--pale:#f2f8f8;--ink:#173c52;--line:#d5e4e7}*{box-sizing:border-box}body{margin:0;background:var(--pale);font-family:Hind,Arial,sans-serif;color:#304b5b}.top{background:#003b68;color:white;font-size:13px;padding:9px 0}.wrap{width:min(1080px,92%);margin:auto}.top .wrap{display:flex;justify-content:space-between}header{background:white}.brand{min-height:105px;display:flex;align-items:center;gap:16px}.logo{width:105px;height:105px;object-fit:contain;border-radius:8px}.brand h1{margin:0;color:var(--navy);font:700 20px Poppins,sans-serif}.brand p{margin:3px 0;color:#71818b}.pill{margin-left:auto;background:#e5f5f3;color:#08746f;border-left:4px solid var(--teal);padding:9px 13px;font-weight:600}.hero{background:linear-gradient(110deg,#004a79e8,#008e9bd9),url('https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=1400&q=75') center/cover;color:#fff;padding:42px 0}.hero h2{font-size:34px;margin:0}.hero p{font-size:18px;margin:7px 0 0}.screen{margin:27px auto}.login{max-width:560px;margin:0 auto;background:#fff;padding:29px;border-radius:9px;box-shadow:0 7px 25px #123d521b}.login h3,.panel h3{margin:0;color:var(--ink);font-size:25px}.hint{margin:5px 0 199px;color:#6c7e87}.tabs{display:flex;margin-bottom:20px;border-bottom:1px solid var(--line)}.tabs button{border:0;background:none;padding:11px 16px;color:#4f6877;font:600 15px Hind;cursor:pointer}.tabs button.on{color:var(--navy);border-bottom:3px solid var(--teal)}label{display:block;font-weight:600;margin:12px 0 5px}input,select,textarea{width:100%;border:1px solid #c7dadd;border-radius:5px;padding:11px;font:16px Hind;color:#294452}textarea{min-height:75px;resize:vertical}button{cursor:pointer}.btn{border:0;border-radius:5px;padding:11px 19px;color:#fff;background:var(--navy);font:600 14px Poppins}.btn.teal{background:var(--teal)}.btn.out{color:var(--navy);background:#fff;border:1px solid var(--navy)}.warning{font-size:13px;background:#fff9e9;border-left:4px solid var(--gold);padding:10px;margin-top:18px;color:#705625}.hidden{display:none!important}.bar{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:17px;margin-bottom:22px}.stat,.panel{background:#fff;border-radius:8px;box-shadow:0 5px 19px #16425513;border:1px solid #dfebec}.stat{padding:17px}.stat b{color:var(--teal);font:700 24px Poppins;display:block}.panel{padding:25px;margin-bottom:20px}.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:15px}.full{grid-column:1/-1}.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px}.tablebox{overflow:auto}table{width:100%;border-collapse:collapse}th{text-align:left;padding:10px;background:#e6f3f3;color:#29556a}td{padding:10px;border-bottom:1px solid var(--line)}.muted{color:#758993}.foot{text-align:center;background:#003b68;color:#dcecf1;padding:17px;margin-top:40px;font-size:13px}@media print{body{background:#fff}.top,header,.hero,.login,.foot,.bar .actions,.btn{display:none!important}.screen,.wrap{width:100%;margin:0}.panel{border:0;box-shadow:none;padding:0}.stats{margin:0 0 12px}.stat{box-shadow:none;border:1px solid #bbb;padding:8px}.tablebox{overflow:visible}table{font-size:10pt}th,td{padding:6px;border:1px solid #aaa}.print-title{display:block!important}}@media(max-width:650px){.brand h1{font-size:16px}.pill{display:none}.logo{width:61px}.hero h2{font-size:28px}.stats,.grid{grid-template-columns:1fr}.panel,.login{padding:19px}.top .wrap{font-size:11px}}
+.logo{background:#fff}.logo{object-position:center}.main-nav .btn{min-width:0}.btn.active-nav{background:#0b66d4!important;color:#fff!important;border-color:#0b66d4!important;box-shadow:0 2px 8px rgba(0,0,0,.18)!important}
+@media(max-width:650px){.main-nav .btn{font-size:14px;padding:10px 13px}}
+</style></head><body>
+<div class="top"><div class="wrap"><span>दि. जळगाव जिल्हा मध्यवर्ती सहकारी बँक लि., जळगाव</span><span>भुसावळ तालुका</span></div></div>
+<header><div class="wrap brand"><img class="logo" src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBwgHBgkIBwgKCgkLDRYPDQwMDRsUFRAWIB0iIiAdHx8kKDQsJCYxJx8fLT0tMTU3Ojo6Iys/RD84QzQ5OjcBCgoKDQwNGg8PGjclHyU3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3N//AABEIAb8BvwMBIgACEQEDEQH/xAAcAAEAAgIDAQAAAAAAAAAAAAAAAQYFBwIDBAj/xABVEAACAQMCAwQFBwYICQsFAAAAAQIDBAUGERIhMQdBUWETInGRsRQyNnOBwdEVI0JSYqEWMzVDcnSy4RckN1NjdYKSwgglNFRVVmSTlOLwJzhEo9L/xAAbAQEAAgMBAQAAAAAAAAAAAAAAAwUBBAYCB//EAC4RAQACAQIEBgEDBAMAAAAAAAABAgMEEQUSITETMjNBUXFhFCI0FUKRs subterranean" alt="The JDCC BANK लोगो"><div><h1>दि. जळगाव जिल्हा मध्यवर्ती सहकारी बँक लि. जळगाव</h1><p>भुसावळ तालुका — शाखा माहिती संकलन प्रणाली</p></div><div class="pill">१७ शाखांसाठी माहिती नोंदणी</div></div><nav class="wrap main-nav" style="display:flex;gap:10px;padding:0 0 15px;flex-wrap:wrap">
+<button id="navHome" class="btn" onclick="showPage('home')">मुख्यपृष्ठ</button>
+<button id="navBranch" class="btn out" onclick="showPage('branch')">शाखा लॉगिन</button>
+<button id="navOffice" class="btn out" onclick="openAdminLogin()">विभागीय कार्यालय प्रवेश</button>
+</nav></header>
+<section class="hero"><div class="wrap"><h2>शाखा माहिती संकलन</h2><p>शाखांची माहिती एकाच ठिकाणी जमा व एकत्रीकरणासाठी डेमो प्रणाली.</p></div></section>
+<main class="wrap screen"><section id="homePage">
+<div class="bar"><div><h3>मुख्यपृष्ठ — दिनांकवार माहिती</h3><span class="muted">दररोजची माहिती फक्त तारीख व माहितीच्या शीर्षकानुसार येथे दिसेल.</span></div></div>
+<section class="panel">
+<div class="tablebox"><table>
+<thead><tr><th>तारीख</th><th>माहितीचे शीर्षक</th></tr></thead>
+<tbody id="homeRows"></tbody>
+</table></div>
+<div id="homeDetails" class="panel hidden" style="margin:18px 0 0;padding:18px">
+  <div class="bar"><h3 id="homeDetailsTitle">माहिती तपशील</h3><button class="btn out" onclick="closeHomeDetails()">बंद करा</button></div>
+  <div id="homeDetailsBody" class="tablebox"></div>
 </div>
+</section>
+</section><section id="loginBox" class="login hidden"><section id="loginNotice" class="warning" style="margin: 0px 0px 18px;"><b>माहिती मागणी</b><br>सर्व शाखांनी आवश्यक माहिती निर्धारित वेळेत भरावी.</section><div id="loginTabs" class="tabs"><button id="branchTab" class="on" onclick="mode('branch')">शाखा लॉगिन</button><button id="adminTab" onclick="mode('admin')">Admin लॉगिन</button></div><h3 id="loginTitle">शाखा लॉगिन</h3><p class="hint" id="loginHint">आपली शाखा निवडा आणि पासवर्ड टाका.</p><label id="branchLabel">शाखेचे नाव</label><select id="loginBranch"><option>वरणगाव</option><option>पिंपळगाव खु.</option><option>शिंदी</option><option>भुसावळ</option><option>पिंपळगाव बु.</option><option>फेकरी</option><option>किन्ही</option><option>तळवेल</option><option>फुलगाव</option><option>कठोरा</option><option>कुऱ्हे पानाचे</option><option>साक्री</option><option>साकेगाव</option><option>सुनसगाव</option><option>वराडसीम</option><option>भुसावळ वि. कक्ष</option><option>न्यू एरिया भुसावळ</option></select><label>पासवर्ड</label><input id="password" type="password" placeholder="पासवर्ड"><div class="actions"><button class="btn" onclick="login()">लॉगिन करा</button></div><div class="warning" id="loginHelp">शाखेसाठी संबंधित शाखेचा लॉगिन पासवर्ड वापरा.</div></section>
+<section id="branchArea" class="hidden">
+<div class="bar"><div><h3 id="branchFormTitle">शाखा माहिती फॉर्म</h3><span class="muted" id="branchName"></span></div>
+<div class="actions" style="margin:0"><button id="backAdmin" class="btn out hidden" type="button" onclick="backToAdmin()">Admin डॅशबोर्डवर परत</button><button class="btn out" onclick="logout()">लॉगआउट</button></div></div>
+<section class="panel">
+<div id="adminBranchCheck" class="warning hidden" style="margin:0 0 15px">
+<b>Admin तपासणी मोड</b><br>Admin लॉगिन कायम ठेवून शाखेची माहिती तपासता येईल.
+<label style="margin-top:10px">तपासायची शाखा</label>
+<select id="adminBranchSelect"></select>
+<div class="actions" style="margin-top:10px"><button class="btn" type="button" onclick="openAdminBranch()">शाखा उघडा</button></div>
+</div>
+<div id="branchDateHint" class="hint" style="margin:10px 0">निवडलेल्या तारखेसाठी Admin ने जतन केलेलेच सूचना व Columns दिसतील.</div>
+<div id="branchDateSync" class="hint">या तारखेचे Admin ने जतन केलेले Columns खाली दिसत आहेत.</div>
+<div id="branchRequestLetter" class="warning"><b>माहिती मागणी</b><br>सर्व शाखांनी आवश्यक माहिती निर्धारित वेळेत भरावी.</div>
+<form id="form"><div class="grid">
+<div><label>शाखा</label><input id="branchDisplay" readonly></div>
+<div><label>माहिती दिनांक *</label><input id="date" type="date" list="adminDateList" required><datalist id="adminDateList"></datalist></div>
+<div><label>शाखा कोड *</label><input id="code" required></div>
+<div class="full"><label>पूर्ण पत्ता *</label><textarea id="address" required></textarea></div>
+<div><label>शाखा व्यवस्थापक *</label><input id="manager" required></div>
+<div><label>मोबाईल क्रमांक *</label><input id="phone" required></div>
+<div><label>ई-मेल</label><input id="email" type="email"></div>
+<div><label>एकूण कर्मचारी</label><input id="staff" type="number" min="0"></div>
+<div><label>शाखेचा ठेव इष्टांक</label><input id="depositTarget" type="number" min="0" step=".01"></div>
+<div id="customFields" class="full grid"></div>
+<div class="full"><label>इतर माहिती / सूचना</label><textarea id="remarks"></textarea></div>
+</div>
+<div class="actions"><button class="btn teal" type="submit">माहिती जतन करा</button><button id="formBackAdmin" class="btn out hidden" type="button" onclick="backToAdmin()">Admin डॅशबोर्डवर परत</button></div>
+</form></section></section>
+<section id="adminArea" class="hidden">
+<section id="adminRequestNotice" class="warning" style="margin:0 0 18px"></section>
+<div class="bar"><div><h3>विभागीय कार्यालय भुसावळ — Admin डॅशबोर्ड</h3><span class="muted">Admin कडून ठरवलेले शीर्षक, लेटर व कॉलम शाखा लॉगिनमध्ये आपोआप दिसतील.</span></div><button class="btn out" onclick="logout()">लॉगआउट</button></div>
+<h2 class="print-title hidden">भुसावळ तालुका — एकत्रित शाखा माहिती</h2>
+<div class="stats"><div class="stat"><b>१७</b><span>एकूण शाखा</span></div><div class="stat"><b id="submitted">०</b><span>माहिती भरलेल्या नोंदी</span></div><div class="stat"><b id="pending">१७</b><span>प्रलंबित शाखा</span></div></div>
 
-<footer>
-  © 2026 दि. जळगाव जिल्हा मध्यवर्ती सहकारी बँक लि., जळगाव – डेमो प्रणाली @ J S GHULE
-</footer>
+<section id="adminHistoryPanel" class="panel"><h3>Admin ने जतन केलेल्या दिनांकवार माहिती मागण्या</h3><div id="adminHistory" class="tablebox" style="margin-top:15px"></div></section>
 
+<section id="requestPanel" class="panel">
+<h3>शाखांसाठी माहिती मागणी / लेटर</h3>
+<p class="hint">Admin येथे माहितीचे शीर्षक, सूचना/लेटर आणि आवश्यक कॉलम ठरवेल. हेच शाखा लॉगिननंतर दिसेल.</p>
+<div><label>माहिती मागणीचा दिनांक *</label><input id="reqDate" type="date" required></div>
+<div><label>माहिती मागणीचे शीर्षक</label><input id="reqTitle"></div>
+<div><label>अतिरिक्त कॉलम</label><input id="reqFields" placeholder="उदा. चालू ठेव, कर्ज वसुली"></div>
+<div class="full"><label>सूचनापत्र / लेटर</label><textarea id="reqLetter"></textarea></div>
+</div>
+<div class="actions"><button id="saveRequestBtn" class="btn teal" type="button">माहिती मागणी जतन करा</button></div>
+</section>
+
+<section class="panel">
+<div class="bar"><h3>दिनांकवार शाखा नोंदी</h3><div class="actions" style="margin:0"><button class="btn teal" onclick="excel()">Excel डाउनलोड</button><button class="btn out" onclick="downloadReport('A4')">A4 रिपोर्ट डाउनलोड</button><button class="btn out" onclick="downloadReport('A3')">A3 रिपोर्ट डाउनलोड</button></div></div>
+<div class="tablebox"><table><thead><tr><th>दिनांक</th><th>शाखा</th><th>माहितीचे शीर्षक</th><th>स्थिती</th><th>Admin एडिट</th></tr></thead><tbody id="rows"></tbody><tfoot id="totals"></tfoot></table></div>
+</section>
+</section></main><footer class="foot">© 2026 दि. जळगाव जिल्हा मध्यवर्ती सहकारी बँक लि., जळगाव — डेमो प्रणाली @ J S GHULE</footer>
 <script>
-  // १. मुख्य कन्फिगरेशन
-  const BRANCHES = ['वरणगाव', 'पिंपळगाव खु.', 'शिंदी', 'भुसावळ', 'पिंपळगाव बु.', 'फेकरी', 'किन्ही', 'तळवेल', 'फुलगाव', 'कठोरा', 'कुऱ्हे पानाचे', 'सावदा'];
-  const REQ_KEY = 'JDCC_SIMPLE_REQUESTS_V1';
-  const DATA_KEY = 'JDCC_SIMPLE_BRANCH_DATA_V1';
-  
-  // Google Sheet Web App URL
-  const SHEET_API = 'https://script.google.com/macros/s/AKfycbwTIdIFHg6fa0goTB4qCR5vP7V4YZ1bwdAf9qfNVjfOJX9-ckq6uZ8Fns3dhZ...';
+const branches=['वरणगाव','पिंपळगाव खु.','शिंदी','भुसावळ','पिंपळगाव बु.','फेकरी','किन्ही','तळवेल','फुलगाव','कठोरा','कुऱ्हे पानाचे','साक्री','साकेगाव','सुनसगाव','वराडसीम','भुसावळ वि. कक्ष','न्यू एरिया भुसावळ'];
+let role='branch',active='',editingIndex=-1;
+const key='jdccBhusawalUnifiedV2',requestKey='jdccBhusawalRequestV2';
 
-  let activeBranch = '';
-  let loggedIn = false;
-  let role = '';
+function today(){
+  const d=new Date();
+  const y=d.getFullYear();
+  const m=String(d.getMonth()+1).padStart(2,'0');
+  const day=String(d.getDate()).padStart(2,'0');
+  return y+'-'+m+'-'+day;
+}
+function fmtDate(v){
+  const m=String(v||'').match(/^(\d{4})-(\d{2})-(\d{2})$/);
+  return m ? m[3]+'-'+m[2]+'-'+m[1] : String(v||'');
+}
+function esc(v){
+  return String(v??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+}
 
-  const $ = id => document.getElementById(id);
+const data=()=>JSON.parse(localStorage.getItem(key)||'{"entries":[]}');
+const save=x=>localStorage.setItem(key,JSON.stringify(x));
+const requestData=()=>JSON.parse(localStorage.getItem(requestKey)||'{"currentDate":"","configs":[]}');
+const saveRequestData=x=>localStorage.setItem(requestKey,JSON.stringify(x));
+const defaultConfig=()=>({title:'माहिती मागणी',letter:'सर्व शाखांनी आवश्यक माहिती निर्धारित वेळेत भरावी.',fields:[]});
 
-  function hideAll() {
-    ['homePage', 'loginBox', 'branchArea', 'adminArea'].forEach(id => {
-      const el = $(id);
-      if(el) el.classList.add('hidden');
-    });
+const ADMIN_REQUEST_STORE='JDCC_BHUSAWAL_ADMIN_REQUESTS_V3';
+
+function readAdminRequests(){
+  try{
+    const x=JSON.parse(localStorage.getItem(ADMIN_REQUEST_STORE)||'[]');
+    return Array.isArray(x)?x:[];
+  }catch(e){return [];}
+}
+function writeAdminRequests(list){
+  localStorage.setItem(ADMIN_REQUEST_STORE,JSON.stringify(list));
+}
+function getAdminRequestForDate(d){
+  const list=readAdminRequests();
+  return list.find(x=>String(x.date)===String(d)) || null;
+}
+function getLatestAdminRequestDate(){
+  const list=readAdminRequests();
+  if(!list.length)return today();
+  return list.slice().sort((a,b)=>String(b.date).localeCompare(String(a.date)))[0].date;
+}
+function getBranchConfigForDate(d){
+  const r=getAdminRequestForDate(d);
+  return r ? {title:r.title||'माहिती मागणी',letter:r.letter||'',fields:Array.isArray(r.fields)?r.fields:[]} : defaultConfig();
+}
+
+function configForDate(d){ return getBranchConfigForDate(d); }
+function latestRequestDate(){ return getLatestAdminRequestDate(); }
+function currentConfig(){
+  const d=document.getElementById('date')?.value || latestRequestDate();
+  return configForDate(d);
+}
+function ensureRequestVisible(){
+  const d=document.getElementById('date')?.value || today();
+  const q=configForDate(d);
+  const n=document.getElementById('loginNotice');
+  if(n)n.innerHTML='<b>'+esc(q.title)+'</b><br>'+esc(q.letter);
+  const an=document.getElementById('adminRequestNotice');
+  if(an)an.innerHTML='<b>'+esc(q.title)+'</b><br>'+esc(q.letter);
+}
+function requestFields(){
+  const d=document.getElementById('date')?.value||getLatestAdminRequestDate();
+  const q=getBranchConfigForDate(d);
+  const box=document.getElementById('customFields');
+  if(!box)return;
+  box.innerHTML='';
+  (q.fields||[]).forEach((field,i)=>{
+    box.insertAdjacentHTML('beforeend','<div><label>'+esc(field)+'</label><input id="custom_'+i+'" placeholder="'+esc(field)+'"></div>');
+  });
+}
+function addRequestPanel(){
+  const d=document.getElementById('reqDate')?.value || getLatestAdminRequestDate();
+  reqDate.value=d;
+  const c=getAdminRequestForDate(d)||defaultConfig();
+  reqTitle.value=c.title||'माहिती मागणी';
+  reqLetter.value=c.letter||'';
+  reqFields.value=(c.fields||[]).join(', ');
+}
+function saveRequest(){
+  const d=(document.getElementById('reqDate')?.value||'').trim();
+  const title=(document.getElementById('reqTitle')?.value||'').trim()||'माहिती मागणी';
+  const letter=(document.getElementById('reqLetter')?.value||'').trim();
+  const fields=(document.getElementById('reqFields')?.value||'').split(',').map(x=>x.trim()).filter(Boolean);
+
+  if(!d){alert('माहिती मागणीचा दिनांक निवडा.');return;}
+
+  const list=readAdminRequests();
+  const item={date:d,title,letter,fields,version:Date.now()};
+  const i=list.findIndex(x=>String(x.date)===String(d));
+  if(i>=0)list[i]=item; else list.push(item);
+  list.sort((a,b)=>String(a.date).localeCompare(String(b.date)));
+  writeAdminRequests(list);
+
+  const verify=getAdminRequestForDate(d);
+  if(!verify || verify.title!==title || JSON.stringify(verify.fields)!==JSON.stringify(fields)){
+    alert('माहिती जतन झाली नाही.');
+    return;
   }
+  alert('Admin ची '+d+' तारीखची माहिती जतन झाली.');
+  addRequestPanel(); renderAdminHistory(); renderHome();
+}
 
-  function showHome() {
-    hideAll();
-    $('homePage').classList.remove('hidden');
-    updateNav('navHome');
+reqDate.addEventListener('change',()=>{
+  const c=getAdminRequestForDate(reqDate.value)||defaultConfig();
+  reqTitle.value=c.title||'माहिती मागणी';
+  reqLetter.value=c.letter||'';
+  reqFields.value=(c.fields||[]).join(', ');
+});
+
+document.getElementById('saveRequestBtn')?.addEventListener('click',saveRequest);
+
+window.isLoggedIn=false;
+
+function migrateLegacyAdminRequests(){
+  const merged=new Map();
+  const add=(x)=>{
+    if(!x || !x.date) return;
+    const d=String(x.date);
+    merged.set(d,{date:d,title:x.title||'माहिती मागणी',letter:x.letter||'',fields:Array.isArray(x.fields)?x.fields:[]});
+  };
+  readAdminRequests().forEach(add);
+  const readKey=(k)=>{try{return JSON.parse(localStorage.getItem(k)||'null')}catch(e){return null;}};
+  const candidates=['jdccBhusawalRequestsV4','jdccBhusawalRequestV2','JDCC_SIMPLE_REQUESTS_V1'];
+  candidates.forEach(k=>{
+    const v=readKey(k);
+    if(Array.isArray(v)) v.forEach(add);
+    else if(v && Array.isArray(v.configs)) v.configs.forEach(add);
+    else if(v && Array.isArray(v.requests)) v.requests.forEach(add);
+  });
+
+  if(!merged.has('2026-08-16')){
+    add({date:'2026-08-16',title:'कर्मचारी संख्या व नाव',letter:'सर्व शाखांनी आवश्यक माहिती निर्धारित वेळेत भरावी.',fields:[]});
   }
-
-  function showLogin(which) {
-    hideAll();
-    $('loginBox').classList.remove('hidden');
-    $('branchTab').classList.toggle('on', which === 'branch');
-    $('adminTab').classList.toggle('on', which === 'admin');
-    $('loginTitle').textContent = which === 'admin' ? 'Admin लॉगिन' : 'शाखा लॉगिन';
-    $('loginBranch').classList.toggle('hidden', which === 'admin');
-    $('branchLabel').classList.toggle('hidden', which === 'admin');
-    
-    if (which === 'branch') renderBranchSelectOptions();
-    
-    $('password').value = '';
-    window.loginMode = which;
+  if(!merged.has('2026-08-14')){
+    add({date:'2026-08-14',title:'LMS माहिती',letter:'सर्व शाखांनी आवश्यक माहिती निर्धारित वेळेत भरावी.',fields:[]});
   }
+  if(merged.size) writeAdminRequests(Array.from(merged.values()).sort((a,b)=>a.date.localeCompare(b.date)));
+}
 
-  function renderBranchSelectOptions() {
-    const sel = $('loginBranch');
-    if(!sel) return;
-    let h = '<option value="">-- शाखा निवडा --</option>';
-    BRANCHES.forEach(b => { h += `<option value="${b}">${b}</option>`; });
-    sel.innerHTML = h;
-  }
+function mode(x){
+  role=x==='admin'?'admin':'branch';
+  const isAdmin=role==='admin';
+  window.currentPage=isAdmin?'admin':'branch';
+  document.getElementById('loginTitle').textContent=isAdmin?'Admin लॉगिन':'शाखा लॉगिन';
+  document.getElementById('loginHint').textContent=isAdmin?'विभागीय कार्यालय भुसावळ — Admin पासवर्ड टाका.':'आपली शाखा निवडा आणि पासवर्ड टाका.';
+  document.getElementById('branchLabel').classList.toggle('hidden',isAdmin);
+  document.getElementById('loginBranch').classList.toggle('hidden',isAdmin);
+  document.getElementById('loginHelp').innerHTML=isAdmin?'':'शाखेसाठी संबंधित शाखेचा लॉगिन पासवर्ड वापरा.';
+  document.getElementById('branchTab').classList.toggle('hidden',isAdmin);
+  document.getElementById('adminTab').classList.toggle('hidden',!isAdmin);
+  document.getElementById('branchTab').classList.toggle('on',!isAdmin);
+  document.getElementById('adminTab').classList.toggle('on',isAdmin);
+  document.getElementById('password').value='';
+  ensureRequestVisible();
+}
 
-  function showBranch() {
-    if (!loggedIn || role !== 'branch') {
-      showLogin('branch');
-    } else {
-      hideAll();
-      $('branchArea').classList.remove('hidden');
-      $('branchName').textContent = 'निवडलेली शाखा: ' + activeBranch;
-      updateNav('navBranch');
+function setNavForSession(){
+  const home=document.getElementById('navHome'), branch=document.getElementById('navBranch'), office=document.getElementById('navOffice');
+  [home,branch,office].forEach(x=>x?.classList.remove('active-nav'));
+  if(home)home.classList.remove('hidden');
+  if(branch)branch.classList.remove('hidden');
+  if(office)office.classList.remove('hidden');
+  const page=window.currentPage||'home';
+  if(page==='home')home?.classList.add('active-nav');
+  else if(page==='branch')branch?.classList.add('active-nav');
+  else if(page==='admin')office?.classList.add('active-nav');
+  const check=document.getElementById('adminBranchCheck');
+  if(check)check.classList.toggle('hidden',!(window.isLoggedIn && role==='admin'));
+}
+
+function showPage(page){
+  window.currentPage=page;
+  homePage.classList.add('hidden');
+  loginBox.classList.add('hidden');
+  branchArea.classList.add('hidden');
+  adminArea.classList.add('hidden');
+
+  if(page==='home'){
+    homePage.classList.remove('hidden');
+    renderHome();
+  }else if(page==='branch'){
+    if(window.isLoggedIn && role==='admin'){
+      openAdminBranch();
+    }else if(window.isLoggedIn && role==='branch'){
+      branchArea.classList.remove('hidden');
+      loadForm();
+    }else{
+      loginBox.classList.remove('hidden');
+      mode('branch');
+    }
+  }else if(page==='admin'){
+    if(window.isLoggedIn && role==='admin'){
+      adminArea.classList.remove('hidden');
+      renderAdmin();
+      addRequestPanel();
+    }else{
+      loginBox.classList.remove('hidden');
+      mode('admin');
     }
   }
+  setNavForSession();
+  ensureRequestVisible();
+}
 
-  function showAdmin() {
-    if (!loggedIn || role !== 'admin') {
-      showLogin('admin');
-    } else {
-      hideAll();
-      $('adminArea').classList.remove('hidden');
-      updateNav('navAdmin');
-    }
+function openAdminLogin(){
+  if(window.isLoggedIn && role==='admin'){
+    showPage('admin');
+    return;
   }
-
-  function updateNav(activeId) {
-    ['navHome', 'navBranch', 'navAdmin'].forEach(id => {
-      const el = $(id);
-      if(el) el.classList.toggle('active', id === activeId);
-    });
+  if(window.isLoggedIn && role==='branch'){
+    alert('शाखा लॉगिनमध्ये विभागीय कार्यालय प्रवेश उपलब्ध नाही.');
+    return;
   }
+  showPage('admin');
+}
 
-  function login() {
-    const pass = $('password').value;
-    if (window.loginMode === 'branch') {
-      const sel = $('loginBranch').value;
-      if (!sel) { alert('कृपया शाखा निवडा!'); return; }
-      if (pass !== '1234') { alert('चुकीचा पासवर्ड!'); return; } // शाखा पासवर्ड
-      
-      activeBranch = sel;
-      role = 'branch';
-      loggedIn = true;
-      showBranch();
-    } else {
-      if (pass !== 'admin123') { alert('चुकीचा Admin पासवर्ड!'); return; } // Admin पासवर्ड
-      role = 'admin';
-      loggedIn = true;
-      showAdmin();
-    }
+function fillAdminBranchSelect(){
+  const s=document.getElementById('adminBranchSelect');
+  if(!s)return;
+  s.innerHTML=branches.map(b=>'<option value="'+esc(b)+'">'+esc(b)+'</option>').join('');
+  if(active && branches.includes(active))s.value=active;
+}
+function openAdminBranch(){
+  window.currentPage='branch';
+  if(!(window.isLoggedIn && role==='admin')){showPage('branch');return;}
+  fillAdminBranchSelect();
+  const s=document.getElementById('adminBranchSelect');
+  active=s?.value || active || branches[0];
+  editingIndex=-1;
+  homePage.classList.add('hidden'); loginBox.classList.add('hidden'); adminArea.classList.add('hidden'); branchArea.classList.remove('hidden');
+  document.getElementById('adminBranchCheck')?.classList.remove('hidden');
+  document.getElementById('backAdmin')?.classList.remove('hidden');
+  document.getElementById('formBackAdmin')?.classList.remove('hidden');
+  branchName.textContent='Admin तपासणी — निवडलेली शाखा: '+active;
+  branchDisplay.value=active;
+  date.value=getLatestAdminRequestDate();
+  loadForm();
+  setNavForSession();
+}
+function backToAdmin(){
+  if(window.isLoggedIn && role==='admin'){
+    document.getElementById('branchArea')?.classList.add('hidden');
+    document.getElementById('backAdmin')?.classList.add('hidden');
+    document.getElementById('formBackAdmin')?.classList.add('hidden');
+    document.getElementById('adminBranchCheck')?.classList.add('hidden');
+    showPage('admin');
   }
+}
 
-  function saveBranch() {
-    const d = $('branchDate').value;
-    if (!d) { alert('कृपया तारीख निवडा!'); return; }
+function login(){
+  const loginTitleText=(document.getElementById('loginTitle')?.textContent||'').trim();
+  const isAdmin=loginTitleText.includes('Admin');
+  role=isAdmin?'admin':'branch';
 
-    const values = ["नमूना डेटा"];
+  const entered=(document.getElementById('password')?.value||'').trim();
+  const expected=isAdmin?'admin123':'branch123';
+  if(entered!==expected){alert('पासवर्ड चुकीचा आहे.');return;}
 
-    if (SHEET_API) {
-      fetch(SHEET_API, {
-        method: 'POST',
-        mode: 'no-cors',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ branch: activeBranch, date: d, values: values })
-      }).then(() => {
-        alert('माहिती Google Sheet मध्ये यशस्वीरीत्या जतन झाली!');
-      }).catch(err => {
-        console.error(err);
-        alert('डेटा सेव्ह करताना त्रुटी आली.');
-      });
-    }
+  loginBox.classList.add('hidden');
+  window.isLoggedIn=true;
+
+  if(isAdmin){
+    window.currentPage='admin';
+    adminArea.classList.remove('hidden');
+    branchArea.classList.add('hidden');
+    renderAdmin();
+    addRequestPanel();
+  }else{
+    window.currentPage='branch';
+    active=document.getElementById('loginBranch')?.value||'';
+    editingIndex=-1;
+    adminArea.classList.add('hidden');
+    branchArea.classList.remove('hidden');
+    branchName.textContent='निवडलेली शाखा: '+active;
+    branchDisplay.value=active;
+    date.value=getLatestAdminRequestDate();
+    loadForm();
   }
+  if(typeof setNavForSession==='function')setNavForSession();
+}
+function logout(){
+  window.isLoggedIn=false;
+  active='';
+  editingIndex=-1;
+  password.value='';
+  branchArea.classList.add('hidden');
+  adminArea.classList.add('hidden');
+  document.getElementById('adminBranchCheck')?.classList.add('hidden');
+  loginBox.classList.add('hidden');
+  role='branch';
+  setNavForSession();
+  showPage('home');
+}
+function populateAdminDateList(){
+  const list=document.getElementById('adminDateList');
+  if(!list)return;
+  const dates=readAdminRequests().map(x=>String(x.date)).filter(Boolean).sort().reverse();
+  list.innerHTML=dates.map(d=>'<option value="'+esc(d)+'"></option>').join('');
+}
+function loadForm(){
+  populateAdminDateList();
+  const d=document.getElementById('date')?.value||getLatestAdminRequestDate();
+  const q=getBranchConfigForDate(d);
 
-  // सुरुवातीला होम पेज दाखवा
-  showHome();
+  branchFormTitle.textContent=q.title||'माहिती मागणी';
+  branchRequestLetter.innerHTML='<b>'+esc(q.title||'माहिती मागणी')+'</b><br>'+esc(q.letter||'');
+  requestFields();
+
+  const existing=data().entries.find(e=>e.branch===active&&e.date===d);
+  code.value=existing?.code||'';
+  address.value=existing?.address||'';
+  manager.value=existing?.manager||'';
+  phone.value=existing?.phone||'';
+  email.value=existing?.email||'';
+  staff.value=existing?.staff||'';
+  depositTarget.value=existing?.depositTarget||'';
+  remarks.value=existing?.remarks||'';
+
+  (q.fields||[]).forEach((field,i)=>{
+    const el=document.getElementById('custom_'+i);
+    if(el)el.value=existing?.custom?.[i]||'';
+  });
+  branchDisplay.value=active;
+}
+
+date.addEventListener('change',()=>{
+  if(editingIndex>=0)return;
+  loadForm();
+});
+
+form.addEventListener('submit',e=>{
+  e.preventDefault();
+  const all=data(),q=currentConfig();
+  const entry={branch:active,date:date.value,code:code.value,address:address.value,manager:manager.value,phone:phone.value,email:email.value,staff:staff.value,depositTarget:depositTarget.value,remarks:remarks.value,custom:(q.fields||[]).map((x,i)=>document.getElementById('custom_'+i)?.value||''),fieldNames:[...(q.fields||[])],title:q.title||'माहिती मागणी',letter:q.letter||'',updated:new Date().toLocaleString('mr-IN')};
+  if(editingIndex>=0) all.entries[editingIndex]=entry;
+  else {
+    const idx=all.entries.findIndex(x=>x.branch===active&&x.date===entry.date);
+    if(idx>=0)all.entries[idx]=entry;else all.entries.push(entry);
+  }
+  save(all);editingIndex=-1;
+  alert('माहिती जतन झाली. त्या तारखेचे Admin ने ठरवलेले कॉलम कायम राहतील.');
+  branchArea.classList.add('hidden');showPage('home');
+});
+
+function renderHome(){
+  const dates=new Map([
+    ['2026-08-16','कर्मचारी संख्या व नाव'],
+    ['2026-08-14','LMS माहिती']
+  ]);
+  let requests=[];
+  try{ requests=readAdminRequests()||[]; }catch(e){}
+  const entries=data().entries||[];
+  requests.forEach(r=>{if(r&&r.date)dates.set(String(r.date),r.title||'माहिती मागणी');});
+  entries.forEach(e=>{if(e&&e.date&&!dates.has(String(e.date)))dates.set(String(e.date),e.title||configForDate(e.date).title||'माहिती मागणी');});
+  const list=Array.from(dates.entries()).sort((a,b)=>b[0].localeCompare(a[0]));
+  homeRows.innerHTML=list.map(([d,t])=>'<tr><td>'+esc(fmtDate(d))+'</td><td><button class="btn out" style="padding:6px 10px" onclick="showHomeDetails('+JSON.stringify(d)+','+JSON.stringify(t)+')">'+esc(t)+'</button></td></tr>').join('');
+}
+function showHomeDetails(d,t){
+  const entries=data().entries.filter(e=>e.date===d&&(e.title||configForDate(d).title)===t);
+  homeDetails.classList.remove('hidden');homeDetailsTitle.textContent=fmtDate(d)+' — '+t;
+  const fieldNames=[...new Set(entries.flatMap(e=>e.fieldNames||[]))];
+  let h='<table><thead><tr><th>शाखा</th><th>व्यवस्थापक</th><th>कर्मचारी</th>';
+  fieldNames.forEach(x=>h+='<th>'+esc(x)+'</th>');
+  h+='<th>इतर माहिती</th></tr></thead><tbody>';
+  entries.forEach(e=>{
+    h+='<tr><td>'+esc(e.branch)+'</td><td>'+esc(e.manager||'-')+'</td><td>'+esc(e.staff||'-')+'</td>';
+    fieldNames.forEach(fn=>{const ix=(e.fieldNames||[]).indexOf(fn);h+='<td>'+esc(ix>=0?(e.custom||[])[ix]||'-':'-')+'</td>';});
+    h+='<td>'+esc(e.remarks||'-')+'</td></tr>';
+  });
+  h+='</tbody></table>';homeDetailsBody.innerHTML=h;
+}
+function closeHomeDetails(){homeDetails.classList.add('hidden');}
+
+function renderAdminHistory(){
+  const list=readAdminRequests().slice().sort((a,b)=>String(b.date).localeCompare(String(a.date)));
+  const box=document.getElementById('adminHistory');
+  if(!box)return;
+  box.innerHTML=list.length?'<table><thead><tr><th>दिनांक</th><th>माहितीचे शीर्षक</th><th>एडिट</th></tr></thead><tbody>'+list.map(x=>'<tr><td>'+esc(fmtDate(x.date))+'</td><td>'+esc(x.title||'माहिती मागणी')+'</td><td><button class="btn out" type="button" onclick="selectAdminRequest('+JSON.stringify(x.date)+')">Edit</button></td></tr>').join('')+'</tbody></table>':'<p class="muted">अद्याप Admin माहिती मागणी जतन केलेली नाही.</p>';
+}
+function selectAdminRequest(d){
+  reqDate.value=d;addRequestPanel();document.getElementById('requestPanel')?.scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+function renderAdmin(){
+  const entries=data().entries.slice().sort((a,b)=>(b.date||'').localeCompare(a.date||''));
+  submitted.textContent=entries.length;
+  const submittedBranches=new Set(entries.map(e=>e.branch)).size;
+  pending.textContent=Math.max(0,17-submittedBranches);
+  renderAdminHistory();
+  rows.innerHTML=entries.length?entries.map((e,i)=>'<tr><td>'+esc(fmtDate(e.date))+'</td><td>'+esc(e.branch)+'</td><td>'+esc(e.title||requestData().title)+'</td><td>जमा</td><td><button class="btn out" style="padding:5px 9px" onclick="editEntry('+i+')">एडिट</button></td></tr>').join(''):'<tr><td colspan="5" class="muted">अद्याप नोंदी नाहीत.</td></tr>';
+  totals.innerHTML='<tr style="background:#e6f3f3;font-weight:700"><td colspan="5">एकूण दिनांकवार नोंदी: '+entries.length+' · माहिती भरलेल्या शाखा: '+submittedBranches+'</td></tr>';
+}
+function editEntry(sortedIndex){
+  const entries=data().entries.slice().sort((a,b)=>(b.date||'').localeCompare(a.date||''));
+  const target=entries[sortedIndex]; if(!target)return;
+  const originalIndex=data().entries.findIndex(e=>e===target);
+  active=target.branch;editingIndex=originalIndex;adminArea.classList.add('hidden');branchArea.classList.remove('hidden');
+  backAdmin.classList.remove('hidden');formBackAdmin.classList.remove('hidden');branchName.textContent='Admin एडिट: '+active;branchDisplay.value=active;date.value=target.date;loadForm();
+}
+
+function csv(){
+  const a=data().entries,h=['शाखा','दिनांक','माहितीचे शीर्षक','कोड','पत्ता','व्यवस्थापक','मोबाईल','ई-मेल','कर्मचारी','ठेव इष्टांक','अतिरिक्त कॉलम/माहिती','इतर माहिती','अद्ययावत'];
+  const q=x=>'"'+String(x??'').replaceAll('"','""')+'"';
+  const rows=a.map(r=>[r.branch,r.date,r.title,r.code,r.address,r.manager,r.phone,r.email,r.staff,r.depositTarget,(r.fieldNames||[]).map((f,i)=>f+': '+((r.custom||[])[i]||'')).join(' | '),r.remarks,r.updated]);
+  const t=[h,...rows].map(r=>r.map(q).join(',')).join('\n');
+  const u=URL.createObjectURL(new Blob(['\ufeff'+t],{type:'text/csv;charset=utf-8'})),l=document.createElement('a');l.href=u;l.download='bhusawal-dinankwar-mahiti.csv';l.click();URL.revokeObjectURL(u);
+}
+function excel(){csv();}
+
+function downloadReport(size){
+  const a=data().entries, q=requestData(), esc2=x=>String(x||'').replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;');
+  let head=['शाखा','दिनांक','माहितीचे शीर्षक','व्यवस्थापक','मोबाईल','कर्मचारी'].concat(q.fields).concat(['इतर माहिती']);
+  let rows=a.map(r=>'<tr>'+[r.branch,r.date,r.title,r.manager,r.phone,r.staff].concat(q.fields.map((x,i)=>r.custom?.[i]||'-')).concat([r.remarks]).map(x=>'<td>'+esc2(x)+'</td>').join('')+'</tr>').join('');
+  let html='<!doctype html><html lang="mr"><meta charset="utf-8"><title>भुसावळ तालुका दिनांकवार रिपोर्ट</title><style>@page{size:'+size+' landscape;margin:10mm}body{font-family:Arial,sans-serif;color:#173c52}h1,p{text-align:center}h1{font-size:20px;margin:0}table{border-collapse:collapse;width:100%;font-size:9pt}th{background:#004a79;color:#fff}th,td{border:1px solid #789;padding:5px;text-align:left;vertical-align:top}</style><body><h1>दि. जळगाव जिल्हा मध्यवर्ती सहकारी बँक लि., जळगाव</h1><p>भुसावळ तालुका — दिनांकवार शाखा माहिती</p><table><thead><tr>'+head.map(x=>'<th>'+esc2(x)+'</th>').join('')+'</tr></thead><tbody>'+rows+'</tbody></table></body></html>';
+  const u=URL.createObjectURL(new Blob([html],{type:'text/html;charset=utf-8'})),l=document.createElement('a');l.href=u;l.download='bhusawal-dinankwar-report-'+size+'.html';l.click();URL.revokeObjectURL(u);
+}
+
+(function(){
+  migrateLegacyAdminRequests();
+  if(!readAdminRequests().length){
+    writeAdminRequests([
+      {date:'2026-08-16',title:'कर्मचारी संख्या व नाव',letter:'सर्व शाखांनी आवश्यक माहिती निर्धारित वेळेत भरावी.',fields:[]},
+      {date:'2026-08-14',title:'LMS माहिती',letter:'सर्व शाखांनी आवश्यक माहिती निर्धारित वेळेत भरावी.',fields:[]}
+    ]);
+  }
+  ensureRequestVisible();renderHome();mode('branch');setNavForSession();
+})();
 </script>
-
-</body>
-</html>
+</body></html>
