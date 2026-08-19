@@ -386,13 +386,22 @@ function saveAdminRequest(){
   const d = document.getElementById('reqDate').value;
   if(!d){ alert('दिनांक निवडा'); return; }
 
-  const cleanedColumns = builderColumns.map(col => ({
-    title: col.title.trim(),
-    subColumns: (col.subColumns || []).map(s => s.trim()).filter(s => s !== '')
-  })).filter(col => col.title !== '');
+  // नाव लिहिलेले नसेल तरी सर्व Sub-columns सेव्ह करा (डिफॉल्ट नाव देऊन)
+  const cleanedColumns = builderColumns.map(col => {
+    const mainTitle = (col.title || '').trim() || 'कॉलम';
+    const subs = (col.subColumns || []).map((s, idx) => {
+      const subName = (s || '').trim();
+      return subName !== '' ? subName : `भाग ${idx + 1}`; // नाव नसेल तर ऑटोमॅटिक भाग १, भाग २ नाव देईल
+    });
+
+    return {
+      title: mainTitle,
+      subColumns: subs
+    };
+  }).filter(col => col.title !== '');
   
   if(cleanedColumns.length === 0){
-    alert('कृपया कमीत कमी एक कॉलम व sub-column प्रविष्ट करा!');
+    alert('कृपया कमीत कमी एक मुख्य कॉलम जोडा!');
     return;
   }
 
@@ -409,37 +418,10 @@ function saveAdminRequest(){
   else list.push(reqData);
 
   saveRequests(list);
-  alert('Admin कडून मागणी व Sub-columns यशस्विरित्या जतन झाले!');
+  alert('Admin कडून सर्व ५ च्या ५ Sub-columns यशस्विरित्या सेव्ह झाले आहेत!');
   renderAdminHistory();
 }
 
-function renderAdminHistory(){
-  const list = getRequests().sort((a,b)=>b.date.localeCompare(a.date));
-  const box = document.getElementById('adminHistory');
-  if(!list.length){ box.innerHTML = '<p class="hint">अद्याप माहिती मागणी नाही.</p>'; return; }
-
-  box.innerHTML = `
-    <table>
-      <thead><tr><th>दिनांक</th><th>शीर्षक</th><th>कॉलम संख्या</th><th>कृती</th></tr></thead>
-      <tbody>
-        ${list.map(r => `
-          <tr>
-            <td>${esc(fmtDate(r.date))}</td>
-            <td>${esc(r.title)}</td>
-            <td>${(r.columns||[]).length}</td>
-            <td><button class="btn out sm" onclick="editRequest('${r.date}')">Edit / पाहा</button></td>
-          </tr>
-        `).join('')}
-      </tbody>
-    </table>`;
-}
-
-function editRequest(d){
-  document.getElementById('reqDate').value = d;
-  loadAdminRequestForDate();
-}
-
-// BRANCH LOGIC (HEADER FIX APPLIED HERE)
 function loadBranchForm(){
   const d = document.getElementById('branchDate').value || today();
   const req = getRequestForDate(d);
@@ -447,7 +429,7 @@ function loadBranchForm(){
   container.innerHTML = '';
 
   if(!req || !req.columns || req.columns.length === 0){
-    document.getElementById('branchRequestLetter').innerHTML = '<b>सूचना:</b> या तारखेसाठी Admin कडून कोणतीही विशेष मागणी उपलब्ध नाही. कृपया Admin Panel मध्ये जाऊन माहिती मागणी जतन करा.';
+    document.getElementById('branchRequestLetter').innerHTML = '<b>सूचना:</b> या तारखेसाठी Admin कडून कोणतीही विशेष मागणी उपलब्ध नाही.';
     return;
   }
 
@@ -505,59 +487,6 @@ function loadBranchForm(){
     if(document.getElementById('phone')) document.getElementById('phone').value = existing.phone || '';
     if(document.getElementById('remarks')) document.getElementById('remarks').value = existing.remarks || '';
   }
-}
-
-function saveBranchEntry(e){
-  e.preventDefault();
-  const d = document.getElementById('branchDate').value;
-  const req = getRequestForDate(d);
-  
-  let customVals = [];
-  let idx = 0;
-  while(document.getElementById('branch_input_' + idx)){
-    customVals.push(document.getElementById('branch_input_' + idx).value);
-    idx++;
-  }
-
-  const entry = {
-    branch: activeBranch,
-    date: d,
-    manager: document.getElementById('manager').value,
-    phone: document.getElementById('phone').value,
-    remarks: document.getElementById('remarks').value,
-    title: req ? req.title : 'माहिती नोंदणी',
-    custom: customVals
-  };
-
-  const entries = getEntries();
-  const i = entries.findIndex(x => x.branch === activeBranch && x.date === d);
-  if(i >= 0) entries[i] = entry; else entries.push(entry);
-
-  saveEntries(entries);
-  alert('माहिती यशस्विरित्या जतन झाली!');
-  showPage('home');
-}
-
-// HOME DISPLAY
-function renderHome(){
-  const entries = getEntries();
-  const requests = getRequests();
-  const dates = new Map();
-
-  requests.forEach(r => dates.set(r.date, r.title));
-  entries.forEach(e => dates.set(e.date, e.title));
-
-  const list = Array.from(dates.entries()).sort((a,b) => b[0].localeCompare(a[0]));
-  const tbody = document.getElementById('homeRows');
-  
-  if(!list.length){ tbody.innerHTML = '<tr><td colspan="2" class="hint">कोणतीही माहिती उपलब्ध नाही.</td></tr>'; return; }
-
-  tbody.innerHTML = list.map(([d, title]) => `
-    <tr>
-      <td>${esc(fmtDate(d))}</td>
-      <td><button class="btn out sm" onclick="showHomeDetails('${d}', '${esc(title)}')">${esc(title)}</button></td>
-    </tr>
-  `).join('');
 }
 
 function showHomeDetails(d, title){
