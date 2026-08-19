@@ -825,6 +825,7 @@ function renderBranchForm(){
     '<div class="full hint">या तारखेसाठी Admin ने कोणतेही Columns जतन केलेले नाहीत.</div>';
 }
 function saveBranch(){
+  function saveBranch(){
   const d=$('branchDate').value,q=req(d);
   if(!q){alert('या तारखेसाठी Admin माहिती उपलब्ध नाही.');return}
 
@@ -835,11 +836,45 @@ function saveBranch(){
       const s=String(f||'').trim(),p=s.split(/\s+-\s+/);
       const main=p[0]||s,sub=p.length>1?p.slice(1).join(' - ').trim():'';
       let c=map.find(x=>x.title===main);
-      if(!c){c={title:main,subs:[]};map.push(c)}
+      if(!c){c={title:main,subs:[]};map.push(c);}
       if(sub&&!c.subs.includes(sub))c.subs.push(sub);
     });
     cols=map;
   }
+
+  const values=[];
+  let i=0;
+  cols.forEach(c=>{
+    const subs=Array.isArray(c.subs)?c.subs.filter(x=>String(x).trim()):[];
+    if(subs.length)subs.forEach(()=>values.push($('bf_'+(i++)).value||''));
+    else if(String(c.title||'').trim())values.push($('bf_'+(i++)).value||'');
+  });
+
+  // LocalStorage मध्ये जतन करणे
+  const all=branchData();
+  if(!all[activeBranch])all[activeBranch]={};
+  all[activeBranch][d]={branch:activeBranch,date:d,values:values,updated:new Date().toISOString()};
+  saveBranchData(all);
+
+  // Google Sheet वर डेटा पाठवणे
+  if(typeof SHEET_API !== 'undefined' && SHEET_API){
+    fetch(SHEET_API,{
+      method:'POST',
+      mode:'no-cors',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({branch:activeBranch,date:d,values:values})
+    }).then(()=>{
+      alert('माहिती Google Sheet मध्ये यशस्वीरीत्या जतन झाली!');
+      renderBranchForm();
+    }).catch(err=>{
+      console.error(err);
+      alert('गूगल शीटमध्ये डेटा पाठवताना अडचण आली.');
+    });
+  } else {
+    alert('माहिती लोकल जतन झाली!');
+    renderBranchForm();
+  }
+}}
 
   const values=[];
   let i=0;
