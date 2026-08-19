@@ -4,27 +4,51 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>JDCC भुसावळ — शाखा माहिती प्रणाली</title>
+<!-- FontAwesome Icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Hind:wght@400;500;600;700&family=Poppins:wght@500;600;700&display=swap');
-:root{--navy:#004a79;--teal:#009a9c;--gold:#b9975b;--pale:#f2f8f8;--ink:#173c52;--line:#d5e4e7}
+:root{--navy:#003b68;--teal:#009a9c;--gold:#b9975b;--pale:#f2f8f8;--ink:#173c52;--line:#d5e4e7}
 *{box-sizing:border-box}
 body{margin:0;background:var(--pale);font-family:Hind,Arial,sans-serif;color:#304b5b}
-.top{background:#003b68;color:white;font-size:13px;padding:9px 0}
+
+/* Header Styles */
+header{background:white;padding:15px 0 10px;box-shadow:0 2px 8px rgba(0,0,0,0.05)}
 .wrap{width:min(1180px,94%);margin:auto}
-.top .wrap{display:flex;justify-content:space-between}
-header{background:white}
-.brand{min-height:105px;display:flex;align-items:center;gap:16px}
-.logo{width:105px;height:105px;object-fit:contain;border-radius:8px;background:#fff}
-.brand h1{margin:0;color:var(--navy);font:700 20px Poppins,sans-serif}
-.brand p{margin:3px 0;color:#71818b}
-.pill{margin-left:auto;background:#e5f5f3;color:#08746f;border-left:4px solid var(--teal);padding:9px 13px;font-weight:600}
-.hero{background:linear-gradient(110deg,#004a79e8,#008e9bd9);color:#fff;padding:30px 0}
-.hero h2{font-size:30px;margin:0}
-.hero p{font-size:16px;margin:5px 0 0}
+.brand{display:flex;align-items:center;gap:15px}
+.logo-box{width:70px;height:70px;display:flex;align-items:center;justify-content:center}
+.logo-box img{max-width:100%;max-height:100%;object-fit:contain}
+.brand h1{margin:0;color:var(--navy);font:700 21px Poppins,sans-serif}
+.brand p{margin:2px 0 0;color:#60727d;font-size:14px}
+.pill{margin-left:auto;background:#fff;color:#007bff;border:1px solid #cce5e5;padding:8px 15px;font-weight:600;border-radius:5px;font-size:13px;display:flex;align-items:center;gap:8px}
+
+/* Nav Buttons */
+.main-nav{display:flex;gap:10px;margin-top:15px;flex-wrap:wrap}
+.nav-btn{border:1px solid #b8d1d8;border-radius:5px;padding:8px 18px;color:var(--navy);background:#fff;font:600 14px Hind;cursor:pointer;display:inline-flex;align-items:center;gap:8px;transition:all 0.2s}
+.nav-btn.active{background:var(--navy);color:#fff;border-color:var(--navy)}
+.nav-btn:hover:not(.active){background:#f0f7fa}
+
+/* Hero Section */
+.hero{
+  position:relative;
+  background:linear-gradient(90deg, rgba(0, 59, 104, 0.92) 0%, rgba(0, 74, 121, 0.75) 50%, rgba(0, 59, 104, 0.3) 100%), 
+             url('https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=1600&auto=format&fit=crop');
+  background-size:cover;
+  background-position:center;
+  color:#fff;
+  padding:50px 0;
+  min-height:240px;
+  display:flex;
+  align-items:center;
+}
+.hero h2{font-size:34px;margin:0 0 10px;font-weight:700}
+.hero p{font-size:16px;margin:0;opacity:0.9}
+
+/* UI Elements */
 .screen{margin:25px auto}
 .login{max-width:520px;margin:0 auto;background:#fff;padding:25px;border-radius:9px;box-shadow:0 7px 25px #123d521b}
 .login h3,.panel h3{margin:0;color:var(--ink);font-size:22px}
-.hint{margin:5px 0 15px;color:#6c7e87}
+.hint{margin:4px 0 15px;color:#6c7e87;font-size:14px}
 .tabs{display:flex;margin-bottom:20px;border-bottom:1px solid var(--line)}
 .tabs button{border:0;background:none;padding:10px 16px;color:#4f6877;font:600 15px Hind;cursor:pointer}
 .tabs button.on{color:var(--navy);border-bottom:3px solid var(--teal)}
@@ -41,7 +65,7 @@ button{cursor:pointer}
 .warning{font-size:13px;background:#fff9e9;border-left:4px solid var(--gold);padding:10px;margin-top:15px;color:#705625}
 .hidden{display:none!important}
 .bar{display:flex;justify-content:space-between;align-items:center;margin-bottom:15px;flex-wrap:wrap;gap:10px}
-.panel{background:#fff;border-radius:8px;box-shadow:0 5px 19px #16425513;border:1px solid #dfebec;padding:22px;margin-bottom:20px}
+.panel{background:#fff;border-radius:8px;box-shadow:0 3px 12px rgba(0,0,0,0.05);border:1px solid #dfebec;padding:20px;margin-bottom:20px}
 .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:15px}
 .full{grid-column:1/-1}
 .actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
@@ -57,7 +81,7 @@ th{background:#e6f3f3;color:#29556a;font-weight:600}
 /* PRINT STYLES */
 @media print {
   body * { visibility: hidden; }
-  .top, header, .hero, .main-nav, .actions, .foot, #homePage, #loginBox, #branchArea, .col-builder-grid, .bar button, .bar label, .bar input { display: none !important; }
+  header, .hero, .main-nav, .actions, .foot, #homePage, #loginBox, #branchArea, .col-builder-grid, .bar button, .bar label, .bar input { display: none !important; }
   #consolidatedReportBox, #consolidatedReportBox * { visibility: visible; }
   #consolidatedReportBox { position: absolute; left: 0; top: 0; width: 100%; font-size: 11px; }
   table { width: 100% !important; border-collapse: collapse !important; }
@@ -73,32 +97,55 @@ body.print-a3 { page: printA3; }
 </head>
 <body>
 
-<div class="top"><div class="wrap"><span>दि. जळगाव जिल्हा मध्यवर्ती सहकारी बँक लि., जळगाव</span><span>भुसावळ तालुका</span></div></div>
-
 <header>
-  <div class="wrap brand">
-    <div>
-      <h1>दि. जळगाव जिल्हा मध्यवर्ती सहकारी बँक लि. जळगाव</h1>
-      <p>भुसावळ तालुका — शाखा माहिती संकलन प्रणाली</p>
+  <div class="wrap">
+    <div class="brand">
+      <div class="logo-box">
+        <!-- तुमचा बँकींग लोगो -->
+        <img src="logo.jpg" alt="JDCC Bank Logo" onerror="this.onerror=null; this.src='https://via.placeholder.com/70?text=JDCC';">
+      </div>
+      <div>
+        <h1>दि. जळगाव जिल्हा मध्यवर्ती सहकारी बँक लि., जळगाव</h1>
+        <p>भुसावळ तालुका — शाखा माहिती संकलन प्रणाली</p>
+      </div>
+      <div class="pill"><i class="fa-solid fa-building-columns"></i> 17 शाखांसाठी माहिती नोंदणी</div>
     </div>
-    <div class="pill">१७ शाखांसाठी माहिती नोंदणी</div>
+    
+    <nav class="main-nav">
+      <button id="btnHome" class="nav-btn active" onclick="showPage('home')">
+        <i class="fa-solid fa-house"></i> मुख्यपृष्ठ
+      </button>
+      <button id="btnBranch" class="nav-btn" onclick="showPage('branch')">
+        <i class="fa-solid fa-user"></i> शाखा लॉगिन
+      </button>
+      <button id="btnAdmin" class="nav-btn" onclick="showPage('admin')">
+        <i class="fa-solid fa-building-columns"></i> विभागीय कार्यालय प्रवेश
+      </button>
+    </nav>
   </div>
-  <nav class="wrap main-nav" style="display:flex;gap:10px;padding:0 0 15px;flex-wrap:wrap">
-    <button id="navHome" class="btn" onclick="showPage('home')">मुख्यपृष्ठ</button>
-    <button id="navBranch" class="btn out" onclick="showPage('branch')">शाखा लॉगिन</button>
-    <button id="navOffice" class="btn out" onclick="showPage('admin')">विभागीय कार्यालय प्रवेश</button>
-  </nav>
 </header>
 
-<section class="hero"><div class="wrap"><h2>शाखा माहिती संकलन</h2><p>शाखांची माहिती एकाच ठिकाणी जमा व एकत्रीकरणासाठी प्रणाली.</p></div></section>
+<!-- Hero Section -->
+<section class="hero">
+  <div class="wrap">
+    <div>
+      <h2>शाखा माहिती संकलन</h2>
+      <p>शाखांची माहिती एकाच ठिकाणी जमा व एकत्रीकरणासाठी प्रणाली.</p>
+    </div>
+  </div>
+</section>
 
 <main class="wrap screen">
 
   <!-- HOME PAGE -->
   <section id="homePage">
-    <div class="bar"><div><h3>मुख्यपृष्ठ — माहिती संकलन प्रणाली</h3><span class="muted">कृपया लॉगिन करून माहिती प्रविष्ट करा.</span></div></div>
-    <section class="panel">
-      <p>प्रणालीमध्ये प्रवेश करण्यासाठी वर दिलेल्या मेनूचा वापर करा.</p>
+    <div style="margin-bottom:15px;">
+      <h3 style="color:var(--navy);margin:0 0 4px;font-size:22px;">मुख्यपृष्ठ — दिनांकवार माहिती</h3>
+      <span class="hint">दररोजची माहिती फक्त तारीख व माहितीच्या शीर्षकानुसार येथे दिसेल.</span>
+    </div>
+    
+    <section class="panel" style="padding:0; overflow:hidden;">
+      <div id="homeRequestsBox"></div>
     </section>
   </section>
 
@@ -258,15 +305,42 @@ function clearAllData(){
   }
 }
 
+function renderHomePageList(){
+  var reqs = getRequests();
+  var box = document.getElementById('homeRequestsBox');
+  
+  if(reqs.length === 0){
+    box.innerHTML = '<table><thead><tr><th style="width:30%;">तारीख</th><th>माहितीचे शीर्षक</th></tr></thead><tbody><tr><td colspan="2" style="text-align:center;color:#888;padding:20px;">कोणतीही नोंदणी उपलब्ध नाही.</td></tr></tbody></table>';
+    return;
+  }
+
+  // Sort descending by date
+  reqs.sort(function(a,b){ return new Date(b.date) - new Date(a.date); });
+
+  var html = '<table><thead><tr><th style="width:30%;">तारीख</th><th>माहितीचे शीर्षक</th></tr></thead><tbody>';
+  reqs.forEach(function(r){
+    html += '<tr><td><b>' + fmtDate(r.date) + '</b></td><td>' + esc(r.title) + '</td></tr>';
+  });
+  html += '</tbody></table>';
+  box.innerHTML = html;
+}
+
 function showPage(p){
   document.getElementById('homePage').classList.add('hidden');
   document.getElementById('loginBox').classList.add('hidden');
   document.getElementById('branchArea').classList.add('hidden');
   document.getElementById('adminArea').classList.add('hidden');
 
+  document.getElementById('btnHome').classList.remove('active');
+  document.getElementById('btnBranch').classList.remove('active');
+  document.getElementById('btnAdmin').classList.remove('active');
+
   if(p === 'home'){
     document.getElementById('homePage').classList.remove('hidden');
+    document.getElementById('btnHome').classList.add('active');
+    renderHomePageList();
   } else if(p === 'branch'){
+    document.getElementById('btnBranch').classList.add('active');
     if(window.isLoggedIn && activeRole === 'branch'){
       document.getElementById('branchArea').classList.remove('hidden');
       loadBranchForm();
@@ -275,6 +349,7 @@ function showPage(p){
       document.getElementById('loginBox').classList.remove('hidden');
     }
   } else if(p === 'admin'){
+    document.getElementById('btnAdmin').classList.add('active');
     if(window.isLoggedIn && activeRole === 'admin'){
       document.getElementById('adminArea').classList.remove('hidden');
       initAdminPanel();
@@ -421,6 +496,7 @@ function saveAdminRequest(){
   saveRequests(list);
   alert('Admin कडून माहिती मागणी यशस्विरित्या जतन झाली!');
   renderConsolidatedReport();
+  renderHomePageList();
 }
 
 function renderConsolidatedReport(){
@@ -435,7 +511,7 @@ function renderConsolidatedReport(){
   var box = document.getElementById('consolidatedReportBox');
 
   if(!req || !req.columns || req.columns.length === 0){
-    box.innerHTML = '<p class="hint" style="color:red;">दिनांक ' + fmtDate(d) + ' साठी Admin कडून कोणतीही माहिती मागणी तयार केलेली नाही.</p>';
+    box.innerHTML = '<p class="hint" style="color:red;padding:10px;">दिनांक ' + fmtDate(d) + ' साठी Admin कडून कोणतीही माहिती मागणी तयार केलेली नाही.</p>';
     return;
   }
 
