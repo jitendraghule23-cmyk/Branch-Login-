@@ -3519,4 +3519,19 @@ window.addEventListener('load', function () {
       }).join('');
   }
 });
+</script><script>
+window.addEventListener('load', function () {
+  const loginBranch = document.getElementById('loginBranch');
+
+  if (loginBranch && typeof BRANCHES !== 'undefined') {
+    loginBranch.innerHTML = '';
+
+    BRANCHES.forEach(function(branch) {
+      const option = document.createElement('option');
+      option.value = branch;
+      option.textContent = branch;
+      loginBranch.appendChild(option);
+    });
+  }
+});
 </script></body></html>
