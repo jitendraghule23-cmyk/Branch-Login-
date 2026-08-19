@@ -563,16 +563,24 @@ function showHome(){
   renderHome();
 }
 function showLogin(which){
-  hideAll();$('loginBox').classList.remove('hidden');
+  hideAll();
+  $('loginBox').classList.remove('hidden');
   $('branchTab').classList.toggle('on',which==='branch');
   $('adminTab').classList.toggle('on',which==='admin');
   $('loginTitle').textContent=which==='admin'?'Admin लॉगिन':'शाखा लॉगिन';
-  $('loginHint').textContent=which==='admin'?'विभागीय कार्यालय भुसावळ — Admin पासवर्ड टाका.':'आपली शाखा निवडा आणि पासवर्ड टाका.';
+  $('loginHint').textContent=which==='admin'?'विभागीय कार्यालय भुसावळ - Admin पासवर्ड टाका.':'आपली शाखा निवडा आणि पासवर्ड टाका.';
   $('loginBranch').classList.toggle('hidden',which==='admin');
   $('branchLabel').classList.toggle('hidden',which==='admin');
+
+  // ड्रॉपडाऊनमध्ये शाखांची नावे भरण्यासाठी ही ओळ जोडा:
+  if(which==='branch' && typeof renderBranchSelectOptions === 'function'){
+    renderBranchSelectOptions();
+  }
+
   $('password').value='';
   $('password').focus();
   window.loginMode=which;
+}
 }
 function showBranch(){
   if(!loggedIn){showLogin('branch');nav('navBranch');return}
