@@ -3508,30 +3508,5 @@ function printAdminReport(size,date){
   });
 })();
 </script>
-<script>
-window.addEventListener('load', function () {
-  const branch = document.getElementById('loginBranch');
-  if (branch && typeof BRANCHES !== 'undefined') {
-    branch.innerHTML =
-      '<option value="">-- शाखा निवडा --</option>' +
-      BRANCHES.map(function(b) {
-        return '<option value="' + b + '">' + b + '</option>';
-      }).join('');
-  }
-});
-</script><script>
-window.addEventListener('load', function () {
-  const loginBranch = document.getElementById('loginBranch');
 
-  if (loginBranch && typeof BRANCHES !== 'undefined') {
-    loginBranch.innerHTML = '';
-
-    BRANCHES.forEach(function(branch) {
-      const option = document.createElement('option');
-      option.value = branch;
-      option.textContent = branch;
-      loginBranch.appendChild(option);
-    });
-  }
-});
 </script></body></html>
