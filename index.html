@@ -6,26 +6,25 @@ function renderConsolidatedReport(){
   const box = document.getElementById('consolidatedReportBox');
 
   if(!req || !req.columns || req.columns.length === 0){
-    box.innerHTML = `<p class="hint" style="color:red;">दिनांक ${fmtDate(d)} साठी Admin कडून कोणतीही माहिती मागणी तयार केलेली नाही.</p>`;
+    box.innerHTML = '<p class="hint" style="color:red;">दिनांक ' + fmtDate(d) + ' साठी Admin कडून कोणतीही माहिती मागणी तयार केलेली नाही.</p>';
     return;
   }
 
-  // Find max sub-columns count among columns
   let maxSubs = 1;
   req.columns.forEach(c => {
     if((c.subColumns || []).length > maxSubs) maxSubs = c.subColumns.length;
   });
 
-  let html = `<table style="width:100%; border-collapse:collapse; background:#fff; font-size:14px;"><thead>`;
-  let headerRow = `<tr style="background:var(--navy); color:#fff;">
-    <th style="padding:10px; border:1px solid #c7dadd; text-align:center;">अ.क्र.</th>
-    <th style="padding:10px; border:1px solid #c7dadd; text-align:left;">शाखेचे नाव</th>
-    <th style="padding:10px; border:1px solid #c7dadd; text-align:left;">विवरण / भाग</th>`;
+  let html = '<table style="width:100%; border-collapse:collapse; background:#fff; font-size:14px;"><thead>';
+  let headerRow = '<tr style="background:var(--navy); color:#fff;">' +
+    '<th style="padding:10px; border:1px solid #c7dadd; text-align:center;">अ.क्र.</th>' +
+    '<th style="padding:10px; border:1px solid #c7dadd; text-align:left;">शाखेचे नाव</th>' +
+    '<th style="padding:10px; border:1px solid #c7dadd; text-align:left;">विवरण / भाग</th>';
 
   req.columns.forEach(col => {
-    headerRow += `<th style="padding:10px; border:1px solid #c7dadd; text-align:center;">${esc(col.title)}</th>`;
+    headerRow += '<th style="padding:10px; border:1px solid #c7dadd; text-align:center;">' + esc(col.title) + '</th>';
   });
-  headerRow += `</tr></thead><tbody>`;
+  headerRow += '</tr></thead><tbody>';
   html += headerRow;
 
   let grandTotals = new Array(req.columns.length).fill(0);
@@ -37,18 +36,16 @@ function renderConsolidatedReport(){
 
     for(let sIdx = 0; sIdx < maxSubs; sIdx++){
       const isFirstRow = (sIdx === 0);
-      html += `<tr style="${sIdx === maxSubs - 1 ? 'border-bottom: 1px solid #aaa;' : ''}">`;
+      html += '<tr>';
       
       if(isFirstRow){
-        html += `<td rowspan="${maxSubs + 1}" style="text-align:center; font-weight:600; border:1px solid #c7dadd; vertical-align:top; padding-top:10px;">${bIdx + 1}</td>`;
-        html += `<td rowspan="${maxSubs}" style="font-weight:700; color:var(--navy); border:1px solid #c7dadd; vertical-align:top; padding-top:10px;">${esc(bName)}<br><small style="color:#666; font-weight:normal;">व्य: ${esc(entry?.manager || '-')}</small></td>`;
+        html += '<td rowspan="' + (maxSubs + 1) + '" style="text-align:center; font-weight:600; border:1px solid #c7dadd; vertical-align:top; padding-top:10px;">' + (bIdx + 1) + '</td>';
+        html += '<td rowspan="' + maxSubs + '" style="font-weight:700; color:var(--navy); border:1px solid #c7dadd; vertical-align:top; padding-top:10px;">' + esc(bName) + '<br><small style="color:#666; font-weight:normal;">व्य: ' + esc(entry?.manager || '-') + '</small></td>';
       }
 
-      // Sub-column Label
-      let subName = `भाग ${sIdx + 1}`;
-      html += `<td style="border:1px solid #c7dadd; background:#fbfbfb; font-size:13px; color:#555;">${subName}</td>`;
+      let subName = 'भाग ' + (sIdx + 1);
+      html += '<td style="border:1px solid #c7dadd; background:#fbfbfb; font-size:13px; color:#555;">' + subName + '</td>';
 
-      // Value mapping
       let customValIdx = 0;
       req.columns.forEach((col, cIdx) => {
         const subs = col.subColumns || [];
@@ -64,9 +61,8 @@ function renderConsolidatedReport(){
           customValIdx += 1;
         }
 
-        html += `<td style="text-align:center; border:1px solid #c7dadd;">${esc(val || '-')}</td>`;
+        html += '<td style="text-align:center; border:1px solid #c7dadd;">' + esc(val || '-') + '</td>';
 
-        // Calculate Subtotals & Grand Totals
         if(val !== '' && !isNaN(val)){
           let num = parseFloat(val);
           branchSubtotals[cIdx] += num;
@@ -76,35 +72,35 @@ function renderConsolidatedReport(){
         }
       });
 
-      html += `</tr>`;
+      html += '</tr>';
     }
 
     // BRANCH SUBTOTAL ROW
-    html += `<tr style="background:#e6f3f3; font-weight:700; border-bottom:2px solid var(--navy);">
-      <td style="border:1px solid #c7dadd; color:var(--navy); padding:6px 10px;">${esc(bName)} एकूण (Subtotal)</td>`;
+    html += '<tr style="background:#e6f3f3; font-weight:700; border-bottom:2px solid var(--navy);">' +
+      '<td style="border:1px solid #c7dadd; color:var(--navy); padding:6px 10px;">' + esc(bName) + ' एकूण (Subtotal)</td>';
 
     req.columns.forEach((col, cIdx) => {
       if(isNumericCol[cIdx] && branchSubtotals[cIdx] > 0){
-        html += `<td style="text-align:center; border:1px solid #c7dadd; color:var(--navy);">${branchSubtotals[cIdx]}</td>`;
+        html += '<td style="text-align:center; border:1px solid #c7dadd; color:var(--navy);">' + branchSubtotals[cIdx] + '</td>';
       } else {
-        html += `<td style="text-align:center; border:1px solid #c7dadd; color:#888;">-</td>`;
+        html += '<td style="text-align:center; border:1px solid #c7dadd; color:#888;">-</td>';
       }
     });
-    html += `</tr>`;
+    html += '</tr>';
   });
 
-  // GRAND TOTAL ROW AT THE VERY BOTTOM
-  html += `<tr style="background:var(--navy); color:#fff; font-weight:700; font-size:15px;">
-    <td colspan="3" style="text-align:right; padding:12px; border:1px solid #c7dadd;">सर्व १७ शाखांची एकत्रित एकूण (Grand Total):</td>`;
+  // GRAND TOTAL ROW
+  html += '<tr style="background:var(--navy); color:#fff; font-weight:700; font-size:15px;">' +
+    '<td colspan="3" style="text-align:right; padding:12px; border:1px solid #c7dadd;">सर्व १७ शाखांची एकत्रित एकूण (Grand Total):</td>';
 
   req.columns.forEach((col, cIdx) => {
     if(isNumericCol[cIdx] && grandTotals[cIdx] > 0){
-      html += `<td style="text-align:center; border:1px solid #c7dadd; color:#ffeb3b;">${grandTotals[cIdx]}</td>`;
+      html += '<td style="text-align:center; border:1px solid #c7dadd; color:#ffeb3b;">' + grandTotals[cIdx] + '</td>';
     } else {
       html += `<td style="text-align:center; border:1px solid #c7dadd; color:#ccc;">-</td>`;
     }
   });
 
-  html += `</tr></tbody></table>`;
+  html += '</tr></tbody></table>';
   box.innerHTML = html;
 }
