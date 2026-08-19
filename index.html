@@ -84,7 +84,7 @@
 
   <!-- ४. Admin एरिया -->
   <section id="adminArea" class="hidden">
-  <button class="saveBranch()">माहिती जतन (save) करा </button>
+    <h3>Admin पॅनेल</h3>
     <p>येथे Admin नवीन फॉर्म आणि तारखा सेट करू शकतात.</p>
   </section>
 
@@ -100,7 +100,7 @@
   const REQ_KEY = 'JDCC_SIMPLE_REQUESTS_V1';
   const DATA_KEY = 'JDCC_SIMPLE_BRANCH_DATA_V1';
   
-  // Google Sheet Web App URL (तुमची स्वतःची लिंक इथे ठेवा)
+  // Google Sheet Web App URL
   const SHEET_API = 'https://script.google.com/macros/s/AKfycbwTIdIFHg6fa0goTB4qCR5vP7V4YZ1bwdAf9qfNVjfOJX9-ckq6uZ8Fns3dhZ...';
 
   let activeBranch = '';
@@ -110,12 +110,16 @@
   const $ = id => document.getElementById(id);
 
   function hideAll() {
-    ['homePage', 'loginBox', 'branchArea', 'adminArea'].forEach(id => $(id).classList.add('hidden'));
+    ['homePage', 'loginBox', 'branchArea', 'adminArea'].forEach(id => {
+      const el = $(id);
+      if(el) el.classList.add('hidden');
+    });
   }
 
   function showHome() {
     hideAll();
     $('homePage').classList.remove('hidden');
+    updateNav('navHome');
   }
 
   function showLogin(which) {
@@ -135,6 +139,7 @@
 
   function renderBranchSelectOptions() {
     const sel = $('loginBranch');
+    if(!sel) return;
     let h = '<option value="">-- शाखा निवडा --</option>';
     BRANCHES.forEach(b => { h += `<option value="${b}">${b}</option>`; });
     sel.innerHTML = h;
@@ -147,6 +152,7 @@
       hideAll();
       $('branchArea').classList.remove('hidden');
       $('branchName').textContent = 'निवडलेली शाखा: ' + activeBranch;
+      updateNav('navBranch');
     }
   }
 
@@ -156,7 +162,15 @@
     } else {
       hideAll();
       $('adminArea').classList.remove('hidden');
+      updateNav('navAdmin');
     }
+  }
+
+  function updateNav(activeId) {
+    ['navHome', 'navBranch', 'navAdmin'].forEach(id => {
+      const el = $(id);
+      if(el) el.classList.toggle('active', id === activeId);
+    });
   }
 
   function login() {
@@ -182,9 +196,8 @@
     const d = $('branchDate').value;
     if (!d) { alert('कृपया तारीख निवडा!'); return; }
 
-    const values = ["नमूना डेटा"]; // येथे तुमच्या फॉर्मची व्हॅल्यू येईल
+    const values = ["नमूना डेटा"];
 
-    // Google Sheet वर डेटा पाठवणे
     if (SHEET_API) {
       fetch(SHEET_API, {
         method: 'POST',
@@ -200,7 +213,7 @@
     }
   }
 
-  // पेज उघडल्यावर होम पेज दाखवा
+  // सुरुवातीला होम पेज दाखवा
   showHome();
 </script>
 
