@@ -127,9 +127,7 @@ th{background:#e6f3f3;color:#29556a;font-weight:600}
         <div class="grid">
           <div><label>शाखा</label><input id="branchDisplay" readonly></div>
           <div><label>माहिती दिनांक *</label><input id="branchDate" type="date" required onchange="loadBranchForm()"></div>
-          <div><label>शाखा व्यवस्थापक *</label><input id="manager" required></div>
-          <div><label>मोबाईल क्रमांक *</label><input id="phone" required></div>
-        </div>
+         
 
         <div style="margin-top:20px; border-top: 1px solid var(--line); padding-top:15px;">
           <h4 style="margin:0 0 10px; color:var(--navy)">अतिरिक्त कॉलम माहिती</h4>
@@ -435,52 +433,46 @@ function loadBranchForm(){
 
   document.getElementById('branchRequestLetter').innerHTML = `<b>${esc(req.title)}</b><br>${esc(req.letter||'')}`;
 
-  let tableHtml = `<table style="width:100%; border-collapse:collapse; background:#fff"><thead>`;
-  
-  let row1 = '<tr>';
-  let row2 = '<tr>';
-  let hasSubColumns = false;
-
-  req.columns.forEach(col => {
-    const subs = col.subColumns || [];
-    if(subs.length > 0){
-      hasSubColumns = true;
-      row1 += `<th colspan="${subs.length}" style="text-align:center; background:#e6f3f3; border:1px solid #c7dadd; padding:8px;">${esc(col.title)}</th>`;
-      subs.forEach(sName => {
-        row2 += `<th style="text-align:center; background:#f0f8f8; font-size:13px; color:#173c52; border:1px solid #c7dadd; padding:6px;">${esc(sName)}</th>`;
-      });
-    } else {
-      row1 += `<th rowspan="2" style="text-align:center; background:#e6f3f3; border:1px solid #c7dadd; padding:8px; vertical-align:middle;">${esc(col.title)}</th>`;
-    }
-  });
-
-  row1 += '</tr>';
-  row2 += '</tr>';
-
-  tableHtml += row1;
-  if(hasSubColumns) tableHtml += row2;
-  tableHtml += `</thead><tbody><tr>`;
-
   const existing = getEntries().find(e => e.branch === activeBranch && e.date === d);
-
   let valIdx = 0;
+
+  // Admin सारखे एका खाली एक ग्रिड कार्ड्स (Vertical Cards) तयार करणे
+  let cardsHtml = `<div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap:15px; margin-top:10px;">`;
+
   req.columns.forEach(col => {
+    cardsHtml += `
+      <div style="border:1px solid #c7dadd; background:#f8fcff; padding:15px; border-radius:8px; box-shadow:0 2px 5px rgba(0,0,0,0.03);">
+        <h4 style="margin:0 0 12px; color:var(--navy); font-size:16px; border-bottom:2px solid var(--teal); padding-bottom:5px;">${esc(col.title)}</h4>
+        <div style="display:flex; flex-direction:column; gap:10px;">
+    `;
+
     const subs = col.subColumns || [];
     if(subs.length === 0){
       const val = existing?.custom?.[valIdx] || '';
-      tableHtml += `<td style="padding:5px; border:1px solid #c7dadd;"><input id="branch_input_${valIdx}" value="${esc(val)}" placeholder="माहिती लिहा"></td>`;
+      cardsHtml += `
+        <div>
+          <label style="font-size:13px; color:#4f6877; margin-bottom:3px;">माहिती</label>
+          <input id="branch_input_${valIdx}" value="${esc(val)}" placeholder="माहिती प्रविष्ट करा">
+        </div>`;
       valIdx++;
     } else {
-      subs.forEach(() => {
+      subs.forEach((sName, sIdx) => {
         const val = existing?.custom?.[valIdx] || '';
-        tableHtml += `<td style="padding:5px; border:1px solid #c7dadd;"><input id="branch_input_${valIdx}" value="${esc(val)}" placeholder="माहिती लिहा"></td>`;
+        const labelText = sName && sName.trim() !== '' ? sName : `भाग ${sIdx + 1}`;
+        cardsHtml += `
+          <div>
+            <label style="font-size:13px; color:#4f6877; margin-bottom:3px; display:block; font-weight:600;">${esc(labelText)}</label>
+            <input id="branch_input_${valIdx}" value="${esc(val)}" placeholder="${esc(labelText)} प्रविष्ट करा">
+          </div>`;
         valIdx++;
       });
     }
+
+    cardsHtml += `</div></div>`;
   });
 
-  tableHtml += `</tr></tbody></table>`;
-  container.innerHTML = tableHtml;
+  cardsHtml += `</div>`;
+  container.innerHTML = cardsHtml;
 
   if(existing){
     if(document.getElementById('manager')) document.getElementById('manager').value = existing.manager || '';
@@ -488,7 +480,6 @@ function loadBranchForm(){
     if(document.getElementById('remarks')) document.getElementById('remarks').value = existing.remarks || '';
   }
 }
-
 function showHomeDetails(d, title){
   const req = getRequestForDate(d);
   const entries = getEntries().filter(e => e.date === d);
