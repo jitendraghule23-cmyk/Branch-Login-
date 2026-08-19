@@ -866,7 +866,11 @@ $('branchDate').onchange=renderBranchForm;$('branchForm').onsubmit=e=>{e.prevent
 $('saveRequest').onclick=saveAdminRequest;$('reqDate').onchange=loadRequestEditor;
 $('navHome').onclick=showHome;$('navBranch').onclick=showBranch;$('navAdmin').onclick=showAdmin;
 
-$('loginBranch').innerHTML='<option value="">-- शाखा निवडा --</option>'+BRANCHES.map(b=>'<option value="'+esc(b)+'">'+esc(b)+'</option>').join('');
+document.getElementById('loginBranch').innerHTML =
+  '<option value="">-- शाखा निवडा --</option>' +
+  BRANCHES.map(function(b){
+    return '<option value="' + esc(b) + '">' + esc(b) + '</option>';
+  }).join('');
 showHome();
 </script>
 
