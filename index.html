@@ -538,7 +538,15 @@ const esc=x=>String(x??'').replaceAll('&','&amp;').replaceAll('<','&lt;').replac
 const today=()=>new Date().toISOString().slice(0,10);
 function requests(){try{const x=JSON.parse(localStorage.getItem(REQ_KEY)||'[]');return Array.isArray(x)?x:[]}catch(e){return[]}}
 function saveRequests(x){localStorage.setItem(REQ_KEY,JSON.stringify(x))}
-function branchData(){try{return JSON.parse(localStorage.getItem(DATA_KEY)||'{}')||{}}catch(e){return{}}}
+async function branchData(){
+  try{
+    const r=await fetch(SHEET_API+'?action=read&token=JDCC_BRANCH_2026');
+    const j=await r.json();
+    return j.found && j.data ? JSON.parse(j.data.branchData||'{}') : {};
+  }catch(e){
+    return JSON.parse(localStorage.getItem(DATA_KEY)||'{}');
+  }
+}
 function saveBranchData(x){localStorage.setItem(DATA_KEY,JSON.stringify(x))}
 function req(d){return requests().find(x=>String(x.date)===String(d))||null}
 function dates(){return requests().map(x=>x.date).filter(Boolean).sort((a,b)=>String(b).localeCompare(String(a)))}
@@ -765,7 +773,7 @@ function renderBranchForm(){
     '<span style="white-space:pre-wrap">'+esc(q.letter||'')+'</span>':
     '<b>या तारखेसाठी Admin माहिती उपलब्ध नाही.</b>';
 
-  const saved=branchData()[activeBranch]?.[d]||{};
+  const saved=await branchData()||{[activeBranch]:{}};
   let cols=Array.isArray(q?.columns)&&q.columns.length?q.columns:[];
 
   // Compatibility: recover Main -> Sub structure from older flat fields.
