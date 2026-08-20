@@ -257,6 +257,7 @@ body.print-a3 { page: printA3; }
 <footer class="foot">© 2026 दि. जळगाव जिल्हा मध्यवर्ती सहकारी बँक लि., जळगाव — भुसावळ तालुका प्रणाली @ J S GHULE</footer>
 
 <script>
+  const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwk96eOFtBNa3tpjxdsPZ6puWL27dBxB2OKJS0X1dFihukpGHR2erFOA94a81iedxUW/exec";
 var STORE_ENTRIES = 'JDCC_ENTRIES_V9';
 var STORE_REQUESTS = 'JDCC_REQUESTS_V9';
 
@@ -283,10 +284,57 @@ function esc(v){
   return String(v).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 }
 
-function getRequests(){ return JSON.parse(localStorage.getItem(STORE_REQUESTS) || '[]'); }
-function saveRequests(list){ localStorage.setItem(STORE_REQUESTS, JSON.stringify(list)); }
-function getEntries(){ return JSON.parse(localStorage.getItem(STORE_ENTRIES) || '[]'); }
-function saveEntries(list){ localStorage.setItem(STORE_ENTRIES, JSON.stringify(list)); }
+// १. Requests मिळवण्यासाठी
+async function getRequests() {
+  try {
+    let res = await fetch(SCRIPT_URL + "?action=getRequests");
+    let data = await res.json();
+    return data || [];
+  } catch(e) {
+    return JSON.parse(localStorage.getItem(STORE_REQUESTS) || '[]');
+  }
+}
+
+// २. Requests सेव्ह करण्यासाठी
+async function saveRequests(list) {
+  localStorage.setItem(STORE_REQUESTS, JSON.stringify(list));
+  try {
+    await fetch(SCRIPT_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action: 'saveRequests', data: list })
+    });
+  } catch(e) {
+    console.error("Save Error:", e);
+  }
+}
+
+// ३. Entries मिळवण्यासाठी
+async function getEntries() {
+  try {
+    let res = await fetch(SCRIPT_URL + "?action=getEntries");
+    let data = await res.json();
+    return data || [];
+  } catch(e) {
+    return JSON.parse(localStorage.getItem(STORE_ENTRIES) || '[]');
+  }
+}
+
+// ४. Entries सेव्ह करण्यासाठी
+async function saveEntries(list) {
+  localStorage.setItem(STORE_ENTRIES, JSON.stringify(list));
+  try {
+    await fetch(SCRIPT_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action: 'saveEntries', data: list })
+    });
+  } catch(e) {
+    console.error("Save Error:", e);
+  }
+}
 
 function getRequestForDate(d){ 
   var reqs = getRequests();
