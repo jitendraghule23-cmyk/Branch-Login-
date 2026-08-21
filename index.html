@@ -1,685 +1,827 @@
 <!DOCTYPE html>
 <html lang="mr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JDCC Bank Branch Report System</title>
-    <style>
-        :root {
-            --navy: #003366;
-            --navy-dark: #002244;
-            --light-bg: #f4f7f9;
-            --border-color: #c7dadd;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>JDCC भुसावळ — शाखा माहिती प्रणाली</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Hind:wght@400;500;600;700&family=Poppins:wght@500;600;700&display=swap');
+:root{--navy:#003b68;--teal:#009a9c;--gold:#b9975b;--pale:#f2f8f8;--ink:#173c52;--line:#d5e4e7}
+*{box-sizing:border-box}
+body{margin:0;background:var(--pale);font-family:Hind,Arial,sans-serif;color:#304b5b}
 
-        body {
-            font-family: Arial, sans-serif;
-            margin: 15px;
-            background-color: var(--light-bg);
-            color: #333;
-        }
+/* Header Styles */
+header{background:white;padding:15px 0 10px;box-shadow:0 2px 8px rgba(0,0,0,0.05)}
+.wrap{width:min(1180px,94%);margin:auto}
+.brand{display:flex;align-items:center;gap:15px}
+.logo-box{width:70px;height:70px;display:flex;align-items:center;justify-content:center}
+.logo-box img{max-width:100%;max-height:100%;object-fit:contain}
+.brand h1{margin:0;color:var(--navy);font:700 21px Poppins,sans-serif}
+.brand p{margin:2px 0 0;color:#60727d;font-size:14px}
+.pill{margin-left:auto;background:#fff;color:#007bff;border:1px solid #cce5e5;padding:8px 15px;font-weight:600;border-radius:5px;font-size:13px;display:flex;align-items:center;gap:8px}
 
-        .header-bar {
-            background: var(--navy);
-            color: white;
-            padding: 12px 20px;
-            border-radius: 6px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 15px;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
+/* Nav Buttons */
+.main-nav{display:flex;gap:10px;margin-top:15px;flex-wrap:wrap}
+.nav-btn{border:1px solid #b8d1d8;border-radius:5px;padding:8px 18px;color:var(--navy);background:#fff;font:600 14px Hind;cursor:pointer;display:inline-flex;align-items:center;gap:8px;transition:all 0.2s}
+.nav-btn.active{background:var(--navy);color:#fff;border-color:var(--navy)}
+.nav-btn:hover:not(.active){background:#f0f7fa}
 
-        .header-bar h2 { margin: 0; font-size: 18px; }
+/* Hero Section */
+.hero{
+  position:relative;
+  background:linear-gradient(90deg, rgba(0, 59, 104, 0.92) 0%, rgba(0, 74, 121, 0.75) 50%, rgba(0, 59, 104, 0.3) 100%), 
+              url('https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=1600&auto=format&fit=crop');
+  background-size:cover;
+  background-position:center;
+  color:#fff;
+  padding:40px 0;
+  min-height:200px;
+  display:flex;
+  align-items:center;
+}
+.hero h2{font-size:30px;margin:0 0 10px;font-weight:700}
+.hero p{font-size:15px;margin:0;opacity:0.9}
 
-        .tabs {
-            display: flex;
-            gap: 8px;
-            margin-bottom: 15px;
-            border-bottom: 2px solid var(--navy);
-            padding-bottom: 8px;
-            flex-wrap: wrap;
-            align-items: center;
-        }
+/* UI Elements */
+.screen{margin:25px auto}
+.login{max-width:520px;margin:0 auto;background:#fff;padding:25px;border-radius:9px;box-shadow:0 7px 25px #123d521b}
+.login h3,.panel h3{margin:0;color:var(--ink);font-size:22px}
+.hint{margin:4px 0 15px;color:#6c7e87;font-size:14px}
+.tabs{display:flex;margin-bottom:20px;border-bottom:1px solid var(--line)}
+.tabs button{border:0;background:none;padding:10px 16px;color:#4f6877;font:600 15px Hind;cursor:pointer}
+.tabs button.on{color:var(--navy);border-bottom:3px solid var(--teal)}
+label{display:block;font-weight:600;margin:10px 0 4px}
+input,select,textarea{width:100%;border:1px solid #c7dadd;border-radius:5px;padding:9px 11px;font:15px Hind;color:#294452}
+textarea{min-height:70px;resize:vertical}
+button{cursor:pointer}
+.btn{border:0;border-radius:5px;padding:9px 16px;color:#fff;background:var(--navy);font:600 14px Poppins}
+.btn.teal{background:var(--teal)}
+.btn.excel{background:#1d6f42}
+.btn.print{background:#d9534f}
+.btn.out{color:var(--navy);background:#fff;border:1px solid var(--navy)}
+.btn.sm{padding:5px 10px;font-size:12px}
+.warning{font-size:13px;background:#fff9e9;border-left:4px solid var(--gold);padding:10px;margin-top:15px;color:#705625}
+.hidden{display:none!important}
+.bar{display:flex;justify-content:space-between;align-items:center;margin-bottom:15px;flex-wrap:wrap;gap:10px}
+.panel{background:#fff;border-radius:8px;box-shadow:0 3px 12px rgba(0,0,0,0.05);border:1px solid #dfebec;padding:20px;margin-bottom:20px}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:15px}
+.full{grid-column:1/-1}
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+.tablebox{overflow:auto}
+table{width:100%;border-collapse:collapse}
+th,td{padding:9px 11px;border:1px solid #c7dadd;text-align:left}
+th{background:#e6f3f3;color:#29556a;font-weight:600}
+.col-builder-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:15px;margin-top:10px}
+.col-card{border:1px solid #c7dadd;background:#f8fcff;padding:12px;border-radius:6px;box-shadow:0 2px 5px rgba(0,0,0,0.03)}
+.subcol-box{margin-top:10px;padding-left:10px;border-left:2px solid var(--teal)}
+.foot{text-align:center;background:#003b68;color:#dcecf1;padding:15px;margin-top:40px;font-size:13px}
 
-        .tab-btn {
-            padding: 8px 12px;
-            border: 1px solid var(--navy);
-            background: #fff;
-            color: var(--navy);
-            font-weight: bold;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 13px;
-            white-space: nowrap;
-        }
+/* PRINT STYLES */
+@media print {
+  body * { visibility: hidden; }
+  header, .hero, .main-nav, .actions, .foot, #homePage, #loginBox, #branchArea, .col-builder-grid, .bar button, .bar label, .bar input { display: none !important; }
+  #consolidatedReportBox, #consolidatedReportBox * { visibility: visible; }
+  #consolidatedReportBox { position: absolute; left: 0; top: 0; width: 100%; font-size: 11px; }
+  table { width: 100% !important; border-collapse: collapse !important; }
+  th, td { border: 1px solid #000 !important; padding: 4px 6px !important; }
+}
 
-        .tab-btn.active {
-            background: var(--navy);
-            color: #fff;
-        }
+@page printA4 { size: A4 landscape; margin: 8mm; }
+@page printA3 { size: A3 landscape; margin: 10mm; }
 
-        .panel {
-            border: 1px solid #ccc;
-            padding: 15px;
-            background: #fff;
-            border-radius: 6px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-            margin-bottom: 15px;
-        }
-
-        /* LOGIN CARDS FOR HOME PAGE */
-        .login-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-            margin-top: 20px;
-        }
-
-        .login-card {
-            border: 2px solid var(--navy);
-            border-radius: 8px;
-            padding: 25px;
-            text-align: center;
-            background: #fff;
-            cursor: pointer;
-            transition: 0.3s;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-        }
-
-        .login-card:hover {
-            background: #eef5fc;
-            transform: translateY(-3px);
-        }
-
-        .login-card h3 {
-            color: var(--navy);
-            margin-top: 10px;
-            font-size: 20px;
-        }
-
-        .login-card .icon {
-            font-size: 40px;
-        }
-
-        .grid-2 {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-        }
-
-        @media (max-width: 768px) {
-            .grid-2, .login-grid { grid-template-columns: 1fr; }
-            .tab-btn { font-size: 12px; padding: 6px 8px; }
-        }
-
-        .form-group { margin-bottom: 12px; }
-        .form-group label { display: block; font-weight: bold; margin-bottom: 5px; font-size: 13px; }
-        .form-group input, .form-group select, .form-group textarea {
-            width: 100%;
-            padding: 8px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            box-sizing: border-box;
-        }
-
-        .btn {
-            padding: 8px 15px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-weight: bold;
-            font-size: 13px;
-        }
-
-        .btn-primary { background: var(--navy); color: white; }
-        .btn-excel { background: #28a745; color: white; }
-        .btn-print { background: #17a2b8; color: white; }
-        .btn-danger { background: #dc3545; color: white; }
-        
-        .btn-edit {
-            background-color: #ffc107;
-            color: #000;
-            border: none;
-            padding: 4px 8px;
-            border-radius: 3px;
-            cursor: pointer;
-            font-size: 11px;
-            font-weight: bold;
-            margin-top: 5px;
-            display: inline-block;
-        }
-        .btn-edit:hover { background-color: #e0a800; }
-
-        .tablebox { overflow-x: auto; margin-top: 10px; }
-
-        .report-table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 12px;
-        }
-
-        .report-table th, .report-table td {
-            border: 1px solid var(--border-color);
-            padding: 6px 8px;
-            text-align: center;
-        }
-
-        .report-table th {
-            background-color: var(--navy);
-            color: white;
-            font-weight: bold;
-        }
-
-        .muted { color: #6c757d; font-size: 12px; }
-        .section-view { display: none; }
-        .section-view.active { display: block; }
-    </style>
+body.print-a4 { page: printA4; }
+body.print-a3 { page: printA3; }
+</style>
 </head>
 <body>
 
-    <div class="header-bar">
-        <h2>JDCC BANK - शाखा अहवाल प्रणाली</h2>
-        <div id="userInfo" style="font-size:14px; display:flex; align-items:center; gap:10px;">
-            <span id="userDisplay" style="font-weight: bold;">मोड निवडा</span>
-            <button class="btn btn-danger" id="btnSwitch" style="padding:4px 8px; display:none;" onclick="logoutToHome()">मुख्य पृष्ठावर जा (Home)</button>
+<header>
+  <div class="wrap">
+    <div class="brand">
+      <div class="logo-box">
+        <img src="logo.png.png" alt="JDCC Bank Logo" onerror="this.onerror=null; this.src='https://via.placeholder.com/70?text=JDCC';">
+      </div>
+      <div>
+        <h1>दि. जळगाव जिल्हा मध्यवर्ती सहकारी बँक लि., जळगाव</h1>
+        <p>भुसावळ तालुका — शाखा माहिती संकलन प्रणाली</p>
+      </div>
+      <div class="pill"><i class="fa-solid fa-building-columns"></i> 17 शाखा माहिती संकलन</div>
+    </div>
+    
+    <nav class="main-nav">
+      <button id="btnHome" class="nav-btn active" onclick="showPage('home')">
+        <i class="fa-solid fa-house"></i> मुख्यपृष्ठ
+      </button>
+      <button id="btnBranch" class="nav-btn" onclick="showPage('branch')">
+        <i class="fa-solid fa-user"></i> शाखा लॉगिन
+      </button>
+      <button id="btnAdmin" class="nav-btn" onclick="showPage('admin')">
+        <i class="fa-solid fa-building-columns"></i> विभागीय कार्यालय प्रवेश
+      </button>
+    </nav>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="wrap">
+    <div>
+      <h2>शाखा माहिती संकलन</h2>
+      <p>सर्व शाखांची माहिती एकाच ठिकाणी जमा व एकत्रीकरणासाठी प्रणाली.</p>
+    </div>
+  </div>
+</section>
+
+<main class="wrap screen">
+
+  <section id="homePage">
+    <div style="margin-bottom:15px;">
+      <h3 style="color:var(--navy);margin:0 0 4px;font-size:22px;">मुख्यपृष्ठ — दिनांकवार माहिती</h3>
+      <span class="hint">दररोजची माहिती फक्त तारीख व माहितीच्या शीर्षकानुसार येथे दिसेल.</span>
+    </div>
+    
+    <section class="panel" style="padding:0; overflow:hidden;">
+      <div id="homeRequestsBox"></div>
+    </section>
+  </section>
+
+  <section id="loginBox" class="login hidden">
+    <div class="tabs">
+      <button id="branchTab" class="on" onclick="setLoginMode('branch')">शाखा लॉगिन</button>
+      <button id="adminTab" onclick="setLoginMode('admin')">Admin लॉगिन</button>
+    </div>
+    <h3 id="loginTitle">शाखा लॉगिन</h3>
+    <p class="hint" id="loginHint">आपली शाखा निवडा आणि पासवर्ड टाका.</p>
+    
+    <label id="branchLabel">शाखेचे नाव</label>
+    <select id="loginBranch">
+      <option>वरणगाव</option><option>पिंपळगाव खु.</option><option>शिंदी</option><option>भुसावळ</option><option>पिंपळगाव बु.</option><option>फेकरी</option><option>किन्ही</option><option>तळवेल</option><option>फुलगाव</option><option>कठोरा</option><option>कुऱ्हे पानाचे</option><option>साक्री</option><option>साकेगाव</option><option>सुनसगाव</option><option>वराडसीम</option><option>भुसावळ वि. कक्ष</option><option>न्यू एरिया भुसावळ</option>
+    </select>
+    
+    <label>पासवर्ड</label>
+    <input id="password" type="password" placeholder="पासवर्ड">
+    
+    <div class="actions"><button class="btn" onclick="login()">लॉगिन करा</button></div>
+  </section>
+
+  <section id="branchArea" class="hidden">
+    <div class="bar">
+      <div><h3 id="branchFormTitle">शाखा माहिती फॉर्म</h3><span id="branchName" style="font-weight:600;color:var(--teal)"></span></div>
+      <button class="btn out sm" onclick="logout()">लॉगआउट</button>
+    </div>
+    <section class="panel">
+      <div id="branchRequestLetter" class="warning" style="margin-top:0;margin-bottom:15px"></div>
+      
+      <form id="branchForm" onsubmit="saveBranchEntry(event)">
+        <div class="grid">
+          <div><label>शाखा</label><input id="branchDisplay" readonly></div>
+          <div><label>माहिती दिनांक *</label><input id="branchDate" type="date" required onchange="loadBranchForm()"></div>
+          <div><label>शाखा व्यवस्थापक *</label><input id="manager" required></div>
+          <div><label>मोबाईल क्रमांक *</label><input id="phone" required></div>
         </div>
-    </div>
 
-    <!-- TABS (अॅडमिन किंवा शाखा लॉगिन झाल्यावर दिसतील) -->
-    <div class="tabs" id="mainTabsContainer" style="display:none;">
-        <button class="tab-btn active" id="btnHome" onclick="switchTab('home')">🏠 मुख्य पृष्ठ</button>
-        <button class="tab-btn" id="btnRequest" onclick="switchTab('request')">📝 नवीन माहिती मागणी (Demand)</button>
-        <button class="tab-btn" id="btnEntry" onclick="switchTab('entry')">📥 शाखा माहिती भरणे (Entry)</button>
-        <button class="tab-btn" id="btnReport" onclick="switchTab('report')">📊 एकत्रित अहवाल (Consolidated Report)</button>
-    </div>
-
-    <!-- 1. ACTUAL HOME PAGE (शाखा लॉगिन आणि विभागीय कार्यालय प्रवेश) -->
-    <div id="homeTab" class="section-view active">
-        <div class="panel" style="text-align: center; padding: 30px 15px;">
-            <h2 style="color:var(--navy); margin-bottom: 20px;">कृपया प्रवेश प्रकार निवडा</h2>
-            
-            <div class="login-grid">
-                <!-- शाखा लॉगिन -->
-                <div class="login-card" onclick="selectRole('branch')">
-                    <div class="icon">🏦</div>
-                    <h3>शाखा लॉगिन</h3>
-                    <p class="muted">शाखेची दैनिक माहिती भरण्यासाठी प्रवेश करा.</p>
-                </div>
-
-                <!-- विभागीय कार्यालय प्रवेश -->
-                <div class="login-card" onclick="selectRole('admin')">
-                    <div class="icon">🏢</div>
-                    <h3>विभागीय कार्यालय प्रवेश</h3>
-                    <p class="muted">नवीन मागणी तयार करणे, अहवाल पाहणे व एडिट करण्यासाठी.</p>
-                </div>
-            </div>
+        <div style="margin-top:20px; border-top: 1px solid var(--line); padding-top:15px;">
+          <h4 style="margin:0 0 10px; color:var(--navy)">अतिरिक्त कॉलम माहिती</h4>
+          <div id="customBranchFields"></div>
         </div>
-    </div>
 
-    <!-- 2. DEMAND REQUEST TAB (ADMIN ONLY) -->
-    <div id="requestTab" class="section-view">
-        <div class="panel">
-            <h3 style="color:var(--navy); margin-top:0;">📝 नवीन माहिती मागणी तयार करा (विभागीय कार्यालय)</h3>
-            <div class="form-group" style="max-width:200px;">
-                <label>तारीख निवडा:</label>
-                <input type="date" id="reqDate">
-            </div>
-            <div id="columnsContainer"></div>
-            <button class="btn btn-primary" onclick="addColumnGroup()" style="margin-top:10px;">+ नवीन कॉलम ग्रुप जोडा</button>
-            <button class="btn btn-excel" onclick="saveDemandRequest()" style="margin-top:10px; margin-left:10px;">माहिती मागणी सेव्ह करा</button>
+        <div style="margin-top:15px;">
+          <label>इतर माहिती / सूचना</label>
+          <textarea id="remarks"></textarea>
         </div>
+
+        <div class="actions"><button class="btn teal" type="submit">माहिती जतन करा</button></div>
+      </form>
+    </section>
+  </section>
+
+  <section id="adminArea" class="hidden">
+    <div class="bar">
+      <div><h3>विभागीय कार्यालय भुसावळ — Admin डॅशबोर्ड</h3></div>
+      <button class="btn out sm" onclick="logout()">लॉगआउट</button>
     </div>
 
-    <!-- 3. BRANCH ENTRY TAB -->
-    <div id="entryTab" class="section-view">
-        <div class="panel">
-            <h3 style="color:var(--navy); margin-top:0;" id="entryTabTitle">📥 शाखा माहिती एंट्री</h3>
-            <div class="grid-2" style="max-width:500px;">
-                <div class="form-group" id="branchSelectGroup">
-                    <label>शाखा निवडा:</label>
-                    <select id="entryBranch" onchange="loadBranchEntryForm()"></select>
-                </div>
-                <div class="form-group">
-                    <label>तारीख:</label>
-                    <input type="date" id="entryDate" onchange="loadBranchEntryForm()">
-                </div>
-            </div>
-            <div id="branchFormBox"></div>
+    <section class="panel" style="border: 2px solid var(--navy);">
+      <div class="bar">
+        <div>
+          <h3 style="color:var(--navy)">📊 १७ शाखांचा एकत्रित अहवाल (Consolidated Report)</h3>
+          <span class="muted">भुसावळ तालुक्यातील सर्व १७ शाखांचा एकत्रित अहवाल व एकूण (Subtotal / Grand Total) पाहा.</span>
         </div>
-    </div>
-
-    <!-- 4. CONSOLIDATED REPORT TAB (EDIT BUTTON IS HERE) -->
-    <div id="reportTab" class="section-view">
-        <div class="panel">
-            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
-                <div>
-                    <h3 style="color:var(--navy); margin:0;">📊 १७ शाखांचा एकत्रित अहवाल</h3>
-                </div>
-                <div style="display:flex; gap:8px; align-items:center;">
-                    <label style="font-weight:bold;">तारीख:</label>
-                    <input id="adminReportDate" type="date" style="padding:4px;" onchange="renderConsolidatedReport()">
-                    <button class="btn btn-excel" onclick="downloadExcel()">📊 Excel</button>
-                    <button class="btn btn-print" onclick="window.print()">🖨️ Print</button>
-                </div>
-            </div>
-            <div id="consolidatedReportBox" class="tablebox"></div>
+        <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
+          <label style="margin:0;">तारीख:</label>
+          <input id="adminReportDate" type="date" style="width:auto;" onchange="renderConsolidatedReport()">
+          <button class="btn excel sm" onclick="downloadExcel()">📊 Excel</button>
+          <button class="btn print sm" onclick="printReport('A4')">🖨️ A4 Print</button>
+          <button class="btn print sm" onclick="printReport('A3')">🖨️ A3 Print</button>
         </div>
-    </div>
+      </div>
+      <div id="consolidatedReportBox" class="tablebox" style="margin-top:10px;"></div>
+    </section>
 
-    <script>
-        var ALL_BRANCHES = [
-            "भुसावळ", "वरणगाव", "पिंपळगाव बु.", "कुऱ्हे पानाचे", "साकरी", 
-            "दीप्ती नगर", "बाजार समिती भुसावळ", "नशिराबाद", "फैजपूर", 
-            "सावदा", "रावेर", "यावल", "मुक्ताईनगर", "बोदवड", 
-            "चोपडा", "अमळनेर", "जळगाव"
-        ];
+    <section class="panel">
+      <h3>शाखांसाठी माहिती मागणी व कॉलम व्यवस्थापन</h3>
+      <p class="hint">मुख्य कॉलम आणि Sub-columns तयार करा.</p>
+      
+      <div class="grid">
+        <div><label>माहिती मागणीचा दिनांक *</label><input id="reqDate" type="date" onchange="loadAdminRequestForDate()"></div>
+        <div><label>माहिती मागणीचे शीर्षक</label><input id="reqTitle" placeholder="उदा. संस्था कर्ज व शेअर माहिती"></div>
+        <div class="full"><label>सूचनापत्र / लेटर</label><textarea id="reqLetter" placeholder="शाखांना द्यावयाच्या सूचना..."></textarea></div>
+      </div>
 
-        var currentUserRole = null;
+      <div style="margin-top:20px; border-top: 2px solid var(--line); padding-top: 15px;">
+        <div class="bar">
+          <label style="font-size:16px; color:var(--navy); margin:0;">कॉलम आणि Sub-Columns व्यवस्थापन</label>
+          <button type="button" class="btn teal sm" onclick="addMainColumn()">+ मुख्य कॉलम जोडा</button>
+        </div>
+        <div id="columnBuilderContainer" class="col-builder-grid"></div>
+      </div>
 
-        function today() { return new Date().toISOString().split('T')[0]; }
-        function esc(str) { return str ? String(str).replace(/</g, "&lt;").replace(/>/g, "&gt;") : ''; }
-        function getEntries() { return JSON.parse(localStorage.getItem('allEntries') || '[]'); }
+      <div class="actions">
+        <button class="btn teal" type="button" onclick="saveAdminRequest()">माहिती मागणी जतन करा</button>
+        <button class="btn out" type="button" style="color:red;border-color:red;" onclick="clearAllData()">सर्व जुना डेटा रिसेट करा (Reset Data)</button>
+      </div>
+    </section>
+  </section>
 
-        function init() {
-            document.getElementById('reqDate').value = today();
-            document.getElementById('entryDate').value = today();
-            document.getElementById('adminReportDate').value = today();
-            
-            var bSelect = document.getElementById('entryBranch');
-            bSelect.innerHTML = ALL_BRANCHES.map(b => `<option value="${b}">${b}</option>`).join('');
-            
-            loadDefaultDemandForm();
+</main>
+
+<footer class="foot">© 2026 दि. जळगाव जिल्हा मध्यवर्ती सहकारी बँक लि., जळगाव — भुसावळ तालुका प्रणाली</footer>
+
+<script>
+var STORE_ENTRIES = 'JDCC_ENTRIES_V9';
+var STORE_REQUESTS = 'JDCC_REQUESTS_V9';
+
+var ALL_BRANCHES = [
+  "वरणगाव", "पिंपळगाव खु.", "शिंदी", "भुसावळ", "पिंपळगाव बु.", "फेकरी", "किन्ही",
+  "तळवेल", "फुलगाव", "कठोरा", "कुऱ्हे पानाचे", "साक्री", "साकेगाव", "सुनसगाव",
+  "वराडसीम", "भुसावळ वि. कक्ष", "न्यू एरिया भुसावळ"
+];
+
+var activeRole = 'branch';
+var activeBranch = '';
+var builderColumns = [];
+
+function today(){
+  var d = new Date();
+  return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
+}
+function fmtDate(v){
+  var m = String(v||'').match(/^(\d{4})-(\d{2})-(\d{2})$/);
+  return m ? m[3]+'-'+m[2]+'-'+m[1] : String(v||'');
+}
+function esc(v){
+  if (v === null || v === undefined) return '';
+  return String(v).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
+
+function getRequests(){ return JSON.parse(localStorage.getItem(STORE_REQUESTS) || '[]'); }
+function saveRequests(list){ localStorage.setItem(STORE_REQUESTS, JSON.stringify(list)); }
+function getEntries(){ return JSON.parse(localStorage.getItem(STORE_ENTRIES) || '[]'); }
+function saveEntries(list){ localStorage.setItem(STORE_ENTRIES, JSON.stringify(list)); }
+
+function getRequestForDate(d){ 
+  var reqs = getRequests();
+  for(var i=0; i<reqs.length; i++){
+    if(reqs[i].date === d) return reqs[i];
+  }
+  return null;
+}
+
+function clearAllData(){
+  if(confirm('तुम्हाला सर्व डेटा रिसेट करायचा आहे का?')){
+    localStorage.removeItem(STORE_REQUESTS);
+    localStorage.removeItem(STORE_ENTRIES);
+    alert('डेटा रिसेट झाला आहे.');
+    location.reload();
+  }
+}
+
+function renderHomePageList(){
+  var reqs = getRequests();
+  var box = document.getElementById('homeRequestsBox');
+  
+  if(reqs.length === 0){
+    box.innerHTML = '<table><thead><tr><th style="width:30%;">तारीख</th><th>माहितीचे शीर्षक</th></tr></thead><tbody><tr><td colspan="2" style="text-align:center;color:#888;padding:20px;">कोणतीही नोंदणी उपलब्ध नाही.</td></tr></tbody></table>';
+    return;
+  }
+
+  reqs.sort(function(a,b){ return new Date(b.date) - new Date(a.date); });
+
+  var html = '<table><thead><tr><th style="width:30%;">तारीख</th><th>माहितीचे शीर्षक</th></tr></thead><tbody>';
+  reqs.forEach(function(r){
+    html += '<tr><td><b>' + fmtDate(r.date) + '</b></td><td>' + esc(r.title) + '</td></tr>';
+  });
+  html += '</tbody></table>';
+  box.innerHTML = html;
+}
+
+function showPage(p){
+  document.getElementById('homePage').classList.add('hidden');
+  document.getElementById('loginBox').classList.add('hidden');
+  document.getElementById('branchArea').classList.add('hidden');
+  document.getElementById('adminArea').classList.add('hidden');
+
+  document.getElementById('btnHome').classList.remove('active');
+  document.getElementById('btnBranch').classList.remove('active');
+  document.getElementById('btnAdmin').classList.remove('active');
+
+  if(p === 'home'){
+    document.getElementById('homePage').classList.remove('hidden');
+    document.getElementById('btnHome').classList.add('active');
+    renderHomePageList();
+  } else if(p === 'branch'){
+    document.getElementById('btnBranch').classList.add('active');
+    if(window.isLoggedIn && activeRole === 'branch'){
+      document.getElementById('branchArea').classList.remove('hidden');
+      loadBranchForm();
+    } else {
+      setLoginMode('branch');
+      document.getElementById('loginBox').classList.remove('hidden');
+    }
+  } else if(p === 'admin'){
+    document.getElementById('btnAdmin').classList.add('active');
+    if(window.isLoggedIn && activeRole === 'admin'){
+      document.getElementById('adminArea').classList.remove('hidden');
+      initAdminPanel();
+    } else {
+      setLoginMode('admin');
+      document.getElementById('loginBox').classList.remove('hidden');
+    }
+  }
+}
+
+function setLoginMode(m){
+  activeRole = m;
+  document.getElementById('loginTitle').textContent = (m==='admin' ? 'Admin लॉगिन' : 'शाखा लॉगिन');
+  document.getElementById('branchLabel').classList.toggle('hidden', m==='admin');
+  document.getElementById('loginBranch').classList.toggle('hidden', m==='admin');
+  document.getElementById('branchTab').classList.toggle('on', m==='branch');
+  document.getElementById('adminTab').classList.toggle('on', m==='admin');
+  document.getElementById('password').value = '';
+}
+
+function login(){
+  var pwd = document.getElementById('password').value.trim();
+  if(activeRole === 'admin'){
+    if(pwd !== 'admin123'){ alert('Admin पासवर्ड चुकीचा आहे.'); return; }
+    window.isLoggedIn = true;
+    showPage('admin');
+  } else {
+    if(pwd !== 'branch123'){ alert('शाखा पासवर्ड चुकीचा आहे.'); return; }
+    window.isLoggedIn = true;
+    activeBranch = document.getElementById('loginBranch').value;
+    document.getElementById('branchDisplay').value = activeBranch;
+    document.getElementById('branchName').textContent = 'शाखा: ' + activeBranch;
+    document.getElementById('branchDate').value = today();
+    showPage('branch');
+  }
+}
+
+function logout(){
+  window.isLoggedIn = false;
+  activeBranch = '';
+  showPage('home');
+}
+
+function initAdminPanel(){
+  document.getElementById('reqDate').value = today();
+  document.getElementById('adminReportDate').value = today();
+  loadAdminRequestForDate();
+  renderConsolidatedReport();
+}
+
+function loadAdminRequestForDate(){
+  var d = document.getElementById('reqDate').value;
+  var req = getRequestForDate(d);
+  if(req){
+    document.getElementById('reqTitle').value = req.title || '';
+    document.getElementById('reqLetter').value = req.letter || '';
+    builderColumns = JSON.parse(JSON.stringify(req.columns || []));
+  } else {
+    document.getElementById('reqTitle').value = 'माहिती मागणी';
+    document.getElementById('reqLetter').value = '';
+    builderColumns = [
+      { title: 'संस्था नाव', subColumns: ['भाग १', 'भाग २', 'भाग ३', 'भाग ४', 'भाग ५'] },
+      { title: 'करंट खाते बॅलन्स', subColumns: ['भाग १', 'भाग २', 'भाग ३', 'भाग ४', 'भाग ५'] },
+      { title: '२% मार्जिन बॅलन्स', subColumns: ['भाग १', 'भाग २', 'भाग ३', 'भाग ४', 'भाग ५'] }
+    ];
+  }
+  renderColumnBuilder();
+}
+
+function renderColumnBuilder(){
+  var container = document.getElementById('columnBuilderContainer');
+  container.innerHTML = '';
+
+  if(builderColumns.length === 0){
+    container.innerHTML = '<p class="hint">कोणताही कॉलम नाही. "+ मुख्य कॉलम जोडा" वापरा.</p>';
+    return;
+  }
+
+  builderColumns.forEach(function(col, cIdx){
+    var subHtml = '';
+    (col.subColumns || []).forEach(function(sub, sIdx){
+      subHtml += '<div style="display:flex; gap:5px; margin-top:6px;">' +
+        '<input type="text" value="' + esc(sub) + '" id="sub_input_' + cIdx + '_' + sIdx + '" placeholder="Sub-column नाव">' +
+        '<button type="button" class="btn out sm" style="color:red;border-color:red;" onclick="removeSubColumn(' + cIdx + ',' + sIdx + ')">X</button>' +
+      '</div>';
+    });
+
+    var card = '<div class="col-card">' +
+      '<label style="font-size:12px;color:var(--navy);">मुख्य कॉलम नाव</label>' +
+      '<input type="text" style="font-weight:600;" id="main_input_' + cIdx + '" value="' + esc(col.title) + '" placeholder="मुख्य कॉलम नाव">' +
+      '<div style="display:flex; gap:5px; margin-top:8px;">' +
+        '<button type="button" class="btn teal sm" style="flex:1" onclick="addSubColumn(' + cIdx + ')">+ Sub-column</button>' +
+        '<button type="button" class="btn out sm" style="color:red;border-color:red" onclick="removeMainColumn(' + cIdx + ')">काढा</button>' +
+      '</div>' +
+      '<div class="subcol-box">' + subHtml + '</div>' +
+    '</div>';
+
+    container.insertAdjacentHTML('beforeend', card);
+  });
+}
+
+function syncBuilderInputs(){
+  builderColumns.forEach(function(col, cIdx){
+    var mainEl = document.getElementById('main_input_' + cIdx);
+    if(mainEl) col.title = mainEl.value;
+    (col.subColumns || []).forEach(function(_, sIdx){
+      var subEl = document.getElementById('sub_input_' + cIdx + '_' + sIdx);
+      if(subEl) col.subColumns[sIdx] = subEl.value;
+    });
+  });
+}
+
+function addMainColumn(){ syncBuilderInputs(); builderColumns.push({ title: 'नवीन कॉलम', subColumns: ['भाग १'] }); renderColumnBuilder(); }
+function removeMainColumn(idx){ syncBuilderInputs(); builderColumns.splice(idx, 1); renderColumnBuilder(); }
+function addSubColumn(cIdx){ syncBuilderInputs(); builderColumns[cIdx].subColumns.push(''); renderColumnBuilder(); }
+function removeSubColumn(cIdx, sIdx){ syncBuilderInputs(); builderColumns[cIdx].subColumns.splice(sIdx, 1); renderColumnBuilder(); }
+
+function saveAdminRequest(){
+  syncBuilderInputs();
+  var d = document.getElementById('reqDate').value;
+  if(!d){ alert('दिनांक निवडा'); return; }
+
+  var cleanedColumns = [];
+  builderColumns.forEach(function(col){
+    var title = (col.title||'').trim() || 'कॉलम';
+    var subs = (col.subColumns || []).map(function(s, idx){
+      return (s||'').trim() !== '' ? s.trim() : ('भाग ' + (idx+1));
+    });
+    cleanedColumns.push({ title: title, subColumns: subs });
+  });
+
+  var list = getRequests();
+  var reqData = {
+    date: d,
+    title: document.getElementById('reqTitle').value || 'माहिती मागणी',
+    letter: document.getElementById('reqLetter').value || '',
+    columns: cleanedColumns
+  };
+
+  var idx = -1;
+  for(var i=0; i<list.length; i++){ if(list[i].date === d){ idx = i; break; } }
+  if(idx >= 0) list[idx] = reqData; else list.push(reqData);
+
+  saveRequests(list);
+  alert('Admin कडून माहिती मागणी यशस्विरित्या जतन झाली!');
+  renderConsolidatedReport();
+  renderHomePageList();
+}
+
+function renderConsolidatedReport(){
+  var d = document.getElementById('adminReportDate').value || today();
+  var req = getRequestForDate(d);
+  var allEntries = getEntries();
+  var entries = [];
+  for(var e=0; e<allEntries.length; e++){
+    if(allEntries[e].date === d) entries.push(allEntries[e]);
+  }
+  
+  var box = document.getElementById('consolidatedReportBox');
+
+  if(!req || !req.columns || req.columns.length === 0){
+    box.innerHTML = '<p class="hint" style="color:red;padding:10px;">दिनांक ' + fmtDate(d) + ' साठी Admin कडून कोणतीही माहिती मागणी तयार केलेली नाही.</p>';
+    return;
+  }
+
+  var maxSubs = 1;
+  req.columns.forEach(function(c){
+    if((c.subColumns || []).length > maxSubs) maxSubs = c.subColumns.length;
+  });
+
+  var html = '<table id="reportTable" style="width:100%; border-collapse:collapse; background:#fff; font-size:14px;"><thead>';
+  var headerRow = '<tr style="background:var(--navy); color:#fff;">' +
+    '<th style="padding:10px; border:1px solid #c7dadd; text-align:center;">अ.क्र.</th>' +
+    '<th style="padding:10px; border:1px solid #c7dadd; text-align:left;">शाखेचे नाव</th>' +
+    '<th style="padding:10px; border:1px solid #c7dadd; text-align:left;">विवरण / भाग</th>';
+
+  req.columns.forEach(function(col){
+    headerRow += '<th style="padding:10px; border:1px solid #c7dadd; text-align:center;">' + esc(col.title) + '</th>';
+  });
+  headerRow += '<th style="padding:10px; border:1px solid #c7dadd; text-align:center; background:#00294a;">एकूण (Total)</th>';
+  headerRow += '</tr></thead><tbody>';
+  html += headerRow;
+
+  var grandTotals = new Array(req.columns.length).fill(0);
+  var isNumericCol = new Array(req.columns.length).fill(true);
+  var absoluteGrandTotal = 0;
+
+  ALL_BRANCHES.forEach(function(bName, bIdx){
+    var entry = null;
+    for(var k=0; k<entries.length; k++){
+      if(entries[k].branch === bName){ entry = entries[k]; break; }
+    }
+    
+    var branchSubtotals = new Array(req.columns.length).fill(0);
+    var branchTotalAllCols = 0;
+
+    for(var sIdx = 0; sIdx < maxSubs; sIdx++){
+      var isFirstRow = (sIdx === 0);
+      var rowHorizontalTotal = 0;
+      var hasRowNumber = false;
+      html += '<tr>';
+      
+      if(isFirstRow){
+        html += '<td rowspan="' + (maxSubs + 1) + '" style="text-align:center; font-weight:600; border:1px solid #c7dadd; vertical-align:top; padding-top:10px;">' + (bIdx + 1) + '</td>';
+        
+        // येथे Admin Edit Buton जोडले आहे
+        html += '<td rowspan="' + maxSubs + '" style="font-weight:700; color:var(--navy); border:1px solid #c7dadd; vertical-align:top; padding-top:10px;">' + esc(bName) + '<br><small style="color:#666; font-weight:normal;">व्य: ' + esc(entry ? entry.manager : '-') + '</small>';
+        html += '<br><button class="btn sm" style="background:#ffc107; color:#000; margin-top:6px; border:none; padding:4px 8px; font-weight:bold; cursor:pointer;" onclick="openAdminEditModal(\'' + bName + '\', \'' + d + '\')">✏️ Edit</button></td>';
+      }
+
+      var subName = 'भाग ' + (sIdx + 1);
+      html += '<td style="border:1px solid #c7dadd; background:#fbfbfb; font-size:13px; color:#555;">' + subName + '</td>';
+
+      var customValIdx = 0;
+      req.columns.forEach(function(col, cIdx){
+        var subs = col.subColumns || [];
+        var val = '';
+
+        if(subs.length > 0){
+          if(sIdx < subs.length && entry && entry.custom){
+            val = entry.custom[customValIdx + sIdx] || '';
+          }
+          customValIdx += subs.length;
+        } else {
+          if(sIdx === 0 && entry && entry.custom) val = entry.custom[customValIdx] || '';
+          customValIdx += 1;
         }
 
-        function selectRole(role) {
-            if(role === 'admin') {
-                currentUserRole = 'admin';
-                document.getElementById('userDisplay').innerText = "विभागीय कार्यालय (Admin)";
-                document.getElementById('mainTabsContainer').style.display = 'flex';
-                document.getElementById('btnSwitch').style.display = 'inline-block';
-                document.getElementById('btnRequest').style.display = 'inline-block';
-                document.getElementById('btnReport').style.display = 'inline-block';
-                document.getElementById('branchSelectGroup').style.display = 'block';
-                switchTab('request');
-            } else {
-                var selectedBranch = prompt("कृपया शाखेचे नाव निवडा/लिहा:", ALL_BRANCHES[0]);
-                if(!selectedBranch) return;
-                
-                currentUserRole = selectedBranch;
-                document.getElementById('userDisplay').innerText = "शाखा: " + currentUserRole;
-                document.getElementById('mainTabsContainer').style.display = 'flex';
-                document.getElementById('btnSwitch').style.display = 'inline-block';
-                document.getElementById('btnRequest').style.display = 'none';
-                document.getElementById('btnReport').style.display = 'none';
-                document.getElementById('branchSelectGroup').style.display = 'none';
-                document.getElementById('entryBranch').value = currentUserRole;
-                document.getElementById('entryTabTitle').innerText = "📥 शाखा माहिती एंट्री (" + currentUserRole + ")";
-                switchTab('entry');
-            }
+        html += '<td style="text-align:center; border:1px solid #c7dadd;">' + esc(val || '-') + '</td>';
+
+        if(val !== '' && !isNaN(val)){
+          var num = parseFloat(val);
+          branchSubtotals[cIdx] += num;
+          grandTotals[cIdx] += num;
+          rowHorizontalTotal += num;
+          hasRowNumber = true;
+        } else if(val !== '' && isNaN(val)){
+          isNumericCol[cIdx] = false;
         }
+      });
 
-        function logoutToHome() {
-            currentUserRole = null;
-            document.getElementById('userDisplay').innerText = "मोड निवडा";
-            document.getElementById('mainTabsContainer').style.display = 'none';
-            document.getElementById('btnSwitch').style.display = 'none';
-            switchTab('home');
-        }
+      branchTotalAllCols += rowHorizontalTotal;
+      html += '<td style="text-align:center; border:1px solid #c7dadd; font-weight:600; background:#f4f9f9;">' + (hasRowNumber ? rowHorizontalTotal : '-') + '</td>';
+      html += '</tr>';
+    }
 
-        function switchTab(tab) {
-            document.querySelectorAll('.section-view').forEach(s => s.classList.remove('active'));
-            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    html += '<tr style="background:#e6f3f3; font-weight:700; border-bottom:2px solid var(--navy);">' +
+      '<td colspan="2" style="border:1px solid #c7dadd; color:var(--navy); padding:6px 10px; text-align:right;">' + esc(bName) + ' एकूण (Subtotal):</td>';
 
-            if(tab === 'home') {
-                document.getElementById('homeTab').classList.add('active');
-                document.getElementById('btnHome').classList.add('active');
-            } else if(tab === 'request') {
-                document.getElementById('requestTab').classList.add('active');
-                document.getElementById('btnRequest').classList.add('active');
-            } else if(tab === 'entry') {
-                document.getElementById('entryTab').classList.add('active');
-                document.getElementById('btnEntry').classList.add('active');
-                loadBranchEntryForm();
-            } else if(tab === 'report') {
-                document.getElementById('reportTab').classList.add('active');
-                document.getElementById('btnReport').classList.add('active');
-                renderConsolidatedReport();
-            }
-        }
+    req.columns.forEach(function(col, cIdx){
+      if(isNumericCol[cIdx] && branchSubtotals[cIdx] > 0){
+        html += '<td style="text-align:center; border:1px solid #c7dadd; color:var(--navy); font-size:14px; font-weight:800;">' + branchSubtotals[cIdx] + '</td>';
+      } else {
+        html += '<td style="text-align:center; border:1px solid #c7dadd; color:#888;">-</td>';
+      }
+    });
 
-        function getRequestForDate(d) {
-            var requests = JSON.parse(localStorage.getItem('allRequests') || '[]');
-            return requests.find(r => r.date === d) || {
-                date: d,
-                columns: [
-                    { title: 'संस्था नाव', subColumns: ['भाग १', 'भाग २', 'भाग ३', 'भाग ४', 'भाग ५'] },
-                    { title: 'करंट खाते बॅलन्स', subColumns: ['भाग १', 'भाग २', 'भाग ३', 'भाग ४', 'भाग ५'] },
-                    { title: '२% मार्जिन बॅलन्स', subColumns: ['भाग १', 'भाग २', 'भाग ३', 'भाग ४', 'भाग ५'] }
-                ]
-            };
-        }
+    html += '<td style="text-align:center; border:1px solid #c7dadd; color:#000; background:#b2d8d8; font-weight:900; font-size:14px;">' + (branchTotalAllCols > 0 ? branchTotalAllCols : '-') + '</td>';
+    html += '</tr>';
 
-        // REPORT WITH BRANCH EDIT BUTTON FOR ADMIN
-        function renderConsolidatedReport(){
-            var d = document.getElementById('adminReportDate').value || today();
-            var req = getRequestForDate(d);
-            var allEntries = getEntries();
-            var entries = allEntries.filter(e => e.date === d);
+    absoluteGrandTotal += branchTotalAllCols;
+  });
 
-            var box = document.getElementById('consolidatedReportBox');
+  html += '<tr style="background:var(--navy); color:#fff; font-weight:700; font-size:15px;">' +
+    '<td colspan="3" style="text-align:right; padding:12px; border:1px solid #c7dadd;">सर्व १७ शाखांची एकत्रित एकूण (Grand Total):</td>';
 
-            if(!req || !req.columns || req.columns.length === 0){
-                box.innerHTML = '<p class="muted">कोणतीही माहिती उपलब्ध नाही.</p>';
-                return;
-            }
+  req.columns.forEach(function(col, cIdx){
+    if(isNumericCol[cIdx] && grandTotals[cIdx] > 0){
+      html += '<td style="text-align:center; border:1px solid #c7dadd; color:#ffeb3b; font-size:15px;">' + grandTotals[cIdx] + '</td>';
+    } else {
+      html += '<td style="text-align:center; border:1px solid #c7dadd; color:#ccc;">-</td>';
+    }
+  });
 
-            var maxSubs = 1;
-            req.columns.forEach(function(col){
-                if(col.subColumns && col.subColumns.length > maxSubs){
-                    maxSubs = col.subColumns.length;
-                }
-            });
+  html += '<td style="text-align:center; border:1px solid #c7dadd; color:#ffeb3b; font-size:16px; font-weight:900; background:#00213d;">' + (absoluteGrandTotal > 0 ? absoluteGrandTotal : '-') + '</td>';
+  html += '</tr></tbody></table>';
+  box.innerHTML = html;
+}
 
-            var html = '<table class="report-table"><thead>';
-            var headerRow1 = '<tr><th rowspan="2">शाखेचे नाव</th><th rowspan="2">विवरण / भाग</th>';
-            var headerRow2 = '<tr>';
+// ADMIN EDIT MODAL FUNCTIONS (नवीन जोडलेला कोड)
+function openAdminEditModal(bName, d){
+  var req = getRequestForDate(d);
+  if(!req) return;
+  
+  var allEntries = getEntries();
+  var entry = null;
+  for(var i=0; i<allEntries.length; i++){
+    if(allEntries[i].branch === bName && allEntries[i].date === d){ entry = allEntries[i]; break; }
+  }
+  
+  var modalHtml = '<div id="adminEditModal" style="position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.6);display:flex;align-items:center;justify-content:center;z-index:9999;">' +
+    '<div style="background:#fff;padding:25px;border-radius:10px;width:90%;max-width:600px;max-height:85vh;overflow-y:auto;box-shadow:0 8px 25px rgba(0,0,0,0.3);">' +
+    '<h3 style="margin-top:0;color:var(--navy);border-bottom:2px solid var(--teal);padding-bottom:10px;">✏️ ' + bName + ' - माहिती दुरुस्ती (' + fmtDate(d) + ')</h3>';
+  
+  var valIdx = 0;
+  modalHtml += '<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px;margin-top:15px;">';
+  req.columns.forEach(function(col){
+    modalHtml += '<div style="grid-column:1/-1;background:#f0f7fa;padding:8px 10px;font-weight:bold;margin-top:10px;border-radius:5px;border:1px solid #c7dadd;color:var(--navy);">' + esc(col.title) + '</div>';
+    var subs = col.subColumns || [];
+    if(subs.length === 0){
+      var val = (entry && entry.custom) ? (entry.custom[valIdx] || '') : '';
+      modalHtml += '<div><label style="font-size:13px;color:#555;font-weight:600;">माहिती</label><input type="text" id="admin_edit_' + valIdx + '" value="' + esc(val) + '" style="width:100%;padding:8px;border:1px solid #ccc;border-radius:5px;"></div>';
+      valIdx++;
+    } else {
+      subs.forEach(function(sName){
+        var val = (entry && entry.custom) ? (entry.custom[valIdx] || '') : '';
+        var labelText = (sName && sName.trim() !== '') ? sName : 'भाग';
+        modalHtml += '<div><label style="font-size:13px;color:#555;font-weight:600;">' + esc(labelText) + '</label><input type="text" id="admin_edit_' + valIdx + '" value="' + esc(val) + '" style="width:100%;padding:8px;border:1px solid #ccc;border-radius:5px;"></div>';
+        valIdx++;
+      });
+    }
+  });
+  modalHtml += '</div>';
+  
+  modalHtml += '<div style="display:flex;gap:15px;justify-content:flex-end;border-top:1px solid #ccc;padding-top:15px;">' +
+    '<button class="btn out" style="color:red;border-color:red;" onclick="closeAdminEditModal()">रद्द करा (Cancel)</button>' +
+    '<button class="btn teal" onclick="saveAdminEdit(\'' + bName + '\', \'' + d + '\')">जतन करा (Save)</button>' +
+    '</div></div></div>';
+    
+  document.body.insertAdjacentHTML('beforeend', modalHtml);
+}
 
-            req.columns.forEach(function(col){
-                var subs = col.subColumns || [];
-                if(subs.length > 0){
-                    headerRow1 += '<th colspan="' + subs.length + '">' + esc(col.title) + '</th>';
-                    subs.forEach(function(sub){
-                        headerRow2 += '<th>' + esc(sub) + '</th>';
-                    });
-                } else {
-                    headerRow1 += '<th rowspan="2">' + esc(col.title) + '</th>';
-                }
-            });
-            
-            headerRow1 += '<th rowspan="2">एकूण</th></tr>';
-            headerRow2 += '</tr>';
+function closeAdminEditModal(){
+  var m = document.getElementById('adminEditModal');
+  if(m) m.remove();
+}
 
-            html += headerRow1 + headerRow2 + '</thead><tbody>';
+function saveAdminEdit(bName, d){
+  var req = getRequestForDate(d);
+  var allEntries = getEntries();
+  var entryIdx = -1;
+  for(var i=0; i<allEntries.length; i++){
+    if(allEntries[i].branch === bName && allEntries[i].date === d){ entryIdx = i; break; }
+  }
+  
+  var customVals = [];
+  var idx = 0;
+  while(document.getElementById('admin_edit_' + idx)){
+    customVals.push(document.getElementById('admin_edit_' + idx).value);
+    idx++;
+  }
+  
+  if(entryIdx >= 0){
+    allEntries[entryIdx].custom = customVals;
+  } else {
+    allEntries.push({
+      branch: bName,
+      date: d,
+      manager: 'Admin',
+      phone: '-',
+      remarks: 'अॅडमिनने माहिती भरली',
+      title: req ? req.title : 'माहिती नोंदणी',
+      custom: customVals
+    });
+  }
+  
+  saveEntries(allEntries);
+  alert('माहिती यशस्विरित्या अपडेट झाली!');
+  closeAdminEditModal();
+  renderConsolidatedReport();
+}
+// ---------------------------------------------
 
-            var grandTotals = new Array(req.columns.length).fill(0);
-            var grandTotalAll = 0;
+function downloadExcel(){
+  var table = document.getElementById('reportTable');
+  if(!table){ alert('डाउनलोड करण्यासाठी डेटा उपलब्ध नाही!'); return; }
+  
+  var d = document.getElementById('adminReportDate').value || today();
+  var html = table.outerHTML;
+  var blob = new Blob(['\ufeff' + html], { type: 'application/vnd.ms-excel;charset=utf-8' });
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'Consolidated_Report_' + d + '.xls';
+  a.click();
+}
 
-            ALL_BRANCHES.forEach(function(bName){
-                var entry = entries.find(e => e.branch === bName);
-                var branchSubtotals = new Array(req.columns.length).fill(0);
-                var branchTotalSum = 0;
+function printReport(size){
+  document.body.classList.remove('print-a4', 'print-a3');
+  if(size === 'A4') {
+    document.body.classList.add('print-a4');
+  } else if(size === 'A3') {
+    document.body.classList.add('print-a3');
+  }
+  window.print();
+}
 
-                for(var sIdx = 0; sIdx < maxSubs; sIdx++){
-                    html += '<tr>';
+function loadBranchForm(){
+  var d = document.getElementById('branchDate').value || today();
+  var req = getRequestForDate(d);
+  var container = document.getElementById('customBranchFields');
+  container.innerHTML = '';
 
-                    if(sIdx === 0){
-                        var editBtnHtml = (currentUserRole === 'admin') 
-                            ? '<br><button class="btn-edit" onclick="openAdminEditModal(\'' + bName + '\', \'' + d + '\')">✏️ Edit</button>' 
-                            : '';
+  if(!req || !req.columns || req.columns.length === 0){
+    document.getElementById('branchRequestLetter').innerHTML = '<b>सूचना:</b> या तारखेसाठी Admin कडून कोणतीही विशेष मागणी उपलब्ध नाही.';
+    return;
+  }
 
-                        html += '<td rowspan="' + maxSubs + '" style="font-weight:600; vertical-align:middle;">' + 
-                                esc(bName) + editBtnHtml + '</td>';
-                    }
+  document.getElementById('branchRequestLetter').innerHTML = '<b>' + esc(req.title) + '</b><br>' + esc(req.letter||'');
 
-                    var subName = 'भाग ' + (sIdx + 1);
-                    html += '<td style="background:#fbfbfb;">' + subName + '</td>';
+  var allEntries = getEntries();
+  var existing = null;
+  for(var i=0; i<allEntries.length; i++){
+    if(allEntries[i].branch === activeBranch && allEntries[i].date === d){
+      existing = allEntries[i];
+      break;
+    }
+  }
 
-                    var rowSum = 0;
+  var valIdx = 0;
+  var cardsHtml = '<div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap:15px; margin-top:10px;">';
 
-                    req.columns.forEach(function(col, cIdx){
-                        var subs = col.subColumns || [];
-                        var val = '';
+  req.columns.forEach(function(col){
+    cardsHtml += '<div style="border:1px solid #c7dadd; background:#f8fcff; padding:15px; border-radius:8px; box-shadow:0 2px 5px rgba(0,0,0,0.03);">' +
+      '<h4 style="margin:0 0 12px; color:var(--navy); font-size:16px; border-bottom:2px solid var(--teal); padding-bottom:5px;">' + esc(col.title) + '</h4>' +
+      '<div style="display:flex; flex-direction:column; gap:10px;">';
 
-                        if(subs.length > 0){
-                            if(sIdx < subs.length && entry && entry.data && entry.data[col.title]){
-                                val = entry.data[col.title][subs[sIdx]] || '';
-                            }
-                        } else if(sIdx === 0 && entry && entry.data){
-                            val = entry.data[col.title] || '';
-                        }
+    var subs = col.subColumns || [];
+    if(subs.length === 0){
+      var val = (existing && existing.custom) ? (existing.custom[valIdx] || '') : '';
+      cardsHtml += '<div><label style="font-size:13px; color:#4f6877; margin-bottom:3px;">माहिती</label>' +
+        '<input id="branch_input_' + valIdx + '" value="' + esc(val) + '" placeholder="माहिती प्रविष्ट करा"></div>';
+      valIdx++;
+    } else {
+      subs.forEach(function(sName, sIdx){
+        var val = (existing && existing.custom) ? (existing.custom[valIdx] || '') : '';
+        var labelText = (sName && sName.trim() !== '') ? sName : ('भाग ' + (sIdx + 1));
+        cardsHtml += '<div><label style="font-size:13px; color:#4f6877; margin-bottom:3px; display:block; font-weight:600;">' + esc(labelText) + '</label>' +
+          '<input id="branch_input_' + valIdx + '" value="' + esc(val) + '" placeholder="' + esc(labelText) + ' प्रविष्ट करा"></div>';
+        valIdx++;
+      });
+    }
 
-                        if(val !== '' && !isNaN(val)){
-                            var num = parseFloat(val);
-                            branchSubtotals[cIdx] += num;
-                            grandTotals[cIdx] += num;
-                            rowSum += num;
-                        }
+    cardsHtml += '</div></div>';
+  });
 
-                        html += '<td>' + (val !== '' ? esc(val) : '-') + '</td>';
-                    });
+  cardsHtml += '</div>';
+  container.innerHTML = cardsHtml;
 
-                    branchTotalSum += rowSum;
-                    html += '<td style="font-weight:600;">' + (rowSum > 0 ? rowSum : '-') + '</td></tr>';
-                }
+  if(existing){
+    if(document.getElementById('manager')) document.getElementById('manager').value = existing.manager || '';
+    if(document.getElementById('phone')) document.getElementById('phone').value = existing.phone || '';
+    if(document.getElementById('remarks')) document.getElementById('remarks').value = existing.remarks || '';
+  }
+}
 
-                html += '<tr style="background:#e6f3f3; font-weight:700;">' +
-                        '<td colspan="2" style="color:var(--navy); text-align:left;">' + esc(bName) + ' एकूण (Subtotal)</td>';
+function saveBranchEntry(e){
+  e.preventDefault();
+  var d = document.getElementById('branchDate').value;
+  var req = getRequestForDate(d);
+  
+  var customVals = [];
+  var idx = 0;
+  while(document.getElementById('branch_input_' + idx)){
+    customVals.push(document.getElementById('branch_input_' + idx).value);
+    idx++;
+  }
 
-                req.columns.forEach(function(col, cIdx){
-                    if(branchSubtotals[cIdx] > 0){
-                        html += '<td style="color:var(--navy);">' + branchSubtotals[cIdx] + '</td>';
-                    } else {
-                        html += '<td style="color:var(--navy);">-</td>';
-                    }
-                });
+  var entry = {
+    branch: activeBranch,
+    date: d,
+    manager: document.getElementById('manager').value,
+    phone: document.getElementById('phone').value,
+    remarks: document.getElementById('remarks').value,
+    title: req ? req.title : 'माहिती नोंदणी',
+    custom: customVals
+  };
 
-                html += '<td style="color:var(--navy);">' + (branchTotalSum > 0 ? branchTotalSum : '-') + '</td></tr>';
-                grandTotalAll += branchTotalSum;
-            });
+  var entries = getEntries();
+  var iIdx = -1;
+  for(var i=0; i<entries.length; i++){
+    if(entries[i].branch === activeBranch && entries[i].date === d){ iIdx = i; break; }
+  }
 
-            html += '<tr style="background:#b8d8d8; font-weight:800;">' +
-                    '<td colspan="2" style="color:var(--navy); text-align:left;">सर्व १७ शाखांची एकत्रित बेरीज (Grand Total)</td>';
+  if(iIdx >= 0) entries[iIdx] = entry; else entries.push(entry);
 
-            req.columns.forEach(function(col, cIdx){
-                if(grandTotals[cIdx] > 0){
-                    html += '<td style="color:var(--navy);">' + grandTotals[cIdx] + '</td>';
-                } else {
-                    html += '<td style="color:var(--navy);">-</td>';
-                }
-            });
+  saveEntries(entries);
+  alert('माहिती यशस्विरित्या जतन झाली!');
+  showPage('home');
+}
 
-            html += '<td style="color:var(--navy);">' + (grandTotalAll > 0 ? grandTotalAll : '-') + '</td></tr>';
-            html += '</tbody></table>';
-            box.innerHTML = html;
-        }
-
-        // ADMIN EDIT MODAL FOR BRANCHES
-        function openAdminEditModal(branchName, date) {
-            var allEntries = getEntries();
-            var entry = allEntries.find(e => e.branch === branchName && e.date === date) || { branch: branchName, date: date, data: {} };
-            var req = getRequestForDate(date);
-
-            var modalHtml = `
-                <div id="adminEditModal" style="position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.6); display:flex; align-items:center; justify-content:center; z-index:1000;">
-                    <div style="background:#fff; padding:20px; border-radius:8px; width:90%; max-width:550px; max-height:85vh; overflow-y:auto; box-shadow: 0 4px 10px rgba(0,0,0,0.3);">
-                        <h3 style="color:var(--navy); margin-top:0;">✏️ ${branchName} - माहिती अपडेट करा</h3>
-                        <form id="adminEditForm">
-                            <div id="dynamicEditFields"></div>
-                            <div style="margin-top:20px; display:flex; gap:10px; justify-content:flex-end;">
-                                <button type="button" onclick="closeAdminEditModal()" class="btn btn-danger">रद्द करा</button>
-                                <button type="button" onclick="saveAdminChanges('${branchName}', '${date}')" class="btn btn-excel">सेव्ह करा</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>`;
-
-            document.body.insertAdjacentHTML('beforeend', modalHtml);
-            var fieldsContainer = document.getElementById('dynamicEditFields');
-            var fieldsHtml = '';
-
-            req.columns.forEach(function(col){
-                fieldsHtml += `<h4 style="margin: 10px 0 5px 0; color:var(--navy); border-bottom:1px solid #ccc; padding-bottom:3px;">${col.title}</h4>`;
-                var subs = col.subColumns || [];
-                
-                if(subs.length > 0){
-                    subs.forEach(function(sub){
-                        var val = (entry.data && entry.data[col.title] && entry.data[col.title][sub]) ? entry.data[col.title][sub] : '';
-                        fieldsHtml += `
-                            <div style="margin-bottom:8px; display:flex; justify-content:space-between; align-items:center;">
-                                <label style="font-size:13px;">${sub}: </label>
-                                <input type="text" data-parent="${col.title}" data-child="${sub}" value="${val}" class="admin-input" style="width:60%; padding:5px;">
-                            </div>`;
-                    });
-                } else {
-                    var val = (entry.data && entry.data[col.title]) ? entry.data[col.title] : '';
-                    fieldsHtml += `
-                        <div style="margin-bottom:8px; display:flex; justify-content:space-between; align-items:center;">
-                            <label style="font-size:13px;">${col.title}: </label>
-                            <input type="text" data-parent="${col.title}" value="${val}" class="admin-input" style="width:60%; padding:5px;">
-                        </div>`;
-                }
-            });
-
-            fieldsContainer.innerHTML = fieldsHtml;
-        }
-
-        function saveAdminChanges(branchName, date) {
-            var allEntries = getEntries();
-            var entryIndex = allEntries.findIndex(e => e.branch === branchName && e.date === date);
-
-            if (entryIndex === -1) {
-                allEntries.push({ branch: branchName, date: date, data: {} });
-                entryIndex = allEntries.length - 1;
-            }
-
-            var inputs = document.querySelectorAll('.admin-input');
-            inputs.forEach(input => {
-                var parent = input.getAttribute('data-parent');
-                var child = input.getAttribute('data-child');
-                var value = input.value.trim();
-
-                if (!allEntries[entryIndex].data) allEntries[entryIndex].data = {};
-
-                if (child) {
-                    if (!allEntries[entryIndex].data[parent]) allEntries[entryIndex].data[parent] = {};
-                    allEntries[entryIndex].data[parent][child] = value;
-                } else {
-                    allEntries[entryIndex].data[parent] = value;
-                }
-            });
-
-            localStorage.setItem('allEntries', JSON.stringify(allEntries));
-            alert("माहिती यशस्वीरीत्या अपडेट झाली!");
-            closeAdminEditModal();
-            renderConsolidatedReport();
-        }
-
-        function closeAdminEditModal() {
-            var modal = document.getElementById('adminEditModal');
-            if (modal) modal.remove();
-        }
-
-        function loadBranchEntryForm() {
-            var d = document.getElementById('entryDate').value;
-            var b = (currentUserRole === 'admin') ? document.getElementById('entryBranch').value : currentUserRole;
-            
-            var req = getRequestForDate(d);
-            var allEntries = getEntries();
-            var entry = allEntries.find(e => e.branch === b && e.date === d) || { data: {} };
-            
-            var box = document.getElementById('branchFormBox');
-            var html = `<p><strong>तारीख:</strong> ${d} | <strong>शाखा:</strong> ${b}</p><form id="bForm">`;
-
-            req.columns.forEach(col => {
-                html += `<fieldset style="margin-bottom:10px; border:1px solid #ccc; padding:10px;"><legend><strong>${col.title}</strong></legend>`;
-                var subs = col.subColumns || [];
-                if(subs.length > 0) {
-                    subs.forEach(s => {
-                        var v = (entry.data && entry.data[col.title] && entry.data[col.title][s]) ? entry.data[col.title][s] : '';
-                        html += `<div class="form-group"><label>${s}:</label><input type="text" name="${col.title}___${s}" value="${v}"></div>`;
-                    });
-                } else {
-                    var v = (entry.data && entry.data[col.title]) ? entry.data[col.title] : '';
-                    html += `<div class="form-group"><input type="text" name="${col.title}" value="${v}"></div>`;
-                }
-                html += `</fieldset>`;
-            });
-
-            html += `<button type="button" class="btn btn-excel" onclick="saveBranchEntry()">माहिती सेव्ह करा</button></form>`;
-            box.innerHTML = html;
-        }
-
-        function saveBranchEntry() {
-            var d = document.getElementById('entryDate').value;
-            var b = (currentUserRole === 'admin') ? document.getElementById('entryBranch').value : currentUserRole;
-            var form = document.getElementById('bForm');
-            var formData = new FormData(form);
-            var data = {};
-
-            formData.forEach((val, key) => {
-                if(key.includes('___')) {
-                    var parts = key.split('___');
-                    if(!data[parts[0]]) data[parts[0]] = {};
-                    data[parts[0]][parts[1]] = val;
-                } else {
-                    data[key] = val;
-                }
-            });
-
-            var allEntries = getEntries();
-            var idx = allEntries.findIndex(e => e.branch === b && e.date === d);
-            if(idx > -1) {
-                allEntries[idx].data = data;
-            } else {
-                allEntries.push({ branch: b, date: d, data: data });
-            }
-
-            localStorage.setItem('allEntries', JSON.stringify(allEntries));
-            alert("शाखेची माहिती यशस्वीरीत्या सेव्ह केली!");
-        }
-
-        function loadDefaultDemandForm() {
-            var box = document.getElementById('columnsContainer');
-            box.innerHTML = `
-                <div class="panel">
-                    <input type="text" value="संस्था नाव" class="col-title" style="font-weight:bold; margin-bottom:5px;">
-                    <input type="text" value="भाग १, भाग २, भाग ३, भाग ४, भाग ५" class="col-subs">
-                </div>
-            `;
-        }
-
-        function addColumnGroup() {
-            var box = document.getElementById('columnsContainer');
-            box.insertAdjacentHTML('beforeend', `
-                <div class="panel">
-                    <input type="text" placeholder="कॉलमचे नाव" class="col-title" style="font-weight:bold; margin-bottom:5px;">
-                    <input type="text" placeholder="उप-कॉलम (कॉमा देऊन लिहा)" class="col-subs">
-                </div>
-            `);
-        }
-
-        function saveDemandRequest() {
-            var d = document.getElementById('reqDate').value;
-            var titles = document.querySelectorAll('.col-title');
-            var subs = document.querySelectorAll('.col-subs');
-            var cols = [];
-
-            titles.forEach((t, i) => {
-                var titleVal = t.value.trim();
-                var subVal = subs[i].value.trim();
-                if(titleVal) {
-                    cols.push({
-                        title: titleVal,
-                        subColumns: subVal ? subVal.split(',').map(s => s.trim()) : []
-                    });
-                }
-            });
-
-            var requests = JSON.parse(localStorage.getItem('allRequests') || '[]');
-            var idx = requests.findIndex(r => r.date === d);
-            if(idx > -1) requests[idx].columns = cols;
-            else requests.push({ date: d, columns: cols });
-
-            localStorage.setItem('allRequests', JSON.stringify(requests));
-            alert("माहिती मागणी सेव्ह झाली!");
-        }
-
-        function downloadExcel() { alert("Excel डाऊनलोड सुरू होत आहे..."); }
-
-        window.onload = init;
-    </script>
+// App Init
+showPage('home');
+</script>
 </body>
 </html>
