@@ -38,6 +38,7 @@
             margin-bottom: 15px;
             border-bottom: 2px solid var(--navy);
             padding-bottom: 8px;
+            flex-wrap: wrap;
         }
 
         .tab-btn {
@@ -149,10 +150,10 @@
 
     <!-- TABS -->
     <div class="tabs">
-        <button class="tab-btn active" onclick="switchTab('home')">🏠 मुख्य पृष्ठ (Home)</button>
-        <button class="tab-btn" onclick="switchTab('request')">📝 नवीन माहिती मागणी (Demand)</button>
-        <button class="tab-btn" onclick="switchTab('entry')">📥 शाखा माहिती भरणे (Entry)</button>
-        <button class="tab-btn" onclick="switchTab('report')">📊 एकत्रित अहवाल (Consolidated Report)</button>
+        <button class="tab-btn active" onclick="switchTab('home', this)">🏠 मुख्य पृष्ठ (Home)</button>
+        <button class="tab-btn" onclick="switchTab('request', this)">📝 नवीन माहिती मागणी (Demand)</button>
+        <button class="tab-btn" onclick="switchTab('entry', this)">📥 शाखा माहिती भरणे (Entry)</button>
+        <button class="tab-btn" onclick="switchTab('report', this)">📊 एकत्रित अहवाल (Consolidated Report)</button>
     </div>
 
     <!-- 1. HOME TAB -->
@@ -241,23 +242,23 @@
             loadDefaultDemandForm();
         }
 
-        function switchTab(tab) {
+        function switchTab(tab, btnElement) {
             document.querySelectorAll('.section-view').forEach(s => s.classList.remove('active'));
             document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
 
+            if(btnElement) {
+                btnElement.classList.add('active');
+            }
+
             if(tab === 'home') {
                 document.getElementById('homeTab').classList.add('active');
-                event.target.classList.add('active');
             } else if(tab === 'request') {
                 document.getElementById('requestTab').classList.add('active');
-                event.target.classList.add('active');
             } else if(tab === 'entry') {
                 document.getElementById('entryTab').classList.add('active');
-                event.target.classList.add('active');
                 loadBranchEntryForm();
             } else if(tab === 'report') {
                 document.getElementById('reportTab').classList.add('active');
-                event.target.classList.add('active');
                 renderConsolidatedReport();
             }
         }
@@ -328,7 +329,6 @@
                     html += '<tr>';
 
                     if(sIdx === 0){
-                        // थेट एडिट बटण (कोणतेही लॉगिन न मागता थेट पॉपअप उघडेल)
                         html += '<td rowspan="' + maxSubs + '" style="font-weight:600; vertical-align:middle;">' + 
                                 esc(bName) + '<br><button class="btn-edit" onclick="openAdminEditModal(\'' + bName + '\', \'' + d + '\')">✏️ Edit</button></td>';
                     }
@@ -563,7 +563,7 @@
         }
 
         function saveDemandRequest() {
-            var d = document.getElementById('reqDate'.value);
+            var d = document.getElementById('reqDate').value;
             var titles = document.querySelectorAll('.col-title');
             var subs = document.querySelectorAll('.col-subs');
             var cols = [];
