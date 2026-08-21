@@ -31,7 +31,7 @@ header{background:white;padding:15px 0 10px;box-shadow:0 2px 8px rgba(0,0,0,0.05
 .hero{
   position:relative;
   background:linear-gradient(90deg, rgba(0, 59, 104, 0.92) 0%, rgba(0, 74, 121, 0.75) 50%, rgba(0, 59, 104, 0.3) 100%), 
-             url('https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=1600&auto=format&fit=crop');
+              url('https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=1600&auto=format&fit=crop');
   background-size:cover;
   background-position:center;
   color:#fff;
@@ -519,11 +519,13 @@ function renderConsolidatedReport(){
   req.columns.forEach(function(col){
     headerRow += '<th style="padding:10px; border:1px solid #c7dadd; text-align:center;">' + esc(col.title) + '</th>';
   });
+  headerRow += '<th style="padding:10px; border:1px solid #c7dadd; text-align:center; background:#00294a;">एकूण (Total)</th>';
   headerRow += '</tr></thead><tbody>';
   html += headerRow;
 
   var grandTotals = new Array(req.columns.length).fill(0);
   var isNumericCol = new Array(req.columns.length).fill(true);
+  var absoluteGrandTotal = 0;
 
   ALL_BRANCHES.forEach(function(bName, bIdx){
     var entry = null;
@@ -532,9 +534,12 @@ function renderConsolidatedReport(){
     }
     
     var branchSubtotals = new Array(req.columns.length).fill(0);
+    var branchTotalAllCols = 0;
 
     for(var sIdx = 0; sIdx < maxSubs; sIdx++){
       var isFirstRow = (sIdx === 0);
+      var rowHorizontalTotal = 0;
+      var hasRowNumber = false;
       html += '<tr>';
       
       if(isFirstRow){
@@ -566,11 +571,15 @@ function renderConsolidatedReport(){
           var num = parseFloat(val);
           branchSubtotals[cIdx] += num;
           grandTotals[cIdx] += num;
+          rowHorizontalTotal += num;
+          hasRowNumber = true;
         } else if(val !== '' && isNaN(val)){
           isNumericCol[cIdx] = false;
         }
       });
 
+      branchTotalAllCols += rowHorizontalTotal;
+      html += '<td style="text-align:center; border:1px solid #c7dadd; font-weight:600; background:#f4f9f9;">' + (hasRowNumber ? rowHorizontalTotal : '-') + '</td>';
       html += '</tr>';
     }
 
@@ -585,7 +594,11 @@ function renderConsolidatedReport(){
         html += '<td style="text-align:center; border:1px solid #c7dadd; color:#888;">-</td>';
       }
     });
+
+    html += '<td style="text-align:center; border:1px solid #c7dadd; color:var(--navy); background:#d0e7e7; font-weight:800;">' + (branchTotalAllCols > 0 ? branchTotalAllCols : '-') + '</td>';
     html += '</tr>';
+
+    absoluteGrandTotal += branchTotalAllCols;
   });
 
   // GRAND TOTAL ROW
@@ -600,6 +613,7 @@ function renderConsolidatedReport(){
     }
   });
 
+  html += '<td style="text-align:center; border:1px solid #c7dadd; color:#ffeb3b; font-size:16px;">' + (absoluteGrandTotal > 0 ? absoluteGrandTotal : '-') + '</td>';
   html += '</tr></tbody></table>';
   box.innerHTML = html;
 }
