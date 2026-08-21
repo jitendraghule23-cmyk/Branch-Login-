@@ -185,15 +185,13 @@
         .section-view.active { display: block; }
 
         /* FOOTER STYLE */
-        .footer {
+        footer {
             text-align: center;
             padding: 15px;
-            color: #555;
+            margin-top: auto;
+            color: #666;
             font-size: 13px;
-            border-top: 1px solid #ccc;
-            margin-top: 20px;
-            background: #fff;
-            border-radius: 6px;
+            border-top: 1px solid #ddd;
         }
     </style>
 </head>
@@ -216,7 +214,7 @@
             <button class="tab-btn" id="btnReport" onclick="switchTab('report')">📊 एकत्रित अहवाल (Consolidated Report)</button>
         </div>
 
-        <!-- 1. HOME PAGE -->
+        <!-- 1. ACTUAL HOME PAGE -->
         <div id="homeTab" class="section-view active">
             <div class="panel" style="text-align: center; padding: 30px 15px;">
                 <h2 style="color:var(--navy); margin-bottom: 20px;">कृपया प्रवेश प्रकार निवडा</h2>
@@ -288,10 +286,10 @@
         </div>
     </div>
 
-    <!-- FOOTER -->
-    <div class="footer">
-        भुसावळ तालुका प्रणाली @ J S GHULE
-    </div>
+    <!-- FOOTER WITH @ J S GHULE -->
+    <footer>
+        <p>© JDCC Bank Branch Report System @ J S GHULE</p>
+    </footer>
 
     <script>
         var ALL_BRANCHES = [
