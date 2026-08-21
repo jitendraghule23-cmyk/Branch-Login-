@@ -105,7 +105,6 @@
         .btn-print { background: #17a2b8; color: white; }
         .btn-danger { background: #dc3545; color: white; }
         
-        /* Report Edit Button Style */
         .btn-edit {
             background-color: #ffc107;
             color: #000;
@@ -163,16 +162,14 @@
         <button class="tab-btn" id="btnReport" onclick="switchTab('report')">📊 एकत्रित अहवाल (Consolidated Report)</button>
     </div>
 
-    <!-- 1. HOME TAB -->
+    <!-- 1. ORIGINAL HOME TAB CONTENT (जसा तुमच्या फोटोत होता) -->
     <div id="homeTab" class="section-view active">
         <div class="panel">
-            <h3 style="color:var(--navy); margin-top:0;">📋 डॅशबोर्ड व सुचना (Admin)</h3>
-            <p>जी. डी. सी. सी. बँक अहवाल प्रणालीमध्ये आपले स्वागत आहे. वर दिलेल्या टॅबचा वापर करून तुम्ही पुढील कामे करू शकता:</p>
-            <ul>
-                <li><strong>माहिती मागणी:</strong> हेड ऑफिसवरून सर्व शाखांसाठी नवीन डेटा कॉलम तयार करा.</li>
-                <li><strong>शाखा माहिती भरणे:</strong> प्रत्येक शाखेची माहिती तपासा किंवा भरा.</li>
-                <li><strong>एकत्रित अहवाल:</strong> सर्व १७ शाखांची माहिती पाहा, शाखेनुसार <strong>Edit</strong> करा, प्रिंट करा किंवा Excel मध्ये डाऊनलोड करा.</li>
-            </ul>
+            <h3 style="color:var(--navy); margin-top:0;">📋 सुचना</h3>
+            <p>शाखा अहवाल प्रणालीमध्ये आपले स्वागत आहे. वर दिलेल्या टॅबचा वापर करून तुम्ही पुढील कामे करू शकता:</p>
+            <p><strong>माहिती मागणी:</strong> हेड ऑफिसवरून सर्व शाखांसाठी नवीन डेटा कॉलम तयार करा.</p>
+            <p><strong>शाखा माहिती भरणे:</strong> प्रत्येक शाखेने आपली माहिती तारीख निवडून अपडेट करावी.</p>
+            <p><strong>एकत्रित अहवाल:</strong> सर्व १७ शाखांची माहिती, Subtotal आणि Grand Total सह प्रिंट करा अथवा Excel मध्ये डाऊनलोड करा.</p>
         </div>
     </div>
 
@@ -208,7 +205,7 @@
         </div>
     </div>
 
-    <!-- 4. CONSOLIDATED REPORT TAB (EDIT BUTTON PROVIDED HERE) -->
+    <!-- 4. CONSOLIDATED REPORT TAB -->
     <div id="reportTab" class="section-view">
         <div class="panel">
             <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
@@ -329,7 +326,6 @@
             };
         }
 
-        // RENDER REPORT WITH BRANCH-WISE EDIT BUTTON FOR ADMIN
         function renderConsolidatedReport(){
             var d = document.getElementById('adminReportDate').value || today();
             var req = getRequestForDate(d);
@@ -383,7 +379,6 @@
                     html += '<tr>';
 
                     if(sIdx === 0){
-                        // Edit button only added for Admin mode next to branch name
                         var editBtnHtml = (currentUserRole === 'admin') 
                             ? '<br><button class="btn-edit" onclick="openAdminEditModal(\'' + bName + '\', \'' + d + '\')">✏️ Edit</button>' 
                             : '';
@@ -454,7 +449,6 @@
             box.innerHTML = html;
         }
 
-        // ADMIN EDIT POPUP MODAL FOR BRANCH DATA
         function openAdminEditModal(branchName, date) {
             var allEntries = getEntries();
             var entry = allEntries.find(e => e.branch === branchName && e.date === date) || { branch: branchName, date: date, data: {} };
