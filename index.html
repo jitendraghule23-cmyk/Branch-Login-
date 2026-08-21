@@ -13,243 +13,43 @@
             --text-dark: #1E293B;
             --card-border: #E2E8F0;
         }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Segoe UI', Arial, sans-serif;
-        }
-
-        body {
-            background-color: var(--light-bg);
-            color: var(--text-dark);
-            padding-bottom: 70px;
-        }
-
-        /* Header Section */
-        header {
-            background: #ffffff;
-            padding: 15px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid var(--card-border);
-        }
-
-        .logo-container {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .logo-container img {
-            height: 45px;
-            width: auto;
-        }
-
-        .bank-title h1 {
-            font-size: 15px;
-            color: var(--primary-blue);
-            font-weight: 700;
-        }
-
-        .bank-title p {
-            font-size: 11px;
-            color: #64748B;
-        }
-
-        .badge-info {
-            border: 1px solid #7DD3FC;
-            background: #F0F9FF;
-            color: #0369A1;
-            padding: 8px 12px;
-            border-radius: 8px;
-            font-size: 12px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        /* Navigation Buttons */
-        .nav-buttons {
-            display: flex;
-            gap: 10px;
-            padding: 15px;
-            background: #ffffff;
-        }
-
-        .btn {
-            flex: 1;
-            padding: 10px;
-            border-radius: 8px;
-            border: 1px solid var(--card-border);
-            background: #ffffff;
-            color: var(--primary-blue);
-            font-weight: 600;
-            font-size: 13px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 6px;
-        }
-
-        .btn.active {
-            background: var(--primary-blue);
-            color: #ffffff;
-            border-color: var(--primary-blue);
-        }
-
-        /* Hero Banner */
-        .hero-banner {
-            position: relative;
-            background: linear-gradient(rgba(0, 59, 115, 0.85), rgba(0, 59, 115, 0.85)), 
-                        url('https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=800&q=80');
-            background-size: cover;
-            background-position: center;
-            color: #ffffff;
-            padding: 30px 20px;
-        }
-
-        .hero-banner h2 {
-            font-size: 26px;
-            margin-bottom: 10px;
-            font-weight: 800;
-        }
-
-        .hero-banner p {
-            font-size: 13px;
-            opacity: 0.9;
-            line-height: 1.4;
-        }
-
-        /* Main Content Section */
-        .main-container {
-            padding: 20px 15px;
-        }
-
-        .section-header {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 15px;
-        }
-
-        .section-icon {
-            background: var(--primary-blue);
-            color: #ffffff;
-            width: 38px;
-            height: 38px;
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 18px;
-        }
-
-        .section-title h3 {
-            font-size: 16px;
-            color: var(--primary-blue);
-        }
-
-        .section-title p {
-            font-size: 11px;
-            color: #64748B;
-        }
-
-        /* Card Block */
-        .content-card {
-            background: #ffffff;
-            border-radius: 8px;
-            border: 1px solid var(--card-border);
-            overflow: hidden;
-        }
-
-        .table-header {
-            display: flex;
-            background: #E0F2FE;
-            padding: 10px 15px;
-            font-weight: bold;
-            font-size: 13px;
-            color: var(--primary-blue);
-        }
-
-        .table-header div {
-            flex: 1;
-        }
-
-        .empty-state {
-            padding: 40px 20px;
-            text-align: center;
-            color: #64748B;
-        }
-
-        .empty-state i {
-            font-size: 32px;
-            color: #94A3B8;
-            margin-bottom: 10px;
-        }
-
-        .empty-state p {
-            font-size: 13px;
-            margin-bottom: 4px;
-            font-weight: 600;
-        }
-
-        .empty-state span {
-            font-size: 11px;
-        }
-
-        /* Footer */
-        footer {
-            background: var(--primary-blue);
-            color: #ffffff;
-            text-align: center;
-            padding: 12px;
-            font-size: 11px;
-            line-height: 1.5;
-        }
-
-        /* Bottom Fixed Navigation Bar */
-        .bottom-nav {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: #ffffff;
-            display: flex;
-            justify-content: space-around;
-            padding: 8px 0;
-            border-top: 1px solid var(--card-border);
-        }
-
-        .nav-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            font-size: 10px;
-            color: #64748B;
-            text-decoration: none;
-        }
-
-        .nav-item i {
-            font-size: 18px;
-            margin-bottom: 3px;
-        }
-
-        .nav-item.active {
-            color: var(--primary-blue);
-            font-weight: bold;
-        }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Arial, sans-serif; }
+        body { background-color: var(--light-bg); color: var(--text-dark); padding-bottom: 70px; }
+        header { background: #ffffff; padding: 15px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--card-border); }
+        .logo-container { display: flex; align-items: center; gap: 12px; }
+        .logo-container img { height: 45px; width: auto; }
+        .bank-title h1 { font-size: 15px; color: var(--primary-blue); font-weight: 700; }
+        .bank-title p { font-size: 11px; color: #64748B; }
+        .badge-info { border: 1px solid #7DD3FC; background: #F0F9FF; color: #0369A1; padding: 8px 12px; border-radius: 8px; font-size: 12px; display: flex; align-items: center; gap: 6px; }
+        .nav-buttons { display: flex; gap: 10px; padding: 15px; background: #ffffff; }
+        .btn { flex: 1; padding: 10px; border-radius: 8px; border: 1px solid var(--card-border); background: #ffffff; color: var(--primary-blue); font-weight: 600; font-size: 13px; text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 6px; }
+        .btn.active { background: var(--primary-blue); color: #ffffff; border-color: var(--primary-blue); }
+        .hero-banner { background: linear-gradient(rgba(0, 59, 115, 0.85), rgba(0, 59, 115, 0.85)), url('https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=800&q=80'); background-size: cover; background-position: center; color: #ffffff; padding: 30px 20px; }
+        .hero-banner h2 { font-size: 26px; margin-bottom: 10px; font-weight: 800; }
+        .hero-banner p { font-size: 13px; opacity: 0.9; line-height: 1.4; }
+        .main-container { padding: 20px 15px; }
+        .section-header { display: flex; align-items: center; gap: 12px; margin-bottom: 15px; }
+        .section-icon { background: var(--primary-blue); color: #ffffff; width: 38px; height: 38px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 18px; }
+        .section-title h3 { font-size: 16px; color: var(--primary-blue); }
+        .section-title p { font-size: 11px; color: #64748B; }
+        .content-card { background: #ffffff; border-radius: 8px; border: 1px solid var(--card-border); overflow: hidden; }
+        .table-header { display: flex; background: #E0F2FE; padding: 10px 15px; font-weight: bold; font-size: 13px; color: var(--primary-blue); }
+        .table-header div { flex: 1; }
+        .empty-state { padding: 40px 20px; text-align: center; color: #64748B; }
+        .empty-state i { font-size: 32px; color: #94A3B8; margin-bottom: 10px; }
+        .empty-state p { font-size: 13px; margin-bottom: 4px; font-weight: 600; }
+        .empty-state span { font-size: 11px; }
+        footer { background: var(--primary-blue); color: #ffffff; text-align: center; padding: 12px; font-size: 11px; line-height: 1.5; }
+        .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: #ffffff; display: flex; justify-content: space-around; padding: 8px 0; border-top: 1px solid var(--card-border); z-index: 100; }
+        .nav-item { display: flex; flex-direction: column; align-items: center; font-size: 10px; color: #64748B; text-decoration: none; }
+        .nav-item i { font-size: 18px; margin-bottom: 3px; }
+        .nav-item.active { color: var(--primary-blue); font-weight: bold; }
     </style>
 </head>
 <body>
 
-    <!-- Header -->
     <header>
         <div class="logo-container">
-            <!-- तुम्ही नवीन लोगो पाठवल्यावर खालील 'src' बदलून घ्या -->
             <img src="logo.png.png" alt="Bank Logo" id="bankLogo">
             <div class="bank-title">
                 <h1>दि. जळगाव जिल्हा मध्यवर्ती सहकारी बँक लि., जळगाव</h1>
@@ -262,64 +62,67 @@
         </div>
     </header>
 
-   <!-- Navigation Buttons -->
-<div class="nav-buttons">
-    <a href="index.html" class="btn active"><i class="fa-solid fa-house"></i> मुख्यपृष्ठ</a>
-    <a href="#" class="btn"><i class="fa-solid fa-user"></i> शाखा लॉगिन</a>
-    <a href="#" class="btn"><i class="fa-solid fa-building"></i> विभागीय कार्यालय प्रवेश</a>
-</div>
+    <div class="nav-buttons">
+        <a href="index.html" class="btn active"><i class="fa-solid fa-house"></i> मुख्यपृष्ठ</a>
+        <a href="#" class="btn"><i class="fa-solid fa-user"></i> शाखा लॉगिन</a>
+        <a href="#" class="btn"><i class="fa-solid fa-building"></i> विभागीय कार्यालय प्रवेश</a>
+    </div>
 
-<!-- Bottom Navigation -->
-<div class="bottom-nav">
-    <a href="index.html" class="nav-item active">
-        <i class="fa-solid fa-house"></i>
-        <span>मुख्यपृष्ठ</span>
-    </a>
-    <a href="#" class="nav-item">
-        <i class="fa-regular fa-user"></i>
-        <span>शाखा लॉगिन</span>
-    </a>
-    <a href="#" class="nav-item">
-        <i class="fa-solid fa-building"></i>
-        <span>विभागीय प्रवेश</span>
-    </a>
-    <a href="#" class="nav-item">
-        <i class="fa-regular fa-calendar-days"></i>
-        <span>दिनांकवार माहिती</span>
-    </a>
-    <a href="#" class="nav-item">
-        <i class="fa-solid fa-circle-info"></i>
-        <span>माहिती</span>
-    </a>
-</div>
-    <!-- Footer -->
+    <div class="hero-banner">
+        <h2>शाखा माहिती संकलन</h2>
+        <p>शाखांची माहिती एकाच ठिकाणी जमा व एकत्रीकरणासाठी डेमो प्रणाली.</p>
+    </div>
+
+    <div class="main-container">
+        <div class="section-header">
+            <div class="section-icon">
+                <i class="fa-regular fa-calendar-days"></i>
+            </div>
+            <div class="section-title">
+                <h3>मुख्यपृष्ठ — दिनांकवार माहिती</h3>
+                <p>दररोजची माहिती एकत्र तारीख व माहितीच्या शीर्षकानुसार येथे दिसेल.</p>
+            </div>
+        </div>
+
+        <div class="content-card">
+            <div class="table-header">
+                <div>तारीख</div>
+                <div>माहितीचे शीर्षक</div>
+            </div>
+            <div class="empty-state">
+                <i class="fa-regular fa-file-lines"></i>
+                <p>सध्या कोणतीही माहिती उपलब्ध नाही.</p>
+                <span>माहिती जोडण्यासाठी शाखा लॉगिन करा.</span>
+            </div>
+        </div>
+    </div>
+
     <footer>
         © 2026 दि. जळगाव जिल्हा मध्यवर्ती सहकारी बँक लि., जळगाव — <br> — हे सर्व हक्क राखीव —
     </footer>
 
-    <!-- Bottom Navigation -->
-<div class="bottom-nav">
-    <a href="index.html" class="nav-item active">
-        <i class="fa-solid fa-house"></i>
-        <span>मुख्यपृष्ठ</span>
-    </a>
-    <a href="branch-login.html" class="nav-item">
-        <i class="fa-regular fa-user"></i>
-        <span>शाखा लॉगिन</span>
-    </a>
-    <a href="division-login.html" class="nav-item">
-        <i class="fa-solid fa-building"></i>
-        <span>विभागीय प्रवेश</span>
-    </a>
-    <a href="datewise-data.html" class="nav-item">
-        <i class="fa-regular fa-calendar-days"></i>
-        <span>दिनांकवार माहिती</span>
-    </a>
-    <a href="info.html" class="nav-item">
-        <i class="fa-solid fa-circle-info"></i>
-        <span>माहिती</span>
-    </a>
-</div>
+    <div class="bottom-nav">
+        <a href="index.html" class="nav-item active">
+            <i class="fa-solid fa-house"></i>
+            <span>मुख्यपृष्ठ</span>
+        </a>
+        <a href="#" class="nav-item">
+            <i class="fa-regular fa-user"></i>
+            <span>शाखा लॉगिन</span>
+        </a>
+        <a href="#" class="nav-item">
+            <i class="fa-solid fa-building"></i>
+            <span>विभागीय प्रवेश</span>
+        </a>
+        <a href="#" class="nav-item">
+            <i class="fa-regular fa-calendar-days"></i>
+            <span>दिनांकवार माहिती</span>
+        </a>
+        <a href="#" class="nav-item">
+            <i class="fa-solid fa-circle-info"></i>
+            <span>माहिती</span>
+        </a>
+    </div>
 
 </body>
 </html>
