@@ -583,37 +583,37 @@ function renderConsolidatedReport(){
       html += '</tr>';
     }
 
-    // BRANCH SUBTOTAL ROW
+    // BRANCH SUBTOTAL ROW (दुरुस्त केलेला Subtotal भाग)
     html += '<tr style="background:#e6f3f3; font-weight:700; border-bottom:2px solid var(--navy);">' +
-      '<td style="border:1px solid #c7dadd; color:var(--navy); padding:6px 10px;">' + esc(bName) + ' एकूण (Subtotal)</td>';
+      '<td colspan="2" style="border:1px solid #c7dadd; color:var(--navy); padding:6px 10px; text-align:right;">' + esc(bName) + ' एकूण (Subtotal):</td>';
 
     req.columns.forEach(function(col, cIdx){
       if(isNumericCol[cIdx] && branchSubtotals[cIdx] > 0){
-        html += '<td style="text-align:center; border:1px solid #c7dadd; color:var(--navy);">' + branchSubtotals[cIdx] + '</td>';
+        html += '<td style="text-align:center; border:1px solid #c7dadd; color:var(--navy); font-size:14px; font-weight:800;">' + branchSubtotals[cIdx] + '</td>';
       } else {
         html += '<td style="text-align:center; border:1px solid #c7dadd; color:#888;">-</td>';
       }
     });
 
-    html += '<td style="text-align:center; border:1px solid #c7dadd; color:var(--navy); background:#d0e7e7; font-weight:800;">' + (branchTotalAllCols > 0 ? branchTotalAllCols : '-') + '</td>';
+    html += '<td style="text-align:center; border:1px solid #c7dadd; color:#000; background:#b2d8d8; font-weight:900; font-size:14px;">' + (branchTotalAllCols > 0 ? branchTotalAllCols : '-') + '</td>';
     html += '</tr>';
 
     absoluteGrandTotal += branchTotalAllCols;
   });
 
-  // GRAND TOTAL ROW
+  // GRAND TOTAL ROW (सर्व शाखांची एकूण)
   html += '<tr style="background:var(--navy); color:#fff; font-weight:700; font-size:15px;">' +
     '<td colspan="3" style="text-align:right; padding:12px; border:1px solid #c7dadd;">सर्व १७ शाखांची एकत्रित एकूण (Grand Total):</td>';
 
   req.columns.forEach(function(col, cIdx){
     if(isNumericCol[cIdx] && grandTotals[cIdx] > 0){
-      html += '<td style="text-align:center; border:1px solid #c7dadd; color:#ffeb3b;">' + grandTotals[cIdx] + '</td>';
+      html += '<td style="text-align:center; border:1px solid #c7dadd; color:#ffeb3b; font-size:15px;">' + grandTotals[cIdx] + '</td>';
     } else {
       html += '<td style="text-align:center; border:1px solid #c7dadd; color:#ccc;">-</td>';
     }
   });
 
-  html += '<td style="text-align:center; border:1px solid #c7dadd; color:#ffeb3b; font-size:16px;">' + (absoluteGrandTotal > 0 ? absoluteGrandTotal : '-') + '</td>';
+  html += '<td style="text-align:center; border:1px solid #c7dadd; color:#ffeb3b; font-size:16px; font-weight:900; background:#00213d;">' + (absoluteGrandTotal > 0 ? absoluteGrandTotal : '-') + '</td>';
   html += '</tr></tbody></table>';
   box.innerHTML = html;
 }
