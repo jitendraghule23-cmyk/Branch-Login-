@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>शाखा लॉगिन - JDCC Bank</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-blue: #003B73;
+            --accent-blue: #0076C6;
+            --light-bg: #F4F8FA;
+            --text-dark: #1E293B;
+            --card-border: #E2E8F0;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Arial, sans-serif; }
+        body { background-color: var(--light-bg); color: var(--text-dark); padding-bottom: 70px; }
+        header { background: #ffffff; padding: 15px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--card-border); }
+        .logo-container { display: flex; align-items: center; gap: 12px; }
+        .logo-container img { height: 45px; width: auto; }
+        .bank-title h1 { font-size: 15px; color: var(--primary-blue); font-weight: 700; }
+        .bank-title p { font-size: 11px; color: #64748B; }
+        .login-card { max-width: 400px; margin: 30px auto; background: #ffffff; padding: 25px; border-radius: 10px; border: 1px solid var(--card-border); box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+        .login-card h2 { color: var(--primary-blue); font-size: 18px; margin-bottom: 20px; text-align: center; }
+        .form-group { margin-bottom: 15px; }
+        .form-group label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 5px; color: var(--text-dark); }
+        .form-group input, .form-group select { width: 100%; padding: 10px; border: 1px solid var(--card-border); border-radius: 6px; font-size: 14px; }
+        .submit-btn { width: 100%; background: var(--primary-blue); color: #ffffff; border: none; padding: 12px; border-radius: 6px; font-weight: bold; font-size: 14px; cursor: pointer; margin-top: 10px; }
+        .submit-btn:hover { background: var(--accent-blue); }
+        .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: #ffffff; display: flex; justify-content: space-around; padding: 8px 0; border-top: 1px solid var(--card-border); z-index: 100; }
+        .nav-item { display: flex; flex-direction: column; align-items: center; font-size: 10px; color: #64748B; text-decoration: none; }
+        .nav-item i { font-size: 18px; margin-bottom: 3px; }
+        .nav-item.active { color: var(--primary-blue); font-weight: bold; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo-container">
+            <img src="logo.png.png" alt="Bank Logo">
+            <div class="bank-title">
+                <h1>दि. जळगाव जिल्हा मध्यवर्ती सहकारी बँक लि., जळगाव</h1>
+                <p>भुसावळ तालुका — शाखा माहिती संकलन प्रणाली</p>
+            </div>
+        </div>
+    </header>
+
+    <div class="login-card">
+        <h2><i class="fa-solid fa-user-lock"></i> शाखा लॉगिन</h2>
+        <form>
+            <div class="form-group">
+                <label>शाखा निवडा</label>
+                <select>
+                    <option>भुसावळ मुख्य शाखा</option>
+                    <option>वरणगाव शाखा</option>
+                    <option>दीपनगर शाखा</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>युझर आयडी (User ID)</label>
+                <input type="text" placeholder="User ID टाका">
+            </div>
+            <div class="form-group">
+                <label>पासवर्ड (Password)</label>
+                <input type="password" placeholder="Password टाका">
+            </div>
+            <button type="button" class="submit-btn">प्रवेश करा</button>
+        </form>
+    </div>
+
+    <div class="bottom-nav">
+        <a href="index.html" class="nav-item">
+            <i class="fa-solid fa-house"></i>
+            <span>मुख्यपृष्ठ</span>
+        </a>
+        <a href="branch-login.html" class="nav-item active">
+            <i class="fa-regular fa-user"></i>
+            <span>शाखा लॉगिन</span>
+        </a>
+        <a href="#" class="nav-item">
+            <i class="fa-solid fa-building"></i>
+            <span>विभागीय प्रवेश</span>
+        </a>
+    </div>
+
+</body>
+</html>
