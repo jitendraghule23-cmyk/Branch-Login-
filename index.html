@@ -17,13 +17,6 @@
             margin: 15px;
             background-color: var(--light-bg);
             color: #333;
-            display: flex;
-            flex-direction: column;
-            min-height: 95vh;
-        }
-
-        .main-content {
-            flex: 1;
         }
 
         .header-bar {
@@ -183,113 +176,98 @@
         .muted { color: #6c757d; font-size: 12px; }
         .section-view { display: none; }
         .section-view.active { display: block; }
-
-        /* FOOTER STYLE */
-        footer {
-            text-align: center;
-            padding: 15px;
-            margin-top: auto;
-            color: #666;
-            font-size: 13px;
-            border-top: 1px solid #ddd;
-        }
     </style>
 </head>
 <body>
 
-    <div class="main-content">
-        <div class="header-bar">
-            <h2>JDCC BANK - शाखा अहवाल प्रणाली</h2>
-            <div id="userInfo" style="font-size:14px; display:flex; align-items:center; gap:10px;">
-                <span id="userDisplay" style="font-weight: bold;">मोड निवडा</span>
-                <button class="btn btn-danger" id="btnSwitch" style="padding:4px 8px; display:none;" onclick="logoutToHome()">मुख्य पृष्ठावर जा (Home)</button>
-            </div>
+    <div class="header-bar">
+        <h2>JDCC BANK - शाखा अहवाल प्रणाली</h2>
+        <div id="userInfo" style="font-size:14px; display:flex; align-items:center; gap:10px;">
+            <span id="userDisplay" style="font-weight: bold;">मोड निवडा</span>
+            <button class="btn btn-danger" id="btnSwitch" style="padding:4px 8px; display:none;" onclick="logoutToHome()">मुख्य पृष्ठावर जा (Home)</button>
         </div>
+    </div>
 
-        <!-- TABS -->
-        <div class="tabs" id="mainTabsContainer" style="display:none;">
-            <button class="tab-btn active" id="btnHome" onclick="switchTab('home')">🏠 मुख्य पृष्ठ</button>
-            <button class="tab-btn" id="btnRequest" onclick="switchTab('request')">📝 नवीन माहिती मागणी (Demand)</button>
-            <button class="tab-btn" id="btnEntry" onclick="switchTab('entry')">📥 शाखा माहिती भरणे (Entry)</button>
-            <button class="tab-btn" id="btnReport" onclick="switchTab('report')">📊 एकत्रित अहवाल (Consolidated Report)</button>
-        </div>
+    <!-- TABS (अॅडमिन किंवा शाखा लॉगिन झाल्यावर दिसतील) -->
+    <div class="tabs" id="mainTabsContainer" style="display:none;">
+        <button class="tab-btn active" id="btnHome" onclick="switchTab('home')">🏠 मुख्य पृष्ठ</button>
+        <button class="tab-btn" id="btnRequest" onclick="switchTab('request')">📝 नवीन माहिती मागणी (Demand)</button>
+        <button class="tab-btn" id="btnEntry" onclick="switchTab('entry')">📥 शाखा माहिती भरणे (Entry)</button>
+        <button class="tab-btn" id="btnReport" onclick="switchTab('report')">📊 एकत्रित अहवाल (Consolidated Report)</button>
+    </div>
 
-        <!-- 1. ACTUAL HOME PAGE -->
-        <div id="homeTab" class="section-view active">
-            <div class="panel" style="text-align: center; padding: 30px 15px;">
-                <h2 style="color:var(--navy); margin-bottom: 20px;">कृपया प्रवेश प्रकार निवडा</h2>
-                
-                <div class="login-grid">
-                    <div class="login-card" onclick="selectRole('branch')">
-                        <div class="icon">🏦</div>
-                        <h3>शाखा लॉगिन</h3>
-                        <p class="muted">शाखेची दैनिक माहिती भरण्यासाठी प्रवेश करा.</p>
-                    </div>
-
-                    <div class="login-card" onclick="selectRole('admin')">
-                        <div class="icon">🏢</div>
-                        <h3>विभागीय कार्यालय प्रवेश</h3>
-                        <p class="muted">नवीन मागणी तयार करणे, अहवाल पाहणे व एडिट करण्यासाठी.</p>
-                    </div>
+    <!-- 1. ACTUAL HOME PAGE (शाखा लॉगिन आणि विभागीय कार्यालय प्रवेश) -->
+    <div id="homeTab" class="section-view active">
+        <div class="panel" style="text-align: center; padding: 30px 15px;">
+            <h2 style="color:var(--navy); margin-bottom: 20px;">कृपया प्रवेश प्रकार निवडा</h2>
+            
+            <div class="login-grid">
+                <!-- शाखा लॉगिन -->
+                <div class="login-card" onclick="selectRole('branch')">
+                    <div class="icon">🏦</div>
+                    <h3>शाखा लॉगिन</h3>
+                    <p class="muted">शाखेची दैनिक माहिती भरण्यासाठी प्रवेश करा.</p>
                 </div>
-            </div>
-        </div>
 
-        <!-- 2. DEMAND REQUEST TAB -->
-        <div id="requestTab" class="section-view">
-            <div class="panel">
-                <h3 style="color:var(--navy); margin-top:0;">📝 नवीन माहिती मागणी तयार करा (विभागीय कार्यालय)</h3>
-                <div class="form-group" style="max-width:200px;">
-                    <label>तारीख निवडा:</label>
-                    <input type="date" id="reqDate">
+                <!-- विभागीय कार्यालय प्रवेश -->
+                <div class="login-card" onclick="selectRole('admin')">
+                    <div class="icon">🏢</div>
+                    <h3>विभागीय कार्यालय प्रवेश</h3>
+                    <p class="muted">नवीन मागणी तयार करणे, अहवाल पाहणे व एडिट करण्यासाठी.</p>
                 </div>
-                <div id="columnsContainer"></div>
-                <button class="btn btn-primary" onclick="addColumnGroup()" style="margin-top:10px;">+ नवीन कॉलम ग्रुप जोडा</button>
-                <button class="btn btn-excel" onclick="saveDemandRequest()" style="margin-top:10px; margin-left:10px;">माहिती मागणी सेव्ह करा</button>
-            </div>
-        </div>
-
-        <!-- 3. BRANCH ENTRY TAB -->
-        <div id="entryTab" class="section-view">
-            <div class="panel">
-                <h3 style="color:var(--navy); margin-top:0;" id="entryTabTitle">📥 शाखा माहिती एंट्री</h3>
-                <div class="grid-2" style="max-width:500px;">
-                    <div class="form-group" id="branchSelectGroup">
-                        <label>शाखा निवडा:</label>
-                        <select id="entryBranch" onchange="loadBranchEntryForm()"></select>
-                    </div>
-                    <div class="form-group">
-                        <label>तारीख:</label>
-                        <input type="date" id="entryDate" onchange="loadBranchEntryForm()">
-                    </div>
-                </div>
-                <div id="branchFormBox"></div>
-            </div>
-        </div>
-
-        <!-- 4. CONSOLIDATED REPORT TAB -->
-        <div id="reportTab" class="section-view">
-            <div class="panel">
-                <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
-                    <div>
-                        <h3 style="color:var(--navy); margin:0;">📊 १७ शाखांचा एकत्रित अहवाल</h3>
-                    </div>
-                    <div style="display:flex; gap:8px; align-items:center;">
-                        <label style="font-weight:bold;">तारीख:</label>
-                        <input id="adminReportDate" type="date" style="padding:4px;" onchange="renderConsolidatedReport()">
-                        <button class="btn btn-excel" onclick="downloadExcel()">📊 Excel</button>
-                        <button class="btn btn-print" onclick="window.print()">🖨️ Print</button>
-                    </div>
-                </div>
-                <div id="consolidatedReportBox" class="tablebox"></div>
             </div>
         </div>
     </div>
 
-    <!-- FOOTER WITH @ J S GHULE -->
-    <footer>
-        <p>© JDCC Bank Branch Report System @ J S GHULE</p>
-    </footer>
+    <!-- 2. DEMAND REQUEST TAB (ADMIN ONLY) -->
+    <div id="requestTab" class="section-view">
+        <div class="panel">
+            <h3 style="color:var(--navy); margin-top:0;">📝 नवीन माहिती मागणी तयार करा (विभागीय कार्यालय)</h3>
+            <div class="form-group" style="max-width:200px;">
+                <label>तारीख निवडा:</label>
+                <input type="date" id="reqDate">
+            </div>
+            <div id="columnsContainer"></div>
+            <button class="btn btn-primary" onclick="addColumnGroup()" style="margin-top:10px;">+ नवीन कॉलम ग्रुप जोडा</button>
+            <button class="btn btn-excel" onclick="saveDemandRequest()" style="margin-top:10px; margin-left:10px;">माहिती मागणी सेव्ह करा</button>
+        </div>
+    </div>
+
+    <!-- 3. BRANCH ENTRY TAB -->
+    <div id="entryTab" class="section-view">
+        <div class="panel">
+            <h3 style="color:var(--navy); margin-top:0;" id="entryTabTitle">📥 शाखा माहिती एंट्री</h3>
+            <div class="grid-2" style="max-width:500px;">
+                <div class="form-group" id="branchSelectGroup">
+                    <label>शाखा निवडा:</label>
+                    <select id="entryBranch" onchange="loadBranchEntryForm()"></select>
+                </div>
+                <div class="form-group">
+                    <label>तारीख:</label>
+                    <input type="date" id="entryDate" onchange="loadBranchEntryForm()">
+                </div>
+            </div>
+            <div id="branchFormBox"></div>
+        </div>
+    </div>
+
+    <!-- 4. CONSOLIDATED REPORT TAB (EDIT BUTTON IS HERE) -->
+    <div id="reportTab" class="section-view">
+        <div class="panel">
+            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+                <div>
+                    <h3 style="color:var(--navy); margin:0;">📊 १७ शाखांचा एकत्रित अहवाल</h3>
+                </div>
+                <div style="display:flex; gap:8px; align-items:center;">
+                    <label style="font-weight:bold;">तारीख:</label>
+                    <input id="adminReportDate" type="date" style="padding:4px;" onchange="renderConsolidatedReport()">
+                    <button class="btn btn-excel" onclick="downloadExcel()">📊 Excel</button>
+                    <button class="btn btn-print" onclick="window.print()">🖨️ Print</button>
+                </div>
+            </div>
+            <div id="consolidatedReportBox" class="tablebox"></div>
+        </div>
+    </div>
 
     <script>
         var ALL_BRANCHES = [
@@ -384,6 +362,7 @@
             };
         }
 
+        // REPORT WITH BRANCH EDIT BUTTON FOR ADMIN
         function renderConsolidatedReport(){
             var d = document.getElementById('adminReportDate').value || today();
             var req = getRequestForDate(d);
@@ -507,6 +486,7 @@
             box.innerHTML = html;
         }
 
+        // ADMIN EDIT MODAL FOR BRANCHES
         function openAdminEditModal(branchName, date) {
             var allEntries = getEntries();
             var entry = allEntries.find(e => e.branch === branchName && e.date === date) || { branch: branchName, date: date, data: {} };
