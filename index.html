@@ -34,14 +34,13 @@
 
         .header-bar h2 { margin: 0; font-size: 18px; }
 
-        /* TABS FIX: Responsive and always visible */
         .tabs {
             display: flex;
             gap: 8px;
             margin-bottom: 15px;
             border-bottom: 2px solid var(--navy);
             padding-bottom: 8px;
-            flex-wrap: wrap; /* स्क्रीन लहान असल्यास बटणे व्यवस्थित खाली येतील */
+            flex-wrap: wrap;
             align-items: center;
         }
 
@@ -54,7 +53,7 @@
             border-radius: 4px;
             cursor: pointer;
             font-size: 13px;
-            white-space: nowrap; /* मजकूर तुटणार नाही */
+            white-space: nowrap;
         }
 
         .tab-btn.active {
@@ -106,16 +105,18 @@
         .btn-print { background: #17a2b8; color: white; }
         .btn-danger { background: #dc3545; color: white; }
         
+        /* Report Edit Button Style */
         .btn-edit {
             background-color: #ffc107;
             color: #000;
             border: none;
-            padding: 3px 8px;
+            padding: 4px 8px;
             border-radius: 3px;
             cursor: pointer;
             font-size: 11px;
             font-weight: bold;
             margin-top: 5px;
+            display: inline-block;
         }
         .btn-edit:hover { background-color: #e0a800; }
 
@@ -162,7 +163,7 @@
         <button class="tab-btn" id="btnReport" onclick="switchTab('report')">📊 एकत्रित अहवाल (Consolidated Report)</button>
     </div>
 
-    <!-- 1. HOME TAB (Admin Only) -->
+    <!-- 1. HOME TAB -->
     <div id="homeTab" class="section-view active">
         <div class="panel">
             <h3 style="color:var(--navy); margin-top:0;">📋 डॅशबोर्ड व सुचना (Admin)</h3>
@@ -170,12 +171,12 @@
             <ul>
                 <li><strong>माहिती मागणी:</strong> हेड ऑफिसवरून सर्व शाखांसाठी नवीन डेटा कॉलम तयार करा.</li>
                 <li><strong>शाखा माहिती भरणे:</strong> प्रत्येक शाखेची माहिती तपासा किंवा भरा.</li>
-                <li><strong>एकत्रित अहवाल:</strong> सर्व १७ शाखांची माहिती, Subtotal आणि Grand Total सह प्रिंट करा अथवा Excel मध्ये डाऊनलोड करा.</li>
+                <li><strong>एकत्रित अहवाल:</strong> सर्व १७ शाखांची माहिती पाहा, शाखेनुसार <strong>Edit</strong> करा, प्रिंट करा किंवा Excel मध्ये डाऊनलोड करा.</li>
             </ul>
         </div>
     </div>
 
-    <!-- 2. DEMAND REQUEST TAB (Admin Only) -->
+    <!-- 2. DEMAND REQUEST TAB -->
     <div id="requestTab" class="section-view">
         <div class="panel">
             <h3 style="color:var(--navy); margin-top:0;">📝 नवीन माहिती मागणी तयार करा (Admin)</h3>
@@ -207,7 +208,7 @@
         </div>
     </div>
 
-    <!-- 4. CONSOLIDATED REPORT TAB -->
+    <!-- 4. CONSOLIDATED REPORT TAB (EDIT BUTTON PROVIDED HERE) -->
     <div id="reportTab" class="section-view">
         <div class="panel">
             <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
@@ -328,6 +329,7 @@
             };
         }
 
+        // RENDER REPORT WITH BRANCH-WISE EDIT BUTTON FOR ADMIN
         function renderConsolidatedReport(){
             var d = document.getElementById('adminReportDate').value || today();
             var req = getRequestForDate(d);
@@ -381,8 +383,13 @@
                     html += '<tr>';
 
                     if(sIdx === 0){
+                        // Edit button only added for Admin mode next to branch name
+                        var editBtnHtml = (currentUserRole === 'admin') 
+                            ? '<br><button class="btn-edit" onclick="openAdminEditModal(\'' + bName + '\', \'' + d + '\')">✏️ Edit</button>' 
+                            : '';
+
                         html += '<td rowspan="' + maxSubs + '" style="font-weight:600; vertical-align:middle;">' + 
-                                esc(bName) + '<br><button class="btn-edit" onclick="openAdminEditModal(\'' + bName + '\', \'' + d + '\')">✏️ Edit</button></td>';
+                                esc(bName) + editBtnHtml + '</td>';
                     }
 
                     var subName = 'भाग ' + (sIdx + 1);
@@ -447,6 +454,7 @@
             box.innerHTML = html;
         }
 
+        // ADMIN EDIT POPUP MODAL FOR BRANCH DATA
         function openAdminEditModal(branchName, date) {
             var allEntries = getEntries();
             var entry = allEntries.find(e => e.branch === branchName && e.date === date) || { branch: branchName, date: date, data: {} };
@@ -455,7 +463,7 @@
             var modalHtml = `
                 <div id="adminEditModal" style="position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.6); display:flex; align-items:center; justify-content:center; z-index:1000;">
                     <div style="background:#fff; padding:20px; border-radius:8px; width:90%; max-width:550px; max-height:85vh; overflow-y:auto; box-shadow: 0 4px 10px rgba(0,0,0,0.3);">
-                        <h3 style="color:var(--navy); margin-top:0;">✏️ ${branchName} - माहिती एडिट करा</h3>
+                        <h3 style="color:var(--navy); margin-top:0;">✏️ ${branchName} - माहिती अपडेट करा</h3>
                         <form id="adminEditForm">
                             <div id="dynamicEditFields"></div>
                             <div style="margin-top:20px; display:flex; gap:10px; justify-content:flex-end;">
