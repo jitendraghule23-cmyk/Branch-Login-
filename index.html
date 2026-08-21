@@ -99,7 +99,6 @@
         .btn-print { background: #17a2b8; color: white; }
         .btn-danger { background: #dc3545; color: white; }
         
-        /* Edit Button Styling */
         .btn-edit {
             background-color: #ffc107;
             color: #000;
@@ -142,34 +141,34 @@
 
     <div class="header-bar">
         <h2>JDCC BANK - शाखा अहवाल प्रणाली</h2>
-        <div id="userInfo" style="font-size:14px;">
-            <span id="userDisplay">Admin Mode</span>
-            <button class="btn btn-danger" style="margin-left:10px; padding:4px 8px;" onclick="switchUser()">युझर बदला</button>
+        <div id="userInfo" style="font-size:14px; display:flex; align-items:center; gap:10px;">
+            <span id="userDisplay" style="font-weight: bold;">Admin Mode</span>
+            <button class="btn btn-danger" style="padding:4px 8px;" onclick="switchUser()">युझर बदला (Switch Role)</button>
         </div>
     </div>
 
     <!-- TABS -->
-    <div class="tabs">
-        <button class="tab-btn active" onclick="switchTab('home', this)">🏠 मुख्य पृष्ठ (Home)</button>
-        <button class="tab-btn" onclick="switchTab('request', this)">📝 नवीन माहिती मागणी (Demand)</button>
-        <button class="tab-btn" onclick="switchTab('entry', this)">📥 शाखा माहिती भरणे (Entry)</button>
-        <button class="tab-btn" onclick="switchTab('report', this)">📊 एकत्रित अहवाल (Consolidated Report)</button>
+    <div class="tabs" id="mainTabsContainer">
+        <button class="tab-btn active" id="btnHome" onclick="switchTab('home')">🏠 मुख्य पृष्ठ (Dashboard)</button>
+        <button class="tab-btn" id="btnRequest" onclick="switchTab('request')">📝 नवीन माहिती मागणी (Demand)</button>
+        <button class="tab-btn" id="btnEntry" onclick="switchTab('entry')">📥 शाखा माहिती भरणे (Entry)</button>
+        <button class="tab-btn" id="btnReport" onclick="switchTab('report')">📊 एकत्रित अहवाल (Consolidated Report)</button>
     </div>
 
-    <!-- 1. HOME TAB -->
+    <!-- 1. HOME TAB (Admin Only) -->
     <div id="homeTab" class="section-view active">
         <div class="panel">
-            <h3 style="color:var(--navy); margin-top:0;">📋 डॅशबोर्ड व सुचना</h3>
+            <h3 style="color:var(--navy); margin-top:0;">📋 डॅशबोर्ड व सुचना (Admin)</h3>
             <p>जी. डी. सी. सी. बँक अहवाल प्रणालीमध्ये आपले स्वागत आहे. वर दिलेल्या टॅबचा वापर करून तुम्ही पुढील कामे करू शकता:</p>
             <ul>
                 <li><strong>माहिती मागणी:</strong> हेड ऑफिसवरून सर्व शाखांसाठी नवीन डेटा कॉलम तयार करा.</li>
-                <li><strong>शाखा माहिती भरणे:</strong> प्रत्येक शाखेने आपली माहिती तारीख निवडून अपडेट करावी.</li>
+                <li><strong>शाखा माहिती भरणे:</strong> प्रत्येक शाखेची माहिती तपासा किंवा भरा.</li>
                 <li><strong>एकत्रित अहवाल:</strong> सर्व १७ शाखांची माहिती, Subtotal आणि Grand Total सह प्रिंट करा अथवा Excel मध्ये डाऊनलोड करा.</li>
             </ul>
         </div>
     </div>
 
-    <!-- 2. DEMAND REQUEST TAB (ADMIN) -->
+    <!-- 2. DEMAND REQUEST TAB (Admin Only) -->
     <div id="requestTab" class="section-view">
         <div class="panel">
             <h3 style="color:var(--navy); margin-top:0;">📝 नवीन माहिती मागणी तयार करा (Admin)</h3>
@@ -183,12 +182,12 @@
         </div>
     </div>
 
-    <!-- 3. BRANCH ENTRY TAB -->
+    <!-- 3. BRANCH ENTRY TAB (Accessible to Both) -->
     <div id="entryTab" class="section-view">
         <div class="panel">
-            <h3 style="color:var(--navy); margin-top:0;">📥 शाखा माहिती एंट्री</h3>
+            <h3 style="color:var(--navy); margin-top:0;" id="entryTabTitle">📥 शाखा माहिती एंट्री</h3>
             <div class="grid-2" style="max-width:500px;">
-                <div class="form-group">
+                <div class="form-group" id="branchSelectGroup">
                     <label>शाखा निवडा:</label>
                     <select id="entryBranch"></select>
                 </div>
@@ -201,7 +200,7 @@
         </div>
     </div>
 
-    <!-- 4. CONSOLIDATED REPORT TAB -->
+    <!-- 4. CONSOLIDATED REPORT TAB (Admin Only) -->
     <div id="reportTab" class="section-view">
         <div class="panel">
             <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
@@ -227,6 +226,9 @@
             "चोपडा", "अमळनेर", "जळगाव"
         ];
 
+        // Default role is Admin ('admin' or branch name like 'भुसावळ')
+        var currentUserRole = localStorage.getItem('jdcc_user_role') || 'admin';
+
         function today() { return new Date().toISOString().split('T')[0]; }
         function esc(str) { return str ? String(str).replace(/</g, "&lt;").replace(/>/g, "&gt;") : ''; }
         function getEntries() { return JSON.parse(localStorage.getItem('allEntries') || '[]'); }
@@ -240,25 +242,72 @@
             bSelect.innerHTML = ALL_BRANCHES.map(b => `<option value="${b}">${b}</option>`).join('');
             
             loadDefaultDemandForm();
+            applyUserRoleView();
         }
 
-        function switchTab(tab, btnElement) {
+        function switchUser() {
+            if(currentUserRole === 'admin') {
+                // Switch to first branch as a demo branch user
+                currentUserRole = ALL_BRANCHES[0];
+                alert("शाखा युझर मोडवर स्विच केले: " + currentUserRole);
+            } else {
+                currentUserRole = 'admin';
+                alert("अॅडमिन (Admin) मोडवर स्विच केले.");
+            }
+            localStorage.setItem('jdcc_user_role', currentUserRole);
+            applyUserRoleView();
+        }
+
+        function applyUserRoleView() {
+            var userDisplay = document.getElementById('userDisplay');
+            var btnHome = document.getElementById('btnHome');
+            var btnRequest = document.getElementById('btnRequest');
+            var btnReport = document.getElementById('btnReport');
+            var branchSelectGroup = document.getElementById('branchSelectGroup');
+            var entryTabTitle = document.getElementById('entryTabTitle');
+
+            if(currentUserRole === 'admin') {
+                userDisplay.innerText = "Admin Mode";
+                btnHome.style.display = 'inline-block';
+                btnRequest.style.display = 'inline-block';
+                btnReport.style.display = 'inline-block';
+                branchSelectGroup.style.display = 'block';
+                entryTabTitle.innerText = "📥 शाखा माहिती एंट्री (Admin)";
+                switchTab('home');
+            } else {
+                userDisplay.innerText = "शाखा: " + currentUserRole;
+                btnHome.style.display = 'none';
+                btnRequest.style.display = 'none';
+                btnReport.style.display = 'none';
+                branchSelectGroup.style.display = 'none'; // Hide dropdown so branch user can only edit their own branch
+                document.getElementById('entryBranch').value = currentUserRole;
+                entryTabTitle.innerText = "📥 शाखा माहिती एंट्री (" + currentUserRole + ")";
+                switchTab('entry');
+            }
+        }
+
+        function switchTab(tab) {
+            // If branch user tries to open restricted tabs, block them
+            if(currentUserRole !== 'admin' && tab !== 'entry') {
+                tab = 'entry';
+            }
+
             document.querySelectorAll('.section-view').forEach(s => s.classList.remove('active'));
             document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
 
-            if(btnElement) {
-                btnElement.classList.add('active');
-            }
-
             if(tab === 'home') {
                 document.getElementById('homeTab').classList.add('active');
+                document.getElementById('btnHome').classList.add('active');
             } else if(tab === 'request') {
                 document.getElementById('requestTab').classList.add('active');
+                document.getElementById('btnRequest').classList.add('active');
             } else if(tab === 'entry') {
                 document.getElementById('entryTab').classList.add('active');
+                document.getElementById('btnEntry').classList.add('active');
                 loadBranchEntryForm();
             } else if(tab === 'report') {
                 document.getElementById('reportTab').classList.add('active');
+                document.getElementById('btnReport').classList.add('active');
                 renderConsolidatedReport();
             }
         }
@@ -275,7 +324,6 @@
             };
         }
 
-        // --- CONSOLIDATED REPORT RENDER (CLEAN EDIT BUTTON) ---
         function renderConsolidatedReport(){
             var d = document.getElementById('adminReportDate').value || today();
             var req = getRequestForDate(d);
@@ -364,7 +412,6 @@
                     html += '<td style="font-weight:600;">' + (rowSum > 0 ? rowSum : '-') + '</td></tr>';
                 }
 
-                // SUBTOTAL ROW
                 html += '<tr style="background:#e6f3f3; font-weight:700;">' +
                         '<td colspan="2" style="color:var(--navy); text-align:left;">' + esc(bName) + ' एकूण (Subtotal)</td>';
 
@@ -380,7 +427,6 @@
                 grandTotalAll += branchTotalSum;
             });
 
-            // GRAND TOTAL ROW
             html += '<tr style="background:#b8d8d8; font-weight:800;">' +
                     '<td colspan="2" style="color:var(--navy); text-align:left;">सर्व १७ शाखांची एकत्रित बेरीज (Grand Total)</td>';
 
@@ -397,7 +443,6 @@
             box.innerHTML = html;
         }
 
-        // --- ADMIN EDIT POPUP SYSTEM ---
         function openAdminEditModal(branchName, date) {
             var allEntries = getEntries();
             var entry = allEntries.find(e => e.branch === branchName && e.date === date) || { branch: branchName, date: date, data: {} };
@@ -483,10 +528,11 @@
             if (modal) modal.remove();
         }
 
-        // --- BRANCH FORM ENTRY ---
         function loadBranchEntryForm() {
             var d = document.getElementById('entryDate').value;
-            var b = document.getElementById('entryBranch').value;
+            // If branch user, always use their own branch name
+            var b = (currentUserRole === 'admin') ? document.getElementById('entryBranch').value : currentUserRole;
+            
             var req = getRequestForDate(d);
             var allEntries = getEntries();
             var entry = allEntries.find(e => e.branch === b && e.date === d) || { data: {} };
@@ -515,7 +561,7 @@
 
         function saveBranchEntry() {
             var d = document.getElementById('entryDate').value;
-            var b = document.getElementById('entryBranch').value;
+            var b = (currentUserRole === 'admin') ? document.getElementById('entryBranch').value : currentUserRole;
             var form = document.getElementById('bForm');
             var formData = new FormData(form);
             var data = {};
@@ -589,7 +635,6 @@
         }
 
         function downloadExcel() { alert("Excel डाऊनलोड सुरू होत आहे..."); }
-        function switchUser() { alert("युझर मोड बदलला."); }
 
         window.onload = init;
     </script>
