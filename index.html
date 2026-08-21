@@ -4,7 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>JDCC भुसावळ — शाखा माहिती प्रणाली</title>
-<!-- FontAwesome Icons -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Hind:wght@400;500;600;700&family=Poppins:wght@500;600;700&display=swap');
@@ -36,13 +35,13 @@ header{background:white;padding:15px 0 10px;box-shadow:0 2px 8px rgba(0,0,0,0.05
   background-size:cover;
   background-position:center;
   color:#fff;
-  padding:50px 0;
-  min-height:240px;
+  padding:40px 0;
+  min-height:200px;
   display:flex;
   align-items:center;
 }
-.hero h2{font-size:34px;margin:0 0 10px;font-weight:700}
-.hero p{font-size:16px;margin:0;opacity:0.9}
+.hero h2{font-size:30px;margin:0 0 10px;font-weight:700}
+.hero p{font-size:15px;margin:0;opacity:0.9}
 
 /* UI Elements */
 .screen{margin:25px auto}
@@ -101,14 +100,13 @@ body.print-a3 { page: printA3; }
   <div class="wrap">
     <div class="brand">
       <div class="logo-box">
-        <!-- बँक लोगो (PNG फॉरमॅट) -->
-        <img src="logo.png" alt="JDCC Bank Logo" onerror="this.onerror=null; this.src='logo.png.png';">
+        <img src="logo.png.png" alt="JDCC Bank Logo" onerror="this.onerror=null; this.src='https://via.placeholder.com/70?text=JDCC';">
       </div>
       <div>
         <h1>दि. जळगाव जिल्हा मध्यवर्ती सहकारी बँक लि., जळगाव</h1>
         <p>भुसावळ तालुका — शाखा माहिती संकलन प्रणाली</p>
       </div>
-      <div class="pill"><i class="fa-solid fa-building-columns"></i> 17 शाखांसाठी माहिती नोंदणी</div>
+      <div class="pill"><i class="fa-solid fa-building-columns"></i> 17 शाखा माहिती संकलन</div>
     </div>
     
     <nav class="main-nav">
@@ -125,19 +123,17 @@ body.print-a3 { page: printA3; }
   </div>
 </header>
 
-<!-- Hero Section -->
 <section class="hero">
   <div class="wrap">
     <div>
       <h2>शाखा माहिती संकलन</h2>
-      <p>शाखांची माहिती एकाच ठिकाणी जमा व एकत्रीकरणासाठी प्रणाली.</p>
+      <p>सर्व शाखांची माहिती एकाच ठिकाणी जमा व एकत्रीकरणासाठी प्रणाली.</p>
     </div>
   </div>
 </section>
 
 <main class="wrap screen">
 
-  <!-- HOME PAGE -->
   <section id="homePage">
     <div style="margin-bottom:15px;">
       <h3 style="color:var(--navy);margin:0 0 4px;font-size:22px;">मुख्यपृष्ठ — दिनांकवार माहिती</h3>
@@ -149,7 +145,6 @@ body.print-a3 { page: printA3; }
     </section>
   </section>
 
-  <!-- LOGIN BOX -->
   <section id="loginBox" class="login hidden">
     <div class="tabs">
       <button id="branchTab" class="on" onclick="setLoginMode('branch')">शाखा लॉगिन</button>
@@ -169,7 +164,6 @@ body.print-a3 { page: printA3; }
     <div class="actions"><button class="btn" onclick="login()">लॉगिन करा</button></div>
   </section>
 
-  <!-- BRANCH AREA -->
   <section id="branchArea" class="hidden">
     <div class="bar">
       <div><h3 id="branchFormTitle">शाखा माहिती फॉर्म</h3><span id="branchName" style="font-weight:600;color:var(--teal)"></span></div>
@@ -201,19 +195,17 @@ body.print-a3 { page: printA3; }
     </section>
   </section>
 
-  <!-- ADMIN AREA -->
   <section id="adminArea" class="hidden">
     <div class="bar">
       <div><h3>विभागीय कार्यालय भुसावळ — Admin डॅशबोर्ड</h3></div>
       <button class="btn out sm" onclick="logout()">लॉगआउट</button>
     </div>
 
-    <!-- 17 BRANCH CONSOLIDATED REPORT -->
     <section class="panel" style="border: 2px solid var(--navy);">
       <div class="bar">
         <div>
           <h3 style="color:var(--navy)">📊 १७ शाखांचा एकत्रित अहवाल (Consolidated Report)</h3>
-          <span class="muted">भुसावळ तालुक्यातील सर्व १७ शाखांचा एकत्रित अहवाल व खालील एकूण (Subtotal / Grand Total) पाहा.</span>
+          <span class="muted">भुसावळ तालुक्यातील सर्व १७ शाखांचा एकत्रित अहवाल व एकूण (Subtotal / Grand Total) पाहा.</span>
         </div>
         <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
           <label style="margin:0;">तारीख:</label>
@@ -226,7 +218,6 @@ body.print-a3 { page: printA3; }
       <div id="consolidatedReportBox" class="tablebox" style="margin-top:10px;"></div>
     </section>
 
-    <!-- Column Builder Panel -->
     <section class="panel">
       <h3>शाखांसाठी माहिती मागणी व कॉलम व्यवस्थापन</h3>
       <p class="hint">मुख्य कॉलम आणि Sub-columns तयार करा.</p>
@@ -254,7 +245,7 @@ body.print-a3 { page: printA3; }
 
 </main>
 
-<footer class="foot">© 2026 दि. जळगाव जिल्हा मध्यवर्ती सहकारी बँक लि., जळगाव — भुसावळ तालुका प्रणाली @ J S GHULE</footer>
+<footer class="foot">© 2026 दि. जळगाव जिल्हा मध्यवर्ती सहकारी बँक लि., जळगाव — भुसावळ तालुका प्रणाली</footer>
 
 <script>
 var STORE_ENTRIES = 'JDCC_ENTRIES_V9';
@@ -314,7 +305,6 @@ function renderHomePageList(){
     return;
   }
 
-  // Sort descending by date
   reqs.sort(function(a,b){ return new Date(b.date) - new Date(a.date); });
 
   var html = '<table><thead><tr><th style="width:30%;">तारीख</th><th>माहितीचे शीर्षक</th></tr></thead><tbody>';
