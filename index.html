@@ -28,27 +28,33 @@
             justify-content: space-between;
             align-items: center;
             margin-bottom: 15px;
+            flex-wrap: wrap;
+            gap: 10px;
         }
 
         .header-bar h2 { margin: 0; font-size: 18px; }
 
+        /* TABS FIX: Responsive and always visible */
         .tabs {
             display: flex;
-            gap: 10px;
+            gap: 8px;
             margin-bottom: 15px;
             border-bottom: 2px solid var(--navy);
             padding-bottom: 8px;
-            flex-wrap: wrap;
+            flex-wrap: wrap; /* स्क्रीन लहान असल्यास बटणे व्यवस्थित खाली येतील */
+            align-items: center;
         }
 
         .tab-btn {
-            padding: 8px 16px;
+            padding: 8px 12px;
             border: 1px solid var(--navy);
             background: #fff;
             color: var(--navy);
             font-weight: bold;
             border-radius: 4px;
             cursor: pointer;
+            font-size: 13px;
+            white-space: nowrap; /* मजकूर तुटणार नाही */
         }
 
         .tab-btn.active {
@@ -73,6 +79,7 @@
 
         @media (max-width: 768px) {
             .grid-2 { grid-template-columns: 1fr; }
+            .tab-btn { font-size: 12px; padding: 6px 8px; }
         }
 
         .form-group { margin-bottom: 12px; }
@@ -149,7 +156,7 @@
 
     <!-- TABS -->
     <div class="tabs" id="mainTabsContainer">
-        <button class="tab-btn active" id="btnHome" onclick="switchTab('home')">🏠 मुख्य पृष्ठ (Dashboard)</button>
+        <button class="tab-btn active" id="btnHome" onclick="switchTab('home')">🏠 मुख्य पृष्ठ (Home)</button>
         <button class="tab-btn" id="btnRequest" onclick="switchTab('request')">📝 नवीन माहिती मागणी (Demand)</button>
         <button class="tab-btn" id="btnEntry" onclick="switchTab('entry')">📥 शाखा माहिती भरणे (Entry)</button>
         <button class="tab-btn" id="btnReport" onclick="switchTab('report')">📊 एकत्रित अहवाल (Consolidated Report)</button>
@@ -182,7 +189,7 @@
         </div>
     </div>
 
-    <!-- 3. BRANCH ENTRY TAB (Accessible to Both) -->
+    <!-- 3. BRANCH ENTRY TAB -->
     <div id="entryTab" class="section-view">
         <div class="panel">
             <h3 style="color:var(--navy); margin-top:0;" id="entryTabTitle">📥 शाखा माहिती एंट्री</h3>
@@ -200,7 +207,7 @@
         </div>
     </div>
 
-    <!-- 4. CONSOLIDATED REPORT TAB (Admin Only) -->
+    <!-- 4. CONSOLIDATED REPORT TAB -->
     <div id="reportTab" class="section-view">
         <div class="panel">
             <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
@@ -226,7 +233,6 @@
             "चोपडा", "अमळनेर", "जळगाव"
         ];
 
-        // Default role is Admin ('admin' or branch name like 'भुसावळ')
         var currentUserRole = localStorage.getItem('jdcc_user_role') || 'admin';
 
         function today() { return new Date().toISOString().split('T')[0]; }
@@ -247,7 +253,6 @@
 
         function switchUser() {
             if(currentUserRole === 'admin') {
-                // Switch to first branch as a demo branch user
                 currentUserRole = ALL_BRANCHES[0];
                 alert("शाखा युझर मोडवर स्विच केले: " + currentUserRole);
             } else {
@@ -279,7 +284,7 @@
                 btnHome.style.display = 'none';
                 btnRequest.style.display = 'none';
                 btnReport.style.display = 'none';
-                branchSelectGroup.style.display = 'none'; // Hide dropdown so branch user can only edit their own branch
+                branchSelectGroup.style.display = 'none';
                 document.getElementById('entryBranch').value = currentUserRole;
                 entryTabTitle.innerText = "📥 शाखा माहिती एंट्री (" + currentUserRole + ")";
                 switchTab('entry');
@@ -287,7 +292,6 @@
         }
 
         function switchTab(tab) {
-            // If branch user tries to open restricted tabs, block them
             if(currentUserRole !== 'admin' && tab !== 'entry') {
                 tab = 'entry';
             }
@@ -530,7 +534,6 @@
 
         function loadBranchEntryForm() {
             var d = document.getElementById('entryDate').value;
-            // If branch user, always use their own branch name
             var b = (currentUserRole === 'admin') ? document.getElementById('entryBranch').value : currentUserRole;
             
             var req = getRequestForDate(d);
