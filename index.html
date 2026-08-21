@@ -17,45 +17,27 @@
             background-color: #f8f9fa;
         }
 
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        /* Login Card Style */
-        .login-card {
-            max-width: 400px;
-            margin: 80px auto;
-            background: #fff;
-            padding: 25px;
-            border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-            border: 2px solid var(--navy);
-            text-align: center;
-        }
-
-        .login-card h2 {
-            color: var(--navy);
-            margin-bottom: 20px;
-        }
-
-        .input-group {
+        .tabs {
+            display: flex;
+            gap: 10px;
             margin-bottom: 15px;
-            text-align: left;
+            border-bottom: 2px solid var(--navy);
+            padding-bottom: 10px;
         }
 
-        .input-group label {
-            display: block;
-            margin-bottom: 5px;
+        .tab-btn {
+            padding: 8px 16px;
+            border: 1px solid var(--navy);
+            background: #fff;
+            color: var(--navy);
             font-weight: bold;
+            border-radius: 4px;
+            cursor: pointer;
         }
 
-        .input-group input, .input-group select {
-            width: 100%;
-            padding: 8px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            box-sizing: border-box;
+        .tab-btn.active {
+            background: var(--navy);
+            color: #fff;
         }
 
         .panel {
@@ -63,6 +45,7 @@
             padding: 15px;
             background: #fff;
             border-radius: 6px;
+            margin-bottom: 20px;
         }
 
         .bar {
@@ -74,9 +57,7 @@
             margin-bottom: 15px;
         }
 
-        .tablebox {
-            overflow-x: auto;
-        }
+        .tablebox { overflow-x: auto; }
 
         .report-table {
             width: 100%;
@@ -97,14 +78,13 @@
         }
 
         .btn {
-            padding: 8px 15px;
+            padding: 6px 12px;
             border: none;
             border-radius: 4px;
             cursor: pointer;
             font-weight: bold;
         }
 
-        .btn-primary { background: var(--navy); color: white; width: 100%; }
         .btn-excel { background: #28a745; color: white; }
         .btn-print { background: #17a2b8; color: white; }
         .btn-out { background: #dc3545; color: white; }
@@ -113,45 +93,46 @@
             background-color: #ffc107;
             color: #000;
             border: none;
-            padding: 3px 8px;
-            border-radius: 4px;
+            padding: 3px 6px;
+            border-radius: 3px;
             cursor: pointer;
             font-size: 11px;
             font-weight: bold;
-            margin-left: 5px;
+            margin-top: 4px;
         }
 
-        .btn-edit:hover { background-color: #e0a800; }
-        .muted { color: #6c757d; }
+        .muted { color: #6c757d; font-size: 13px; }
+        .section-view { display: none; }
+        .section-view.active { display: block; }
     </style>
 </head>
 <body>
 
-    <!-- १. होम / लॉगिन पेज (Home / Login Section) -->
-    <div id="homeSection" class="login-card">
-        <h2>JDCC Bank रिपोर्ट प्रणाली</h2>
-        <form onsubmit="handleLogin(event)">
-            <div class="input-group">
-                <label>युझर प्रकार (User Role):</label>
-                <select id="userRole">
-                    <option value="admin">Admin</option>
-                    <option value="branch">Branch</option>
-                </select>
-            </div>
-            <div class="input-group">
-                <label>पासवर्ड:</label>
-                <input type="password" id="loginPassword" placeholder="पासवर्ड टाका" required>
-            </div>
-            <button type="submit" class="btn btn-primary">लॉगिन करा</button>
-        </form>
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+        <div class="tabs" style="margin-bottom:0; border-bottom:none;">
+            <button class="tab-btn active" onclick="switchTab('home')">🏠 मुख्य पृष्ठ (Home)</button>
+            <button class="tab-btn" onclick="switchTab('report')">📊 एकत्रित अहवाल (Consolidated Report)</button>
+        </div>
+        <button class="btn btn-out sm" onclick="logout()">लॉगआउट</button>
     </div>
 
-    <!-- २. ॲडमिन डॅशबोर्ड (Admin Dashboard) - सुरुवातीला लपवलेला (Hidden) -->
-    <div id="dashboardSection" style="display:none;">
-        <div style="display:flex; justify-content:flex-end; margin-bottom:10px;">
-            <button class="btn btn-out" onclick="logout()">लॉगआउट</button>
-        </div>
+    <!-- 1. HOME PAGE SECTION (मूळ होम पेज) -->
+    <div id="homeTab" class="section-view active">
+        <section class="panel">
+            <h3 style="color:var(--navy); margin-top:0;">📋 माहिती मागणी व डॅशबोर्ड</h3>
+            <p class="muted">इथून तुम्ही दररोजची माहिती मागणी व्यवस्थापित करू शकता व शाखा अहवाल पाहू शकता.</p>
+            <hr style="border:0; border-top:1px solid #ccc; margin:15px 0;">
+            
+            <div style="display:flex; gap:15px; flex-wrap:wrap;">
+                <button class="btn btn-excel" style="padding:12px 20px; font-size:15px;" onclick="switchTab('report')">
+                    📊 १७ शाखांचा एकत्रित अहवाल पाहा
+                </button>
+            </div>
+        </section>
+    </div>
 
+    <!-- 2. CONSOLIDATED REPORT SECTION (सुधारित रिपोर्ट) -->
+    <div id="reportTab" class="section-view">
         <section class="panel">
             <div class="bar">
                 <div>
@@ -179,17 +160,9 @@
             "चोपडा", "अमळनेर", "जळगाव"
         ];
 
-        function today() {
-            return new Date().toISOString().split('T')[0];
-        }
-
-        function esc(str) {
-            return str ? String(str).replace(/</g, "&lt;").replace(/>/g, "&gt;") : '';
-        }
-
-        function getEntries() {
-            return JSON.parse(localStorage.getItem('allEntries') || '[]');
-        }
+        function today() { return new Date().toISOString().split('T')[0]; }
+        function esc(str) { return str ? String(str).replace(/</g, "&lt;").replace/>/g, "&gt;") : ''; }
+        function getEntries() { return JSON.parse(localStorage.getItem('allEntries') || '[]'); }
 
         function getRequestForDate(d) {
             var requests = JSON.parse(localStorage.getItem('allRequests') || '[]');
@@ -203,23 +176,27 @@
             };
         }
 
-        // ================= LOGIN & LOGOUT LOGIC =================
-        function handleLogin(e) {
-            e.preventDefault();
-            // लॉगिन यशस्वी मानून डॅशबोर्ड दाखवणे
-            document.getElementById('homeSection').style.display = 'none';
-            document.getElementById('dashboardSection').style.display = 'block';
-            document.getElementById('adminReportDate').value = today();
-            renderConsolidatedReport();
+        // TABS SWITCHING LOGIC
+        function switchTab(tabName) {
+            document.getElementById('homeTab').classList.remove('active');
+            document.getElementById('reportTab').classList.remove('active');
+            
+            var btns = document.querySelectorAll('.tab-btn');
+            btns.forEach(b => b.classList.remove('active'));
+
+            if(tabName === 'home') {
+                document.getElementById('homeTab').classList.add('active');
+                btns[0].classList.add('active');
+            } else {
+                document.getElementById('reportTab').classList.add('active');
+                btns[1].classList.add('active');
+                renderConsolidatedReport();
+            }
         }
 
-        function logout() {
-            document.getElementById('dashboardSection').style.display = 'none';
-            document.getElementById('homeSection').style.display = 'block';
-            document.getElementById('loginPassword').value = '';
-        }
+        document.getElementById('adminReportDate').value = today();
 
-        // ================= MAIN REPORT RENDER FUNCTION =================
+        // MAIN REPORT RENDER FUNCTION (अचूक Alignment आणि Edit बटनसह)
         function renderConsolidatedReport(){
             var d = document.getElementById('adminReportDate').value || today();
             var req = getRequestForDate(d);
@@ -319,7 +296,7 @@
                     html += '<td style="text-align:center; font-weight:600; border:1px solid #c7dadd;">' + (rowSum > 0 ? rowSum : '-') + '</td></tr>';
                 }
 
-                // BRANCH SUBTOTAL ROW
+                // BRANCH SUBTOTAL ROW (Colspan Fixed)
                 html += '<tr style="background:#e6f3f3; font-weight:700; border-bottom:2px solid var(--navy);">' +
                         '<td colspan="2" style="border:1px solid #c7dadd; color:var(--navy); padding:6px 10px;">' + esc(bName) + ' एकूण (Subtotal)</td>';
 
@@ -354,15 +331,10 @@
             box.innerHTML = html;
         }
 
-        // ================= ADMIN EDIT MODAL FUNCTIONS =================
+        // ADMIN EDIT POPUP SYSTEM
         function openAdminEditModal(branchName, date) {
             var allEntries = getEntries();
-            var entry = allEntries.find(e => e.branch === branchName && e.date === date);
-
-            if (!entry) {
-                entry = { branch: branchName, date: date, data: {} };
-            }
-
+            var entry = allEntries.find(e => e.branch === branchName && e.date === date) || { branch: branchName, date: date, data: {} };
             var req = getRequestForDate(date);
 
             var modalHtml = `
@@ -449,6 +421,7 @@
 
         function downloadExcel() { alert("Excel डाऊनलोड सुरू होत आहे..."); }
         function printReport(type) { window.print(); }
+        function logout() { alert("लॉगआउट झाले!"); }
     </script>
 </body>
 </html>
