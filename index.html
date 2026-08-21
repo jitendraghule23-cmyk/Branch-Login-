@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>भुसावळ तालुका - शाखा माहिती संकलन प्रणाली</title>
+    <title>दि. जळगाव जिल्हा मध्यवर्ती सहकारी बँक लि., जळगाव</title>
     <style>
         :root {
             --navy: #003366;
@@ -28,17 +28,28 @@
 
         /* HEADER */
         .header-bar {
-            background: var(--navy);
-            color: white;
-            padding: 10px 20px;
+            background: #fff;
+            color: var(--navy);
+            padding: 15px 20px;
+            border-bottom: 2px solid var(--border-color);
             display: flex;
             justify-content: space-between;
             align-items: center;
             flex-wrap: wrap;
-            gap: 10px;
+            gap: 15px;
         }
 
-        .header-bar h2 { margin: 0; font-size: 16px; }
+        .bank-title-box h1 {
+            margin: 0 0 4px 0;
+            font-size: 18px;
+            color: var(--navy);
+        }
+
+        .bank-title-box p {
+            margin: 0;
+            font-size: 13px;
+            color: #555;
+        }
 
         .top-buttons {
             display: flex;
@@ -48,15 +59,15 @@
         .nav-btn {
             background: #fff;
             color: var(--navy);
-            border: none;
-            padding: 6px 12px;
+            border: 1px solid var(--navy);
+            padding: 6px 14px;
             border-radius: 4px;
             font-weight: bold;
             cursor: pointer;
             font-size: 13px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
         }
-        .nav-btn:hover { background: #e0e0e0; }
+        .nav-btn:hover { background: var(--navy); color: white; }
 
         /* BANNER */
         .banner {
@@ -77,6 +88,18 @@
             padding: 0 15px 20px 15px;
             width: 100%;
             box-sizing: border-box;
+        }
+
+        /* DYNAMIC TABS BAR */
+        .tabs {
+            display: none; /* सुरुवातीला लपलेले राहील */
+            margin-bottom: 20px;
+            gap: 8px;
+            flex-wrap: wrap;
+            background: #fff;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
         }
 
         .panel {
@@ -174,9 +197,12 @@
 <body>
 
     <div class="main-content">
-        <!-- HEADER WITH TOP BUTTONS -->
+        <!-- HEADER WITH BANK TITLE & TOP BUTTONS -->
         <div class="header-bar">
-            <h2>भुसावळ तालुका – शाखा माहिती संकलन प्रणाली</h2>
+            <div class="bank-title-box">
+                <h1>दि. जळगाव जिल्हा मध्यवर्ती सहकारी बँक लि., जळगाव</h1>
+                <p>भुसावळ तालुका — शाखा माहिती संकलन प्रणाली</p>
+            </div>
             <div class="top-buttons">
                 <button class="nav-btn" onclick="selectRole('branch')">👤 शाखा लॉगिन</button>
                 <button class="nav-btn" onclick="selectRole('admin')">🏛️ विभागीय कार्यालय प्रवेश</button>
@@ -192,20 +218,20 @@
         </div>
 
         <div class="container">
-            <!-- TABS (Hidden initially, shown after login/admin selection) -->
-            <div class="tabs" id="mainTabsContainer" style="display:none; margin-bottom:15px; gap:8px; display:flex; flex-wrap:wrap;">
+            <!-- DYNAMIC TAB NAVIGATION -->
+            <div class="tabs" id="mainTabsContainer">
                 <button class="btn btn-primary" id="btnHome" onclick="switchTab('home')">🏠 मुख्य पृष्ठ</button>
                 <button class="btn btn-primary" id="btnRequest" onclick="switchTab('request')">📝 नवीन माहिती मागणी (Demand)</button>
                 <button class="btn btn-primary" id="btnEntry" onclick="switchTab('entry')">📥 शाखा माहिती भरणे (Entry)</button>
                 <button class="btn btn-primary" id="btnReport" onclick="switchTab('report')">📊 एकत्रित अहवाल (Consolidated Report)</button>
-                <button class="btn btn-danger" onclick="logoutToHome()" style="margin-left:auto;">बाहेर پडा (Logout)</button>
+                <button class="btn btn-danger" onclick="logoutToHome()" style="margin-left:auto;">बाहेर पडा (Logout)</button>
             </div>
 
-            <!-- 1. HOME VIEW (AS SHOWN IN YOUR PHOTO) -->
+            <!-- 1. HOME VIEW -->
             <div id="homeTab" class="section-view active">
                 <div class="panel">
                     <h3 style="color:var(--navy); margin-top:0; border-bottom: 2px solid var(--navy); padding-bottom: 8px;">📅 दिनांकवार माहिती</h3>
-                    <p class="muted">येथे फक्त तारीख व माहितीच्या शीर्षकानुसार नोटीस व नोंدی दिसेल.</p>
+                    <p class="muted">येथे फक्त तारीख व माहितीच्या शीर्षकानुसार नोटीस व नोंदी दिसेल.</p>
                     
                     <div class="form-group" style="max-width:300px; margin-top:15px;">
                         <label>माहितीचे शीर्षक:</label>
@@ -304,16 +330,31 @@
         }
 
         function selectRole(role) {
-            document.getElementById('mainTabsContainer').style.display = 'flex';
+            var tabsContainer = document.getElementById('mainTabsContainer');
+            tabsContainer.style.display = 'flex';
+
             if(role === 'admin') {
                 currentUserRole = 'admin';
+                document.getElementById('btnHome').style.display = 'inline-block';
+                document.getElementById('btnRequest').style.display = 'inline-block';
+                document.getElementById('btnEntry').style.display = 'inline-block';
+                document.getElementById('btnReport').style.display = 'inline-block';
                 switchTab('request');
             } else {
                 var selectedBranch = prompt("कृपया शाखेचे नाव निवडा/लिहा:", ALL_BRANCHES[0]);
-                if(!selectedBranch) return;
+                if(!selectedBranch) {
+                    tabsContainer.style.display = 'none';
+                    return;
+                }
                 currentUserRole = selectedBranch;
                 document.getElementById('entryBranch').value = currentUserRole;
                 document.getElementById('entryTabTitle').innerText = "📥 शाखा माहिती एंट्री (" + currentUserRole + ")";
+                
+                document.getElementById('btnHome').style.display = 'inline-block';
+                document.getElementById('btnRequest').style.display = 'none';
+                document.getElementById('btnEntry').style.display = 'inline-block';
+                document.getElementById('btnReport').style.display = 'none';
+                
                 switchTab('entry');
             }
         }
@@ -368,7 +409,6 @@
                 return;
             }
 
-            // Temporarily use report rendering logic for home view preview
             var req = getRequestForDate(d);
             var allEntries = getEntries();
             var entries = allEntries.filter(e => e.date === d);
