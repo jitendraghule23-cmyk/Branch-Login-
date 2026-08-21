@@ -17,6 +17,47 @@
             background-color: #f8f9fa;
         }
 
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Login Card Style */
+        .login-card {
+            max-width: 400px;
+            margin: 80px auto;
+            background: #fff;
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            border: 2px solid var(--navy);
+            text-align: center;
+        }
+
+        .login-card h2 {
+            color: var(--navy);
+            margin-bottom: 20px;
+        }
+
+        .input-group {
+            margin-bottom: 15px;
+            text-align: left;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        .input-group input, .input-group select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
         .panel {
             border: 2px solid var(--navy);
             padding: 15px;
@@ -56,13 +97,14 @@
         }
 
         .btn {
-            padding: 5px 10px;
+            padding: 8px 15px;
             border: none;
             border-radius: 4px;
             cursor: pointer;
             font-weight: bold;
         }
 
+        .btn-primary { background: var(--navy); color: white; width: 100%; }
         .btn-excel { background: #28a745; color: white; }
         .btn-print { background: #17a2b8; color: white; }
         .btn-out { background: #dc3545; color: white; }
@@ -79,39 +121,57 @@
             margin-left: 5px;
         }
 
-        .btn-edit:hover {
-            background-color: #e0a800;
-        }
-
+        .btn-edit:hover { background-color: #e0a800; }
         .muted { color: #6c757d; }
     </style>
 </head>
 <body>
 
-    <div style="display:flex; justify-content:flex-end; margin-bottom:10px;">
-        <button class="btn btn-out" onclick="logout()">लॉगआउट</button>
+    <!-- १. होम / लॉगिन पेज (Home / Login Section) -->
+    <div id="homeSection" class="login-card">
+        <h2>JDCC Bank रिपोर्ट प्रणाली</h2>
+        <form onsubmit="handleLogin(event)">
+            <div class="input-group">
+                <label>युझर प्रकार (User Role):</label>
+                <select id="userRole">
+                    <option value="admin">Admin</option>
+                    <option value="branch">Branch</option>
+                </select>
+            </div>
+            <div class="input-group">
+                <label>पासवर्ड:</label>
+                <input type="password" id="loginPassword" placeholder="पासवर्ड टाका" required>
+            </div>
+            <button type="submit" class="btn btn-primary">लॉगिन करा</button>
+        </form>
     </div>
 
-    <section class="panel">
-        <div class="bar">
-            <div>
-                <h3 style="color:var(--navy); margin:0;">📊 १७ शाखांचा एकत्रित अहवाल (Consolidated Report)</h3>
-                <span class="muted">भुसावळ तालुक्यातील सर्व १७ शाखांचा एकत्रित अहवाल व एकूण (Subtotal / Grand Total) पाहा.</span>
-            </div>
-            <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
-                <label style="margin:0; font-weight:bold;">तारीख:</label>
-                <input id="adminReportDate" type="date" style="width:auto; padding:4px;" onchange="renderConsolidatedReport()">
-                <button class="btn btn-excel" onclick="downloadExcel()">📊 Excel</button>
-                <button class="btn btn-print" onclick="printReport('A4')">🖨️ A4 Print</button>
-                <button class="btn btn-print" onclick="printReport('A3')">🖨️ A3 Print</button>
-            </div>
+    <!-- २. ॲडमिन डॅशबोर्ड (Admin Dashboard) - सुरुवातीला लपवलेला (Hidden) -->
+    <div id="dashboardSection" style="display:none;">
+        <div style="display:flex; justify-content:flex-end; margin-bottom:10px;">
+            <button class="btn btn-out" onclick="logout()">लॉगआउट</button>
         </div>
 
-        <div id="consolidatedReportBox" class="tablebox" style="margin-top:10px;"></div>
-    </section>
+        <section class="panel">
+            <div class="bar">
+                <div>
+                    <h3 style="color:var(--navy); margin:0;">📊 १७ शाखांचा एकत्रित अहवाल (Consolidated Report)</h3>
+                    <span class="muted">भुसावळ तालुक्यातील सर्व १७ शाखांचा एकत्रित अहवाल व एकूण (Subtotal / Grand Total) पाहा.</span>
+                </div>
+                <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
+                    <label style="margin:0; font-weight:bold;">तारीख:</label>
+                    <input id="adminReportDate" type="date" style="width:auto; padding:4px;" onchange="renderConsolidatedReport()">
+                    <button class="btn btn-excel" onclick="downloadExcel()">📊 Excel</button>
+                    <button class="btn btn-print" onclick="printReport('A4')">🖨️ A4 Print</button>
+                    <button class="btn btn-print" onclick="printReport('A3')">🖨️ A3 Print</button>
+                </div>
+            </div>
+
+            <div id="consolidatedReportBox" class="tablebox" style="margin-top:10px;"></div>
+        </section>
+    </div>
 
     <script>
-        // सर्व १७ शाखांची यादी
         var ALL_BRANCHES = [
             "भुसावळ", "वरणगाव", "पिंपळगाव बु.", "कुऱ्हे पानाचे", "साकरी", 
             "दीप्ती नगर", "बाजार समिती भुसावळ", "नशिराबाद", "फैजपूर", 
@@ -143,7 +203,21 @@
             };
         }
 
-        document.getElementById('adminReportDate').value = today();
+        // ================= LOGIN & LOGOUT LOGIC =================
+        function handleLogin(e) {
+            e.preventDefault();
+            // लॉगिन यशस्वी मानून डॅशबोर्ड दाखवणे
+            document.getElementById('homeSection').style.display = 'none';
+            document.getElementById('dashboardSection').style.display = 'block';
+            document.getElementById('adminReportDate').value = today();
+            renderConsolidatedReport();
+        }
+
+        function logout() {
+            document.getElementById('dashboardSection').style.display = 'none';
+            document.getElementById('homeSection').style.display = 'block';
+            document.getElementById('loginPassword').value = '';
+        }
 
         // ================= MAIN REPORT RENDER FUNCTION =================
         function renderConsolidatedReport(){
@@ -373,15 +447,8 @@
             if (modal) modal.remove();
         }
 
-        function logout() {
-            alert("लॉगआउट झाले!");
-        }
-
         function downloadExcel() { alert("Excel डाऊनलोड सुरू होत आहे..."); }
         function printReport(type) { window.print(); }
-
-        // पेज लोड झाल्यावर रिपोर्ट दाखवणे
-        renderConsolidatedReport();
     </script>
 </body>
 </html>
